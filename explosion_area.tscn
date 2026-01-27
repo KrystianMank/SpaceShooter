@@ -1,0 +1,91 @@
+[gd_scene load_steps=11 format=3 uid="uid://biikhef1q8swo"]
+
+[ext_resource type="Script" uid="uid://dkodhocrv0ypl" path="res://scripts/ExplosionArea.cs" id="1_t86v5"]
+[ext_resource type="Texture2D" uid="uid://di2sutndtvnac" path="res://sprites/explosion/explosion_sheet.png" id="2_khqqm"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2b2rl"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ivps1"]
+atlas = ExtResource("2_khqqm")
+region = Rect2(0, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_urp6f"]
+atlas = ExtResource("2_khqqm")
+region = Rect2(0, 50, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bwjto"]
+atlas = ExtResource("2_khqqm")
+region = Rect2(0, 100, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_606se"]
+atlas = ExtResource("2_khqqm")
+region = Rect2(0, 150, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u1c27"]
+atlas = ExtResource("2_khqqm")
+region = Rect2(50, 0, 50, 50)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mmjbn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ivps1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_urp6f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bwjto")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_606se")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u1c27")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_g2b2c"]
+particle_flag_align_y = true
+particle_flag_disable_z = true
+emission_shape = 2
+emission_sphere_radius = 23.05
+angle_min = -720.0
+angle_max = -720.0
+spread = 180.0
+initial_velocity_min = 201.61
+initial_velocity_max = 201.61
+gravity = Vector3(0, 98, 0)
+tangential_accel_min = -2.2351742e-06
+tangential_accel_max = -2.2351742e-06
+scale_max = 8.0
+color = Color(0.98039216, 0, 0, 1)
+hue_variation_min = -0.050000023
+hue_variation_max = 0.17999998
+turbulence_enabled = true
+
+[node name="ExplosionArea" type="Area2D" node_paths=PackedStringArray("ExplosionAnimation", "ExplosionVFX")]
+script = ExtResource("1_t86v5")
+ExplosionAnimation = NodePath("ExplosionAnimation")
+ExplosionVFX = NodePath("ExplosionVFX")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_2b2rl")
+
+[node name="ExplosionAnimation" type="AnimatedSprite2D" parent="."]
+position = Vector2(4, -3)
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_mmjbn")
+speed_scale = 2.5
+
+[node name="ExplosionVFX" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 40
+lifetime = 0.4
+one_shot = true
+process_material = SubResource("ParticleProcessMaterial_g2b2c")
+
+[connection signal="body_entered" from="." to="." method="OnBodyEntered"]

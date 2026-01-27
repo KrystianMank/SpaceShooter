@@ -1,0 +1,145 @@
+[gd_scene load_steps=18 format=3 uid="uid://coofy7hsq27pt"]
+
+[ext_resource type="Script" uid="uid://ny0e4y7vbfx6" path="res://scripts/Main.cs" id="1_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://c8ilhiox31kgv" path="res://meteor.tscn" id="2_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://ouxsv4v68ul7" path="res://player.tscn" id="2_h2yge"]
+[ext_resource type="PackedScene" uid="uid://coct2sxk5l3xy" path="res://hud.tscn" id="4_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://pflh35lfqp4n" path="res://Alien.tscn" id="4_5vw27"]
+[ext_resource type="PackedScene" uid="uid://bgwot2idj6lhh" path="res://entity_healthbar.tscn" id="5_kek77"]
+[ext_resource type="AudioStream" uid="uid://buhfwkj3awnsm" path="res://sounds/cosmic-minimal-music-fragment-55131.mp3" id="5_lquwl"]
+[ext_resource type="AudioStream" uid="uid://dg7ycj234572q" path="res://sounds/gameover.wav" id="6_7mycd"]
+[ext_resource type="Texture2D" uid="uid://bggbt630fp2ca" path="res://sprites/background/backround_image.png" id="7_272bh"]
+[ext_resource type="Texture2D" uid="uid://du74q21rvnt6f" path="res://sprites/rocket/rocket_dash_blink.png" id="10_4c57u"]
+
+[sub_resource type="Curve2D" id="Curve2D_0xm2m"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -3, 0, 0, 0, 0, 0, 476, -5, 0, 0, 0, 0, 478, 718, 0, 0, 0, 0, -7, 713, 0, 0, 0, 0, -3, 0)
+}
+point_count = 5
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qtqh7"]
+atlas = ExtResource("10_4c57u")
+region = Rect2(0, 0, 30, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2wuci"]
+atlas = ExtResource("10_4c57u")
+region = Rect2(0, 36, 30, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iruf7"]
+atlas = ExtResource("10_4c57u")
+region = Rect2(0, 72, 30, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j5n4i"]
+atlas = ExtResource("10_4c57u")
+region = Rect2(0, 108, 30, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_634y6"]
+atlas = ExtResource("10_4c57u")
+region = Rect2(0, 144, 30, 36)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_efxa6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qtqh7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2wuci")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iruf7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j5n4i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_634y6")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Main" type="Node"]
+script = ExtResource("1_0xm2m")
+MeteorScene = ExtResource("2_1bvp3")
+PlayerScene = ExtResource("2_h2yge")
+AlienScene = ExtResource("4_5vw27")
+EntityHealthbarScene = ExtResource("5_kek77")
+
+[node name="LeftMarginWindow" type="Marker2D" parent="."]
+
+[node name="RightMarginWindow" type="Marker2D" parent="."]
+position = Vector2(480, 0)
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -323.0
+offset_right = 317.0
+offset_bottom = 1800.0
+grow_horizontal = 2
+texture = ExtResource("7_272bh")
+
+[node name="HUD" parent="." instance=ExtResource("4_1bvp3")]
+
+[node name="Player" parent="." instance=ExtResource("2_h2yge")]
+priority = 2
+
+[node name="StartPosition" type="Marker2D" parent="."]
+position = Vector2(240, 600)
+
+[node name="MeteorPath" type="Path2D" parent="."]
+curve = SubResource("Curve2D_0xm2m")
+
+[node name="MeteorSpawnLocation" type="PathFollow2D" parent="MeteorPath"]
+position = Vector2(-3, 0)
+rotation = -0.010438034
+
+[node name="MeteorSpawnTimer" type="Timer" parent="." groups=["timers"]]
+
+[node name="AlienSpawnTimer" type="Timer" parent="." groups=["timers"]]
+wait_time = 2.0
+
+[node name="StartTimer" type="Timer" parent="."]
+wait_time = 2.0
+
+[node name="BackgroundMusic" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_lquwl")
+parameters/looping = true
+
+[node name="DeathSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_7mycd")
+
+[node name="DashLandLabel" type="Label" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+text = "X"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DashAnimationBlink" type="AnimatedSprite2D" parent="."]
+position = Vector2(0.8333333, -8.333333)
+sprite_frames = SubResource("SpriteFrames_efxa6")
+speed_scale = 2.0
+
+[connection signal="HudReady" from="." to="HUD" method="OnHudReady"]
+[connection signal="ShowPlayerStatsUpgradePanel" from="." to="HUD" method="ShowPlayerUpgradeStatsPanel"]
+[connection signal="ShowPlayerStatsUpgradePanelReady" from="." to="HUD" method="OnShowPlayerStatsUpgradePanelReady"]
+[connection signal="StartGame" from="HUD" to="." method="NewGame"]
+[connection signal="PlayerHealthDepleted" from="Player" to="." method="GameOver"]
+[connection signal="timeout" from="MeteorSpawnTimer" to="." method="MetorSpawnTimeout"]
+[connection signal="timeout" from="AlienSpawnTimer" to="." method="AlienSpawnTimeout"]
+[connection signal="timeout" from="StartTimer" to="." method="StartTimerTimeout"]

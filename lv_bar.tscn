@@ -1,0 +1,52 @@
+[gd_scene load_steps=5 format=3 uid="uid://ibxox6f0niok"]
+
+[ext_resource type="Texture2D" uid="uid://bnxdwgyiake43" path="res://sprites/LVBar/LVBarFrame.png" id="1_48fcs"]
+[ext_resource type="Script" uid="uid://d28gkwweetpwm" path="res://scripts/LvBar.cs" id="1_vfjkk"]
+[ext_resource type="Texture2D" uid="uid://dlc5a04unvw6a" path="res://sprites/LVBar/LVBarProgress.png" id="2_vfjkk"]
+[ext_resource type="FontFile" uid="uid://blljbnpo7x5in" path="res://fonts/Xolonium-Regular.ttf" id="3_67rsj"]
+
+[node name="LVBar" type="CanvasLayer"]
+script = ExtResource("1_vfjkk")
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -105.0
+offset_top = 55.0
+offset_right = 45.0
+offset_bottom = 80.0
+grow_horizontal = 2
+scale = Vector2(1.5, 1.5)
+size_flags_horizontal = 4
+max_value = 10.0
+texture_under = ExtResource("1_48fcs")
+texture_progress = ExtResource("2_vfjkk")
+texture_progress_offset = Vector2(25, 1)
+
+[node name="LevelLabel" type="Label" parent="TextureProgressBar"]
+layout_mode = 1
+offset_left = 1.3333335
+offset_top = 3.3333333
+offset_right = 13.333334
+offset_bottom = 23.333334
+theme_override_colors/font_color = Color(0, 0.28627452, 0, 1)
+theme_override_fonts/font = ExtResource("3_67rsj")
+text = "1"
+
+[node name="CurrentScoreLabel" type="Label" parent="TextureProgressBar"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -13.0
+offset_top = -23.0
+offset_right = 27.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("3_67rsj")
+text = "0/0"
+horizontal_alignment = 1
+vertical_alignment = 1

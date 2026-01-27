@@ -1,0 +1,95 @@
+[gd_scene load_steps=4 format=3 uid="uid://xdv18x3wwirg"]
+
+[ext_resource type="FontFile" uid="uid://blljbnpo7x5in" path="res://fonts/Xolonium-Regular.ttf" id="1_alhk8"]
+[ext_resource type="Script" uid="uid://br1tqrsq1a6g4" path="res://scripts/MainMenuPanel.cs" id="1_mncx2"]
+[ext_resource type="PackedScene" uid="uid://da3itqni70mde" path="res://powerups_info_panel.tscn" id="2_x0dtn"]
+
+[node name="MainMenuPanel" type="CanvasLayer"]
+script = ExtResource("1_mncx2")
+MenuScenes = Array[PackedScene]([ExtResource("2_x0dtn")])
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="MarginContainer3" type="MarginContainer" parent="."]
+offset_right = 480.0
+offset_bottom = 158.0
+size_flags_vertical = 0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 50
+
+[node name="Label" type="Label" parent="MarginContainer3"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("1_alhk8")
+theme_override_font_sizes/font_size = 48
+text = "Main Menu"
+
+[node name="CloseButton" type="Button" parent="."]
+offset_left = 453.0
+offset_right = 480.0
+offset_bottom = 50.0
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_colors/icon_normal_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "X"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_top = 276.0
+offset_right = 480.0
+offset_bottom = 443.0
+size_flags_vertical = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="PowerupsInfoButton" type="Button" parent="VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_alhk8")
+theme_override_font_sizes/font_size = 20
+text = "Powerups"
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="EnemiesInfoButton" type="Button" parent="VBoxContainer/MarginContainer2"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_alhk8")
+theme_override_font_sizes/font_size = 20
+text = "Enemies
+"
+
+[node name="MarginContainer4" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="SettingButton" type="Button" parent="VBoxContainer/MarginContainer4"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_alhk8")
+theme_override_font_sizes/font_size = 20
+text = "Settings"
+
+[connection signal="visibility_changed" from="." to="." method="OnVisibilityChanged"]
+[connection signal="pressed" from="CloseButton" to="." method="OnCloseButtonPressed"]
+[connection signal="pressed" from="VBoxContainer/MarginContainer/PowerupsInfoButton" to="." method="OnPowerupsInfoButtonPressed"]

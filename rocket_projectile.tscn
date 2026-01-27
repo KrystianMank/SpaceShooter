@@ -1,0 +1,90 @@
+[gd_scene load_steps=15 format=3 uid="uid://c1gslxc722a82"]
+
+[ext_resource type="Script" uid="uid://bilam6tfrs0s0" path="res://scripts/Bullet.cs" id="1_4xkm6"]
+[ext_resource type="Texture2D" uid="uid://bhnjy00ckemy4" path="res://sprites/bullet_fire/rocket_projectile.png" id="2_i46y2"]
+[ext_resource type="Texture2D" uid="uid://7cyy33l66txq" path="res://sprites/explosion/rocket_behind_flame.png" id="3_4xkm6"]
+[ext_resource type="PackedScene" uid="uid://t6ijqvc73rcj" path="res://hitbox_component.tscn" id="5_4xkm6"]
+[ext_resource type="PackedScene" uid="uid://biikhef1q8swo" path="res://explosion_area.tscn" id="5_mmjbn"]
+[ext_resource type="Script" uid="uid://dkodhocrv0ypl" path="res://scripts/ExplosionArea.cs" id="5_toc24"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_toc24"]
+atlas = ExtResource("3_4xkm6")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wl6iy"]
+atlas = ExtResource("3_4xkm6")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tqfoj"]
+atlas = ExtResource("3_4xkm6")
+region = Rect2(0, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2aslq"]
+atlas = ExtResource("3_4xkm6")
+region = Rect2(0, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_agv0x"]
+atlas = ExtResource("3_4xkm6")
+region = Rect2(0, 64, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_blf87"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_toc24")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wl6iy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tqfoj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2aslq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_agv0x")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2b2rl"]
+height = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_toc24"]
+radius = 0.01
+
+[node name="RocketProjectile" type="RigidBody2D" groups=["bullet"]]
+collision_mask = 3
+gravity_scale = 0.0
+contact_monitor = true
+max_contacts_reported = 10
+script = ExtResource("1_4xkm6")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -1)
+texture = ExtResource("2_i46y2")
+
+[node name="FlameBehindAnimation" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, 15)
+sprite_frames = SubResource("SpriteFrames_blf87")
+autoplay = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_2b2rl")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[node name="ExplosionArea" parent="." instance=ExtResource("5_mmjbn")]
+script = ExtResource("5_toc24")
+ExplosionRadius = 75.0
+
+[node name="HitboxComponent" parent="." instance=ExtResource("5_4xkm6")]
+Damage = null
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
+shape = SubResource("CircleShape2D_toc24")
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="VisibleOnScreenNotifier2D"]

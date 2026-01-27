@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://bgwot2idj6lhh"]
+
+[ext_resource type="Script" uid="uid://8bgy8tchhteb" path="res://EntityHealthbar.cs" id="1_2ffqv"]
+
+[node name="EntityHealthbar" type="MarginContainer"]
+offset_left = -40.0
+offset_right = 40.0
+offset_bottom = 20.0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+script = ExtResource("1_2ffqv")
+metadata/_edit_use_anchors_ = true
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+layout_mode = 2
+size_flags_vertical = 4
+value = 100.0
+show_percentage = false

@@ -1,0 +1,139 @@
+[gd_scene load_steps=9 format=3 uid="uid://but1kii8awjkw"]
+
+[ext_resource type="Script" uid="uid://btkqmhl0xoem4" path="res://scripts/StatsUpgradePanel.cs" id="1_6ftb8"]
+[ext_resource type="Texture2D" uid="uid://odeblqe3wgpr" path="res://sprites/stats upgrade panel/stats_upgrade_panel.png" id="2_l327r"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jajy1"]
+atlas = ExtResource("2_l327r")
+region = Rect2(0, 0, 250, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7ctpm"]
+atlas = ExtResource("2_l327r")
+region = Rect2(250, 0, 250, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gjyhh"]
+atlas = ExtResource("2_l327r")
+region = Rect2(500, 0, 250, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_76aet"]
+atlas = ExtResource("2_l327r")
+region = Rect2(750, 0, 250, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_itxte"]
+atlas = ExtResource("2_l327r")
+region = Rect2(1000, 0, 250, 360)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2rg74"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jajy1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7ctpm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gjyhh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_76aet")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_itxte")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="StatsUpgradePanel" type="CanvasLayer"]
+script = ExtResource("1_6ftb8")
+
+[node name="Animation" type="AnimatedSprite2D" parent="."]
+position = Vector2(248, 349)
+sprite_frames = SubResource("SpriteFrames_2rg74")
+
+[node name="PanelContainer" type="PanelContainer" parent="Animation"]
+clip_contents = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -243.00002
+offset_top = -203.0
+offset_right = -23.000015
+offset_bottom = -63.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.073, 0.947)
+
+[node name="ColorRect" type="ColorRect" parent="Animation/PanelContainer"]
+layout_mode = 2
+color = Color(0, 0.47778904, 0.6033963, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="Animation/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Control" type="VBoxContainer" parent="Animation/PanelContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="GridContainer2" type="GridContainer" parent="Animation/PanelContainer/MarginContainer/Control"]
+layout_mode = 2
+columns = 3
+
+[node name="RefreshStatsButton" type="Button" parent="Animation/PanelContainer/MarginContainer/Control/GridContainer2"]
+layout_mode = 2
+size_flags_horizontal = 8
+tooltip_text = "-1 Skill point"
+text = "Refresh"
+
+[node name="HealButton" type="Button" parent="Animation/PanelContainer/MarginContainer/Control/GridContainer2"]
+layout_mode = 2
+tooltip_text = "-1 Skill point"
+text = "Heal"
+
+[node name="CloseButton" type="Button" parent="Animation/PanelContainer/MarginContainer/Control/GridContainer2"]
+layout_mode = 2
+size_flags_horizontal = 10
+tooltip_text = "Close"
+text = "X"
+
+[node name="Label" type="Label" parent="Animation/PanelContainer/MarginContainer/Control"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+text = "Upgrade"
+horizontal_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="Animation/PanelContainer/MarginContainer/Control"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/h_separation = 4
+columns = 2
+
+[node name="Option_1_Button" type="Button" parent="Animation/PanelContainer/MarginContainer/Control/GridContainer"]
+layout_mode = 2
+text = "Fire rate UP"
+
+[node name="Option_2_Button" type="Button" parent="Animation/PanelContainer/MarginContainer/Control/GridContainer"]
+layout_mode = 2
+text = "Speed UP
+"
+
+[node name="SkillPointsLabel" type="Label" parent="Animation/PanelContainer/MarginContainer/Control"]
+layout_mode = 2
+text = "Sklill points:"
+
+[connection signal="visibility_changed" from="." to="." method="OnVisibilityChanged"]
+[connection signal="pressed" from="Animation/PanelContainer/MarginContainer/Control/GridContainer2/RefreshStatsButton" to="." method="OnRefreshButtonPressed"]
+[connection signal="mouse_entered" from="Animation/PanelContainer/MarginContainer/Control/GridContainer2/HealButton" to="." method="OnHealButtonMouseEntered"]
+[connection signal="pressed" from="Animation/PanelContainer/MarginContainer/Control/GridContainer2/HealButton" to="." method="OnHealButtonPressed"]
+[connection signal="pressed" from="Animation/PanelContainer/MarginContainer/Control/GridContainer2/CloseButton" to="." method="OnCloseButtonPressed"]
+[connection signal="pressed" from="Animation/PanelContainer/MarginContainer/Control/GridContainer/Option_1_Button" to="." method="OnOption1ButtonPressed"]
+[connection signal="pressed" from="Animation/PanelContainer/MarginContainer/Control/GridContainer/Option_2_Button" to="." method="OnOption2ButtonPressed"]

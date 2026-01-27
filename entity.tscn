@@ -1,0 +1,84 @@
+[gd_scene load_steps=14 format=3 uid="uid://dqv5yge1mfqvs"]
+
+[ext_resource type="Texture2D" uid="uid://di2sutndtvnac" path="res://sprites/explosion/explosion_sheet.png" id="1_6e8rh"]
+[ext_resource type="Script" uid="uid://cr7kg8xmd3hvn" path="res://scripts/Entity.cs" id="1_nwmpt"]
+[ext_resource type="PackedScene" uid="uid://crjbmcvbllf4d" path="res://powerup.tscn" id="2_03rkj"]
+[ext_resource type="AudioStream" uid="uid://ce5u5ujrrhkan" path="res://sounds/bomb-explosion-type-02-265506.mp3" id="2_uqc13"]
+[ext_resource type="PackedScene" uid="uid://bgwot2idj6lhh" path="res://entity_healthbar.tscn" id="3_pimh3"]
+[ext_resource type="PackedScene" uid="uid://t6ijqvc73rcj" path="res://hitbox_component.tscn" id="6_6tppj"]
+[ext_resource type="PackedScene" uid="uid://coc5dbts0k4k8" path="res://hurtbox_component.tscn" id="7_pb85n"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uqc13"]
+atlas = ExtResource("1_6e8rh")
+region = Rect2(0, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nwmpt"]
+atlas = ExtResource("1_6e8rh")
+region = Rect2(0, 50, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_03rkj"]
+atlas = ExtResource("1_6e8rh")
+region = Rect2(0, 100, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pimh3"]
+atlas = ExtResource("1_6e8rh")
+region = Rect2(0, 150, 50, 50)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6tppj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uqc13")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nwmpt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_03rkj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pimh3")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pb85n"]
+
+[node name="Entity" type="RigidBody2D"]
+gravity_scale = 0.0
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("1_nwmpt")
+PowerupScene = ExtResource("2_03rkj")
+
+[node name="EntityHealthbar" parent="." instance=ExtResource("3_pimh3")]
+script = null
+
+[node name="ExplosionAnimation" type="AnimatedSprite2D" parent="."]
+position = Vector2(4, -3)
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_6tppj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_pb85n")
+
+[node name="ExplosionSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_uqc13")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[node name="HitboxComponent" parent="." instance=ExtResource("6_6tppj")]
+Damage = 5.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
+shape = SubResource("CircleShape2D_pb85n")
+
+[node name="HurtboxComponent" parent="." instance=ExtResource("7_pb85n")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+shape = SubResource("CircleShape2D_pb85n")
+
+[connection signal="body_entered" from="." to="." method="OnBodyEntered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="VisibleOnScreenNotifier2D"]

@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://f6ukj75fdw68"]
+
+[ext_resource type="Script" uid="uid://1cnhb0l1r62v" path="res://scripts/PlayerStatsPanel.cs" id="1_naqit"]
+
+[node name="PlayerStatsPanel" type="CanvasLayer"]
+script = ExtResource("1_naqit")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(200, 0)
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 50.0
+offset_bottom = 50.0
+
+[node name="ColorRect" type="ColorRect" parent="PanelContainer"]
+layout_mode = 2
+color = Color(0.41567016, 0.50180393, 1, 0.49803922)
+
+[node name="GridContainer" type="GridContainer" parent="PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4

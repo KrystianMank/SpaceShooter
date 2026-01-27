@@ -1,0 +1,157 @@
+[gd_scene load_steps=8 format=3 uid="uid://da3itqni70mde"]
+
+[ext_resource type="FontFile" uid="uid://blljbnpo7x5in" path="res://fonts/Xolonium-Regular.ttf" id="1_4tofk"]
+[ext_resource type="Texture2D" uid="uid://duubk7htjv65y" path="res://sprites/poweups/invincibility_powerup.png" id="2_i2scs"]
+[ext_resource type="Texture2D" uid="uid://dm2vvg18cf0ol" path="res://sprites/poweups/piercing_powerup.png" id="3_6cxsi"]
+[ext_resource type="Texture2D" uid="uid://dw1jyrh8rkbuy" path="res://sprites/poweups/multishot_powerup.png" id="4_i2scs"]
+[ext_resource type="Texture2D" uid="uid://cc84dxnsrh4dy" path="res://sprites/poweups/dash_powerup.png" id="5_6cxsi"]
+[ext_resource type="Texture2D" uid="uid://bk7bcejissbv3" path="res://sprites/poweups/rockets_powerup.png" id="6_tw16l"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mncx2"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="PowerupsInfoPanel" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_mncx2")
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer3" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 50
+
+[node name="Label" type="Label" parent="MarginContainer3"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("1_4tofk")
+theme_override_font_sizes/font_size = 48
+text = "Powerups"
+
+[node name="BackButton" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "Back
+"
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="BoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BoxContainer"]
+layout_mode = 2
+text = "Invincibility"
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/VBoxContainer/BoxContainer"]
+layout_mode = 2
+columns = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/BoxContainer/GridContainer"]
+layout_mode = 2
+texture = ExtResource("2_i2scs")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+text = "Gives a few seconds of invincibility to the player"
+
+[node name="BoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BoxContainer2"]
+layout_mode = 2
+text = "Piercing"
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/VBoxContainer/BoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 4
+columns = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/BoxContainer2/GridContainer"]
+layout_mode = 2
+texture = ExtResource("3_6cxsi")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BoxContainer2/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+text = "Bullets can penetrate entities"
+
+[node name="BoxContainer3" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BoxContainer3"]
+layout_mode = 2
+text = "Multishot"
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/VBoxContainer/BoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 4
+columns = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/BoxContainer3/GridContainer"]
+layout_mode = 2
+texture = ExtResource("4_i2scs")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BoxContainer3/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+text = "Fire multiple bullets at once"
+
+[node name="BoxContainer4" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BoxContainer4"]
+layout_mode = 2
+text = "Dash"
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/VBoxContainer/BoxContainer4"]
+layout_mode = 2
+size_flags_vertical = 4
+columns = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/BoxContainer4/GridContainer"]
+layout_mode = 2
+texture = ExtResource("5_6cxsi")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BoxContainer4/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+text = "Dash in the direction you are flying towards"
+
+[node name="BoxContainer5" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BoxContainer5"]
+layout_mode = 2
+text = "Rockets"
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/VBoxContainer/BoxContainer5"]
+layout_mode = 2
+size_flags_vertical = 4
+columns = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/BoxContainer5/GridContainer"]
+layout_mode = 2
+texture = ExtResource("6_tw16l")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BoxContainer5/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+text = "Shoot powerful rockets which explode after some time"
