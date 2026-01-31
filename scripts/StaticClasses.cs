@@ -14,7 +14,6 @@ namespace StaticClasses
         public static readonly double MAX_PIERCING_POWERUP_DURATION = 10d;
         public static readonly double MAX_MULTISHOT_POWERUP_DURATION = 15d;
         public static readonly double MAX_DASH_POWERUP_DURATION = 15d;
-        public static readonly double MAX_ROCKETS_POWERUP_DURATION = 13d;
 
         public static readonly double POWERUP_SPAWN_TRESHOLD = 0.85d;
 
@@ -32,7 +31,6 @@ namespace StaticClasses
             TresholdValuesList.Add(MAX_PIERCING_POWERUP_DURATION);
             TresholdValuesList.Add(MAX_MULTISHOT_POWERUP_DURATION);
             TresholdValuesList.Add(MAX_DASH_POWERUP_DURATION);
-            TresholdValuesList.Add(MAX_ROCKETS_POWERUP_DURATION);
         }
     }
 
@@ -48,7 +46,6 @@ namespace StaticClasses
 	    public const double PIERCING_POWERUP_DURATION_MULTIPLIER = 0.5d;
         public const double MULTISHOT_POWERUP_DURATION_MULTIPLIER = 1d;
         public const double DASH_POWERUP_DURATION_MULTIPLIER = 1d;
-        public const double ROCKETS_POWERUP_DURATION_MULTIPLIER = 1d;
     }
 
     public static class DeafultPlayerStatsValues
@@ -65,6 +62,5 @@ namespace StaticClasses
         public const double PIERCING_POWERUP_DURATION = 6d;
         public const double MULTISHOT_POWERUP_DURATION = 10d;
         public const double DASH_POWERUP_DURATION = 10d;
-        public const double ROCKETS_POWERUP_DURATION = 8d;
     }
 }

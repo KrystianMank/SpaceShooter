@@ -41,7 +41,6 @@ public partial class StatsUpgradePanel : CanvasLayer
 			{UpgradableStatsEnum.InvincibilityPowerupDuration, PlayerStatsMultipliers.INVINCIBILITY_POWERUP_DURATION_MULTIPLIER},
 			{UpgradableStatsEnum.MultishotPowerupDuration, PlayerStatsMultipliers.MULTISHOT_POWERUP_DURATION_MULTIPLIER},
 			{UpgradableStatsEnum.DashPowerupDuration, PlayerStatsMultipliers.DASH_POWERUP_DURATION_MULTIPLIER},
-			{UpgradableStatsEnum.RocketsPowerupDuration, PlayerStatsMultipliers.ROCKETS_POWERUP_DURATION_MULTIPLIER}
         };
     }
     public override void _Process(double delta)
@@ -192,13 +191,6 @@ public partial class StatsUpgradePanel : CanvasLayer
 						shouldDisable = true;
                     break;
                 }
-       		case UpgradableStatsEnum.RocketsPowerupDuration:
-                {
-					if(_playerStats.RocketsPowerupDuration.Value + value> TresholdValues.MAX_ROCKETS_POWERUP_DURATION)
-
-						shouldDisable = true;
-                    break;
-                }
 		}
 		DisableButton(callerButton, shouldDisable);
     }
@@ -265,11 +257,6 @@ public partial class StatsUpgradePanel : CanvasLayer
 					_playerStats.PiercingPowerupDuration.Value += value;
                     break;
                 }
-			case UpgradableStatsEnum.RocketsPowerupDuration:
-				{
-					_playerStats.RocketsPowerupDuration.Value += value;
-					break;
-				}
         }
 		_playerStats.SkillPoints.Value--;
     }

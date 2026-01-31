@@ -408,7 +408,6 @@ public partial class Player : Area2D
 		playerStats.PiercingPowerupDuration.Value = DeafultPlayerStatsValues.PIERCING_POWERUP_DURATION;
 		playerStats.MultishotPowerupDuration.Value = DeafultPlayerStatsValues.MULTISHOT_POWERUP_DURATION;
 		playerStats.DashPowerupDuration.Value = DeafultPlayerStatsValues.DASH_POWERUP_DURATION;
-		playerStats.RocketsPowerupDuration.Value = DeafultPlayerStatsValues.ROCKETS_POWERUP_DURATION;
 	}
 
 	/// <summary>

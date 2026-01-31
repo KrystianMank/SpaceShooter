@@ -6,7 +6,6 @@ namespace GameEnums
         invincibility_powerup,
         multishot_powerup,
         dash_powerup,
-        rockets_powerup
     }
     public enum UpgradableStatsEnum
     {
@@ -22,7 +21,6 @@ namespace GameEnums
         PiercingPowerupDuration,
         MultishotPowerupDuration,
         DashPowerupDuration,
-        RocketsPowerupDuration
     }
     public enum WeaponTypes
     {

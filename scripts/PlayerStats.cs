@@ -16,7 +16,6 @@ public class PlayerStats
     public Observable<double> PiercingPowerupDuration = new();
     public Observable<double> MultishotPowerupDuration = new();
     public Observable<double> DashPowerupDuration = new();
-    public Observable<double> RocketsPowerupDuration = new();
 
 
     public Dictionary<string,object> PlayerStatsList = new Dictionary<string, object>();
@@ -35,7 +34,6 @@ public class PlayerStats
       PlayerStatsList.Add(nameof(PiercingPowerupDuration), PiercingPowerupDuration.Value);
       PlayerStatsList.Add(nameof(MultishotPowerupDuration), MultishotPowerupDuration.Value);
       PlayerStatsList.Add(nameof(DashPowerupDuration), DashPowerupDuration.Value);
-      PlayerStatsList.Add(nameof(RocketsPowerupDuration), RocketsPowerupDuration.Value);
 
       Speed.Changed += OnSpeedValueChanged;
       FireRate.Changed += OnFirerateValueChanged;
@@ -49,7 +47,6 @@ public class PlayerStats
       PiercingPowerupDuration.Changed += OnPiercingPowerupDurationValueChanged;
       MultishotPowerupDuration.Changed += OnMultishotPowerupDurationValueChanged;
       DashPowerupDuration.Changed += OnDashPowerupDurationValueChanged;
-      RocketsPowerupDuration.Changed += OnRocketsPowerupDurationChanged;
     }
     public void OnFirerateValueChanged(object target, Observable<double>.ChanedEventArgs eventArgs)
     {
@@ -100,8 +97,5 @@ public class PlayerStats
     {
     PlayerStatsList[nameof(DashPowerupDuration)] = eventArgs.NewValue;
     }
-    public void OnRocketsPowerupDurationChanged(object target, Observable<double>.ChanedEventArgs eventArgs)
-    {
-      PlayerStatsList[nameof(RocketsPowerupDuration)] = eventArgs.NewValue;
-    }
+
 }
