@@ -1,0 +1,128 @@
+[gd_scene format=3 uid="uid://c4bdp8uav35em"]
+
+[ext_resource type="Script" uid="uid://c6u6g34egvn5y" path="res://scripts/PlayerWeapon.cs" id="1_woryq"]
+[ext_resource type="PackedScene" uid="uid://cb4navl08e7bj" path="res://firing_component.tscn" id="2_g1uu5"]
+[ext_resource type="PackedScene" uid="uid://ddxe1pjlkw2uk" path="res://bullet.tscn" id="2_woryq"]
+[ext_resource type="PackedScene" uid="uid://c1gslxc722a82" path="res://rocket_projectile.tscn" id="3_66dhs"]
+[ext_resource type="Texture2D" uid="uid://ck48mexpggqpu" path="res://sprites/bullet_fire/bullet.png" id="4_uhxye"]
+[ext_resource type="Texture2D" uid="uid://bhnjy00ckemy4" path="res://sprites/bullet_fire/rocket_projectile.png" id="5_a47y8"]
+[ext_resource type="Texture2D" uid="uid://d1wsb8pw5gfph" path="res://sprites/WeaponLoadBar/WeaponLoadingBarEmpty-sheet.png" id="7_66dhs"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uhxye"]
+atlas = ExtResource("7_66dhs")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a47y8"]
+atlas = ExtResource("7_66dhs")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gf177"]
+atlas = ExtResource("7_66dhs")
+region = Rect2(0, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rhoyi"]
+atlas = ExtResource("7_66dhs")
+region = Rect2(0, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g8g5g"]
+atlas = ExtResource("7_66dhs")
+region = Rect2(0, 64, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fmm3b"]
+atlas = ExtResource("7_66dhs")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oxbvj"]
+atlas = ExtResource("7_66dhs")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0otv2"]
+atlas = ExtResource("7_66dhs")
+region = Rect2(16, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r06l2"]
+atlas = ExtResource("7_66dhs")
+region = Rect2(16, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xktje"]
+atlas = ExtResource("7_66dhs")
+region = Rect2(16, 64, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_evnaf"]
+atlas = ExtResource("7_66dhs")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xqmlc"]
+atlas = ExtResource("7_66dhs")
+region = Rect2(32, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x548k"]
+atlas = ExtResource("7_66dhs")
+region = Rect2(32, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u7bq8"]
+atlas = ExtResource("7_66dhs")
+region = Rect2(32, 48, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4p17a"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uhxye")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a47y8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gf177")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rhoyi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g8g5g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fmm3b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oxbvj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0otv2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r06l2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xktje")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_evnaf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xqmlc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x548k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u7bq8")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="PlayerWeapon" type="Node" unique_id=1499773877 node_paths=PackedStringArray("WeaponChangeAnimation")]
+script = ExtResource("1_woryq")
+WeaponScenes = Array[PackedScene]([ExtResource("2_woryq"), ExtResource("3_66dhs")])
+WeaponSprites = Array[Texture2D]([ExtResource("4_uhxye"), ExtResource("5_a47y8")])
+WeaponChangeAnimation = NodePath("WeaponChangeAnim")
+
+[node name="FiringComponent" parent="." unique_id=268641480 instance=ExtResource("2_g1uu5")]
+
+[node name="WeaponChangeAnim" type="AnimatedSprite2D" parent="." unique_id=1149379136]
+sprite_frames = SubResource("SpriteFrames_4p17a")
+frame = 13
+frame_progress = 1.0

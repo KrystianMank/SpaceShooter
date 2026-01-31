@@ -24,4 +24,10 @@ namespace GameEnums
         DashPowerupDuration,
         RocketsPowerupDuration
     }
+    public enum WeaponTypes
+    {
+        MaschineGun,
+        RocketLauncher,
+        Laser
+    }
 }

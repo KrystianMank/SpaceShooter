@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://coofy7hsq27pt"]
+[gd_scene format=3 uid="uid://coofy7hsq27pt"]
 
 [ext_resource type="Script" uid="uid://ny0e4y7vbfx6" path="res://scripts/Main.cs" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://c8ilhiox31kgv" path="res://meteor.tscn" id="2_1bvp3"]
@@ -60,19 +60,19 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Main" type="Node"]
+[node name="Main" type="Node" unique_id=359640060]
 script = ExtResource("1_0xm2m")
 MeteorScene = ExtResource("2_1bvp3")
 PlayerScene = ExtResource("2_h2yge")
 AlienScene = ExtResource("4_5vw27")
 EntityHealthbarScene = ExtResource("5_kek77")
 
-[node name="LeftMarginWindow" type="Marker2D" parent="."]
+[node name="LeftMarginWindow" type="Marker2D" parent="." unique_id=906078839]
 
-[node name="RightMarginWindow" type="Marker2D" parent="."]
+[node name="RightMarginWindow" type="Marker2D" parent="." unique_id=1697432935]
 position = Vector2(480, 0)
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=30537603]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -82,37 +82,37 @@ offset_bottom = 1800.0
 grow_horizontal = 2
 texture = ExtResource("7_272bh")
 
-[node name="HUD" parent="." instance=ExtResource("4_1bvp3")]
+[node name="HUD" parent="." unique_id=1707379831 instance=ExtResource("4_1bvp3")]
 
-[node name="Player" parent="." instance=ExtResource("2_h2yge")]
+[node name="Player" parent="." unique_id=1454094639 instance=ExtResource("2_h2yge")]
 priority = 2
 
-[node name="StartPosition" type="Marker2D" parent="."]
+[node name="StartPosition" type="Marker2D" parent="." unique_id=659636138]
 position = Vector2(240, 600)
 
-[node name="MeteorPath" type="Path2D" parent="."]
+[node name="MeteorPath" type="Path2D" parent="." unique_id=63936259]
 curve = SubResource("Curve2D_0xm2m")
 
-[node name="MeteorSpawnLocation" type="PathFollow2D" parent="MeteorPath"]
+[node name="MeteorSpawnLocation" type="PathFollow2D" parent="MeteorPath" unique_id=1156145155]
 position = Vector2(-3, 0)
 rotation = -0.010438034
 
-[node name="MeteorSpawnTimer" type="Timer" parent="." groups=["timers"]]
+[node name="MeteorSpawnTimer" type="Timer" parent="." unique_id=436762398 groups=["timers"]]
 
-[node name="AlienSpawnTimer" type="Timer" parent="." groups=["timers"]]
+[node name="AlienSpawnTimer" type="Timer" parent="." unique_id=2028748447 groups=["timers"]]
 wait_time = 2.0
 
-[node name="StartTimer" type="Timer" parent="."]
+[node name="StartTimer" type="Timer" parent="." unique_id=1035437602]
 wait_time = 2.0
 
-[node name="BackgroundMusic" type="AudioStreamPlayer2D" parent="."]
+[node name="BackgroundMusic" type="AudioStreamPlayer2D" parent="." unique_id=329586429]
 stream = ExtResource("5_lquwl")
 parameters/looping = true
 
-[node name="DeathSound" type="AudioStreamPlayer2D" parent="."]
+[node name="DeathSound" type="AudioStreamPlayer2D" parent="." unique_id=392042117]
 stream = ExtResource("6_7mycd")
 
-[node name="DashLandLabel" type="Label" parent="."]
+[node name="DashLandLabel" type="Label" parent="." unique_id=1371452110]
 visible = false
 anchors_preset = 8
 anchor_left = 0.5
@@ -130,7 +130,7 @@ text = "X"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="DashAnimationBlink" type="AnimatedSprite2D" parent="."]
+[node name="DashAnimationBlink" type="AnimatedSprite2D" parent="." unique_id=607502727]
 position = Vector2(0.8333333, -8.333333)
 sprite_frames = SubResource("SpriteFrames_efxa6")
 speed_scale = 2.0

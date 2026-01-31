@@ -1,21 +1,15 @@
-[gd_scene load_steps=38 format=3 uid="uid://ouxsv4v68ul7"]
+[gd_scene format=3 uid="uid://ouxsv4v68ul7"]
 
 [ext_resource type="Script" uid="uid://rn46r3ojh8c8" path="res://scripts/Player.cs" id="1_op7ga"]
 [ext_resource type="Texture2D" uid="uid://cn8wstlq1j8br" path="res://sprites/rocket/Rocket_left.png" id="2_b26j0"]
 [ext_resource type="Texture2D" uid="uid://cxenkd82ju2u5" path="res://sprites/rocket/Rocket_right.png" id="3_n7ghd"]
 [ext_resource type="Texture2D" uid="uid://cdqfpe7yh47jj" path="res://sprites/rocket/Rocket_straight.png" id="4_nvl01"]
-[ext_resource type="PackedScene" uid="uid://ddxe1pjlkw2uk" path="res://bullet.tscn" id="5_n7ghd"]
-[ext_resource type="Texture2D" uid="uid://ck48mexpggqpu" path="res://sprites/bullet_fire/bullet.png" id="6_bwjto"]
 [ext_resource type="Texture2D" uid="uid://wu0ftdjfxggx" path="res://sprites/poweups/powerup_frame.png" id="6_urp6f"]
-[ext_resource type="Texture2D" uid="uid://bhnjy00ckemy4" path="res://sprites/bullet_fire/rocket_projectile.png" id="7_606se"]
-[ext_resource type="PackedScene" uid="uid://c1gslxc722a82" path="res://rocket_projectile.tscn" id="7_bwjto"]
-[ext_resource type="PackedScene" uid="uid://cb4navl08e7bj" path="res://firing_component.tscn" id="10_op7ga"]
 [ext_resource type="Texture2D" uid="uid://di2sutndtvnac" path="res://sprites/explosion/explosion_sheet.png" id="11_ivps1"]
-[ext_resource type="Script" uid="uid://cmyadn81qkkdp" path="res://scripts/FiringComponent.cs" id="11_q13i1"]
+[ext_resource type="PackedScene" uid="uid://c4bdp8uav35em" path="res://player_weapon.tscn" id="11_nvl01"]
 [ext_resource type="AudioStream" uid="uid://ce5u5ujrrhkan" path="res://sounds/bomb-explosion-type-02-265506.mp3" id="12_urp6f"]
 [ext_resource type="PackedScene" uid="uid://coc5dbts0k4k8" path="res://hurtbox_component.tscn" id="14_bwjto"]
 [ext_resource type="Texture2D" uid="uid://c413eb45oha4y" path="res://sprites/rocket/dash_to_left.png" id="15_606se"]
-[ext_resource type="Script" uid="uid://yei0wnvrm3he" path="res://scripts/HurtboxComponent.cs" id="15_pylmc"]
 [ext_resource type="Texture2D" uid="uid://craxdohx2abi" path="res://sprites/rocket/dash_updown.png" id="16_u1c27"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hqtel"]
@@ -153,57 +147,60 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Player" type="Area2D" node_paths=PackedStringArray("PowerupTimer", "FiringComponent")]
+[node name="Player" type="Area2D" unique_id=2018958441 node_paths=PackedStringArray("PowerupTimer", "PlayerWeapon")]
 scale = Vector2(1.2, 1.2)
 collision_layer = 3
 script = ExtResource("1_op7ga")
 RocketTextures = Array[Texture2D]([ExtResource("2_b26j0"), ExtResource("3_n7ghd"), ExtResource("4_nvl01")])
 PowerupContainerEmpty = ExtResource("6_urp6f")
 PowerupTimer = NodePath("PowerupTimer")
-FiringComponent = NodePath("FiringComponent")
-BulletSprites = Array[Texture2D]([ExtResource("6_bwjto"), ExtResource("7_606se")])
-ProjectileScenes = Array[PackedScene]([ExtResource("5_n7ghd"), ExtResource("7_bwjto")])
+PlayerWeapon = NodePath("PlayerWeapon")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=911577782]
 texture = ExtResource("4_nvl01")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1597506381]
 shape = SubResource("CapsuleShape2D_hqtel")
 
-[node name="FiringComponent" parent="." instance=ExtResource("10_op7ga")]
-script = ExtResource("11_q13i1")
-BulletScene = ExtResource("5_n7ghd")
-
-[node name="BulletSpawn" type="Marker2D" parent="."]
+[node name="BulletSpawn" type="Marker2D" parent="." unique_id=793124666]
 position = Vector2(0, -40)
 
-[node name="ExplosionAnimation" type="AnimatedSprite2D" parent="."]
+[node name="ExplosionAnimation" type="AnimatedSprite2D" parent="." unique_id=836209661]
 position = Vector2(4, -3)
 scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_bwjto")
 
-[node name="ExplosionSound" type="AudioStreamPlayer2D" parent="."]
+[node name="ExplosionSound" type="AudioStreamPlayer2D" parent="." unique_id=1854468703]
 stream = ExtResource("12_urp6f")
 
-[node name="PowerupTimer" type="Timer" parent="." groups=["timers"]]
-one_shot = true
-
-[node name="HurtboxComponent" parent="." instance=ExtResource("14_bwjto")]
+[node name="HurtboxComponent" parent="." unique_id=940410500 instance=ExtResource("14_bwjto")]
 collision_layer = 3
-script = ExtResource("15_pylmc")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=522185143]
 shape = SubResource("CapsuleShape2D_bwjto")
 
-[node name="DashAnimationLeftRight" type="AnimatedSprite2D" parent="."]
+[node name="DashAnimationLeftRight" type="AnimatedSprite2D" parent="." unique_id=1898508718]
 position = Vector2(0, 14.999999)
 sprite_frames = SubResource("SpriteFrames_7ahtn")
 frame_progress = 0.3954567
 speed_scale = 2.0
 
-[node name="DashAnimationUpDown" type="AnimatedSprite2D" parent="."]
+[node name="DashAnimationUpDown" type="AnimatedSprite2D" parent="." unique_id=272492729]
 position = Vector2(0, 19.166666)
 sprite_frames = SubResource("SpriteFrames_qtqh7")
 speed_scale = 2.0
 
+[node name="PowerupTimer" type="Timer" parent="." unique_id=122111564 groups=["timers"]]
+one_shot = true
+
+[node name="PlayerWeapon" parent="." unique_id=1499773877 instance=ExtResource("11_nvl01")]
+
+[node name="TextureProgressBar" parent="PlayerWeapon" index="1" unique_id=1463742021]
+offset_left = 11.0
+offset_top = -48.0
+offset_right = 27.0
+offset_bottom = -32.0
+
 [connection signal="area_entered" from="." to="." method="OnAreaEntered"]
+
+[editable path="PlayerWeapon"]

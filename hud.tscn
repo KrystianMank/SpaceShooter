@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://coct2sxk5l3xy"]
+[gd_scene format=3 uid="uid://coct2sxk5l3xy"]
 
 [ext_resource type="Script" uid="uid://6xwv5rtsi3h0" path="res://scripts/Hud.cs" id="1_4u2vk"]
 [ext_resource type="FontFile" uid="uid://blljbnpo7x5in" path="res://fonts/Xolonium-Regular.ttf" id="2_8sq4i"]
@@ -8,18 +8,19 @@
 [ext_resource type="PackedScene" uid="uid://f6ukj75fdw68" path="res://player_stats_panel.tscn" id="5_a2258"]
 [ext_resource type="PackedScene" uid="uid://bwge0428h14x2" path="res://player_health_bar.tscn" id="6_1xsix"]
 [ext_resource type="PackedScene" uid="uid://ibxox6f0niok" path="res://lv_bar.tscn" id="8_61f8s"]
+[ext_resource type="PackedScene" uid="uid://vwrd0ie7u3l2" path="res://weapon_holder.tscn" id="9_g10ll"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_1xsix"]
 load_path = "res://.godot/imported/gear-icon.png-fd259933318d55115e09466aea774e7c.ctex"
 
-[node name="HUD" type="CanvasLayer"]
+[node name="HUD" type="CanvasLayer" unique_id=1359352940]
 script = ExtResource("1_4u2vk")
 MainMenuScene = ExtResource("2_rftc2")
 
-[node name="StatsUpgradePanel" parent="." instance=ExtResource("2_640wx")]
+[node name="StatsUpgradePanel" parent="." unique_id=110685004 instance=ExtResource("2_640wx")]
 visible = false
 
-[node name="ScoreLabel" type="Label" parent="."]
+[node name="ScoreLabel" type="Label" parent="." unique_id=2017390418]
 visible = false
 anchors_preset = 5
 anchor_left = 0.5
@@ -34,7 +35,7 @@ theme_override_font_sizes/font_size = 40
 text = "0"
 horizontal_alignment = 1
 
-[node name="Message" type="Label" parent="."]
+[node name="Message" type="Label" parent="." unique_id=418780663]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -49,7 +50,7 @@ text = "Space Shooter"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="StartButton" type="Button" parent="."]
+[node name="StartButton" type="Button" parent="." unique_id=1129690758]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -65,27 +66,29 @@ theme_override_fonts/font = ExtResource("2_8sq4i")
 theme_override_font_sizes/font_size = 50
 text = "Start"
 
-[node name="MessageTimer" type="Timer" parent="."]
+[node name="MessageTimer" type="Timer" parent="." unique_id=2139572232]
 wait_time = 2.0
 
-[node name="PowerupHolder" parent="." instance=ExtResource("4_640wx")]
+[node name="PowerupHolder" parent="." unique_id=290823551 instance=ExtResource("4_640wx")]
 
-[node name="PlayerStatsPanel" parent="." instance=ExtResource("5_a2258")]
+[node name="PlayerStatsPanel" parent="." unique_id=1472119492 instance=ExtResource("5_a2258")]
 visible = false
 
-[node name="PlayerHealthBar" parent="." instance=ExtResource("6_1xsix")]
+[node name="PlayerHealthBar" parent="." unique_id=2053359214 instance=ExtResource("6_1xsix")]
 
-[node name="MainMenuButton" type="Button" parent="."]
+[node name="MainMenuButton" type="Button" parent="." unique_id=445888677]
 offset_left = 412.0
 offset_top = 10.0
 offset_right = 470.0
 offset_bottom = 68.0
 icon = SubResource("CompressedTexture2D_1xsix")
 
-[node name="LVBar" parent="." instance=ExtResource("8_61f8s")]
+[node name="LVBar" parent="." unique_id=1287005651 instance=ExtResource("8_61f8s")]
 
-[node name="MainMenuPanel" parent="." instance=ExtResource("2_rftc2")]
+[node name="MainMenuPanel" parent="." unique_id=807349935 instance=ExtResource("2_rftc2")]
 visible = false
+
+[node name="WeaponHolder" parent="." unique_id=1909623520 instance=ExtResource("9_g10ll")]
 
 [connection signal="PlayerStatsPanelReady" from="." to="PlayerStatsPanel" method="OnReady"]
 [connection signal="PlayerStatsUpgradePanelReady" from="." to="StatsUpgradePanel" method="OnPlayerStatsUpgradePanelReady"]

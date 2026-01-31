@@ -14,11 +14,13 @@ public partial class Player : Area2D
 	[Export]
 	public Godot.Timer PowerupTimer;
 	[Export]
-	public FiringComponent FiringComponent;
-	[Export]
-	public Texture2D[] BulletSprites;
-	[Export]
-	public PackedScene[] ProjectileScenes;
+	public PlayerWeapon PlayerWeapon;
+	// [Export]
+	// public FiringComponent FiringComponent;
+	// [Export]
+	// public Texture2D[] BulletSprites;
+	// [Export]
+	// public PackedScene[] ProjectileScenes;
 	
 	public Vector2 ScreenSize;
 	public TextureRect MainBackground;
@@ -44,7 +46,7 @@ public partial class Player : Area2D
 		Monitorable = true;
 
 		// New instance of PlayerStats
-		playerStats = new PlayerStats(FiringComponent);
+		playerStats = new PlayerStats(PlayerWeapon.FiringComponent);
 
 		// For moving the background
 		ScreenSize = GetViewportRect().Size;
@@ -75,15 +77,17 @@ public partial class Player : Area2D
             }
         };
 
-		
+		PlayerWeapon.PlayerStats = playerStats;
     }
+
+
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	async public override void _Process(double delta)
 	{
 		_velocity = Vector2.Zero;
 		_rocketSprite.Texture = RocketTextures[2];
-		FiringComponent.BulletSpawn.Position = GetNode<Marker2D>("BulletSpawn").GlobalPosition;
+		//PlayerWeapon.FiringComponent.BulletSpawn.Position = GetNode<Marker2D>("BulletSpawn").GlobalPosition;
 
 		if (Input.IsActionPressed("turn_left"))
 		{
@@ -136,8 +140,6 @@ public partial class Player : Area2D
 			x: Mathf.Clamp(Position.X, 0, ScreenSize.X),
 			y: Mathf.Clamp(Position.Y, 0, ScreenSize.Y)
 		);
-
-
 		
 		if (_isDashActive)
 		{
@@ -224,16 +226,11 @@ public partial class Player : Area2D
 		PowerupEnded();
 		_isDashActive = false;
 
-		// Setting firing component
-		FiringComponent.BulletDamage.Value = playerStats.Damage.Value;
-		FiringComponent.BulletSpeed.Value = playerStats.Speed.Value;
-		FiringComponent.BulletFirerate.Value = playerStats.FireRate.Value;
-		FiringComponent.PlayerBullet = true;
-		FiringComponent.BulletScene = ProjectileScenes[0];
-		FiringComponent.BulletSprite = BulletSprites[0];
-		FiringComponent.SetBulletSpawnVariables(1, 0f);
-
-		FiringComponent.StartShooting();
+		// Setting player weapon component
+		PlayerWeapon.Reset();
+		PlayerWeapon.SetWeaponVariables(playerStats.BulletSpeed.Value, playerStats.Damage.Value, playerStats.FireRate.Value);
+		PlayerWeapon.SetBulletQuantity(1);
+		PlayerWeapon.FiringComponent.StartShooting();
     }
 
 	/// <summary>
@@ -241,7 +238,7 @@ public partial class Player : Area2D
     /// </summary>
 	async public void PlayerDeath()
 	{
-		FiringComponent.StopShooting();
+		PlayerWeapon.FiringComponent.StopShooting();
 
 		var explosionAnimation = GetNode<AnimatedSprite2D>("ExplosionAnimation");
 		explosionAnimation.SpriteFrames.SetAnimationLoop("default", false);
@@ -300,7 +297,7 @@ public partial class Player : Area2D
                 }
 			case PowerupEnum.multishot_powerup:
                 {
-					FiringComponent.SetBulletSpawnVariables(3, 3f);			
+					PlayerWeapon.SetBulletQuantity(2);			
 
 					PowerupTimer.WaitTime = playerStats.MultishotPowerupDuration.Value;
 					_powerupCallable = new Callable(this, nameof(OnMultishotTimeout));
@@ -318,17 +315,6 @@ public partial class Player : Area2D
 					
                     break;
                 }
-			case PowerupEnum.rockets_powerup:
-				{
-					FiringComponent.BulletScene = ProjectileScenes[1];
-					FiringComponent.BulletSprite = BulletSprites[1];
-					FiringComponent.BulletFirerate.Value = 1d;
-					FiringComponent.BulletSpeed.Value = 800;
-
-					PowerupTimer.WaitTime = playerStats.DashPowerupDuration.Value;
-					_powerupCallable = new Callable(this, nameof(OnRocketsTimeout));
-					break;
-				}
         }
 
 		PowerupTimer.Connect(Godot.Timer.SignalName.Timeout, _powerupCallable);
@@ -357,18 +343,11 @@ public partial class Player : Area2D
 				GetNode<HurtboxComponent>("HurtboxComponent").GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred(CollisionShape2D.PropertyName.Disabled, false);
 				break;
 			case PowerupEnum.multishot_powerup:
-				FiringComponent.SetBulletSpawnVariables(1, 0f);
+				PlayerWeapon.SetBulletQuantity(1);
 				break;
 			case PowerupEnum.dash_powerup:
 				_isDashActive = false;
 				GetParent().GetNode<Label>("DashLandLabel").Visible =false;
-				break;
-			case PowerupEnum.rockets_powerup:
-				FiringComponent.BulletScene = ProjectileScenes[0];
-				FiringComponent.BulletSprite = BulletSprites[0];
-				FiringComponent.BulletFirerate.Value = playerStats.FireRate.Value;
-				FiringComponent.BulletSpeed.Value = playerStats.BulletSpeed.Value;
-
 				break;
 		}
 
@@ -391,11 +370,6 @@ public partial class Player : Area2D
 
 	}
 	void OnDashTimeout()
-	{
-		EndCurrentPowerup();
-		PowerupEnded();
-	}
-	void OnRocketsTimeout()
 	{
 		EndCurrentPowerup();
 		PowerupEnded();

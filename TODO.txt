@@ -6,9 +6,9 @@
 NEXT:
 1. Sterowanie na telefon i desktop (panel ustawień) 
 2. Nowe powerup: 
-    - Czarna dziura (wciąga przeciwników do środka i zadaje dmg w czasie)
+	- Czarna dziura (wciąga przeciwników do środka i zadaje dmg w czasie)
 3. Przeciwnik poruszający się w losowe strony i atakujący gracza po zobaczeniu go
 4. Miejsce na HUD pokazujące aktualnie trzymaną broń:
-    - zwykłe pociski (normal dmg, normal firerate, mały hitbox)
-    - Wybuchające pociski (duży dmg, mały firerate, duże pole rażenia) ^
-    - laser (mały dmg, duży firerate, mały hitbox, ciągła wiązka)
+	- zwykłe pociski (normal dmg, normal firerate, mały hitbox)
+	- Wybuchające pociski (duży dmg, mały firerate, duże pole rażenia) ^
+	- laser (mały dmg, duży firerate, mały hitbox, ciągła wiązka)

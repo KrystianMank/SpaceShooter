@@ -1,28 +1,27 @@
-[gd_scene load_steps=8 format=3 uid="uid://crjbmcvbllf4d"]
+[gd_scene format=3 uid="uid://crjbmcvbllf4d"]
 
 [ext_resource type="Script" uid="uid://bsaglpnq7kdo4" path="res://scripts/Powerup.cs" id="1_iuyn8"]
 [ext_resource type="Texture2D" uid="uid://dm2vvg18cf0ol" path="res://sprites/poweups/piercing_powerup.png" id="2_6cuax"]
 [ext_resource type="Texture2D" uid="uid://duubk7htjv65y" path="res://sprites/poweups/invincibility_powerup.png" id="3_6cuax"]
 [ext_resource type="Texture2D" uid="uid://dw1jyrh8rkbuy" path="res://sprites/poweups/multishot_powerup.png" id="4_xu7g1"]
 [ext_resource type="Texture2D" uid="uid://cc84dxnsrh4dy" path="res://sprites/poweups/dash_powerup.png" id="5_iuyn8"]
-[ext_resource type="Texture2D" uid="uid://bk7bcejissbv3" path="res://sprites/poweups/rockets_powerup.png" id="6_iuyn8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_to7bl"]
 size = Vector2(50, 49)
 
-[node name="Powerup" type="Area2D" groups=["powerups"]]
+[node name="Powerup" type="Area2D" unique_id=383939482 groups=["powerups"]]
 collision_mask = 3
 script = ExtResource("1_iuyn8")
-PowerupTextures = Array[Texture2D]([ExtResource("2_6cuax"), ExtResource("3_6cuax"), ExtResource("4_xu7g1"), ExtResource("5_iuyn8"), ExtResource("6_iuyn8")])
+PowerupTextures = Array[Texture2D]([ExtResource("2_6cuax"), ExtResource("3_6cuax"), ExtResource("4_xu7g1"), ExtResource("5_iuyn8")])
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2047823484]
 texture = ExtResource("2_6cuax")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=254534472]
 position = Vector2(0, -0.5)
 shape = SubResource("RectangleShape2D_to7bl")
 
-[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1418137897]
 
 [connection signal="area_entered" from="." to="." method="OnAreaEntered"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="OnVisibleOnScreenNotifier2dScreenExited"]
