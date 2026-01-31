@@ -1,19 +1,19 @@
-[gd_scene load_steps=2 format=3 uid="uid://vwrd0ie7u3l2"]
+[gd_scene format=3 uid="uid://vwrd0ie7u3l2"]
 
 [ext_resource type="Texture2D" uid="uid://vg30ewtrovfs" path="res://sprites/poweups/weapon_frame.png" id="1_nckh0"]
 
-[node name="WeaponHolder" type="CanvasLayer"]
+[node name="WeaponHolder" type="CanvasLayer" unique_id=1909623520]
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=186621600]
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 10.0
+offset_left = 70.0
 offset_top = -105.0
-offset_right = 60.0
+offset_right = 120.0
 offset_bottom = -55.0
 grow_vertical = 0
 
-[node name="PowerupContainer" type="Sprite2D" parent="PanelContainer"]
+[node name="PowerupContainer" type="Sprite2D" parent="PanelContainer" unique_id=1944347566]
 position = Vector2(25, 24)
 texture = ExtResource("1_nckh0")

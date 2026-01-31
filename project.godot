@@ -8,12 +8,16 @@
 
 config_version=5
 
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
 [application]
 
 config/name="Space Shooter"
 config/version="0.4"
 run/main_scene="uid://coofy7hsq27pt"
-config/features=PackedStringArray("4.5", "C#", "Mobile")
+config/features=PackedStringArray("4.6", "C#", "Mobile")
 boot_splash/bg_color=Color(0, 0.17495865, 0.4916125, 1)
 boot_splash/use_filter=false
 boot_splash/image="uid://cdqfpe7yh47jj"
@@ -39,6 +43,7 @@ powerup_holders=""
 entities=""
 bullet=""
 piercing=""
+weapon_holder=""
 
 [input]
 
