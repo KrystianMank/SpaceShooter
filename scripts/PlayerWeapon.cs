@@ -149,7 +149,7 @@ public partial class PlayerWeapon : Node
 	/// <summary>
 	/// Save picked weapon to FiringComponent
 	/// </summary>
-	private void SetWeapon()
+	public void SetWeapon()
 	{
 		FiringComponent.BulletScene = _currentWeapon;
 		switch (CurrentWeaponType)

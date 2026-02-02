@@ -19,10 +19,10 @@ public class PlayerStats
 
 
     public Dictionary<string,object> PlayerStatsList = new Dictionary<string, object>();
-    public FiringComponent FiringComponent;
-    public PlayerStats(FiringComponent firingComponent)
+    public PlayerWeapon PlayerWeapon;
+    public PlayerStats(PlayerWeapon playerWeapon)
     {
-      FiringComponent = firingComponent;
+      PlayerWeapon = playerWeapon;
 
       PlayerStatsList.Add(nameof(Speed), Speed.Value);
       PlayerStatsList.Add(nameof(FireRate), FireRate.Value);
@@ -51,7 +51,8 @@ public class PlayerStats
     public void OnFirerateValueChanged(object target, Observable<double>.ChanedEventArgs eventArgs)
     {
       PlayerStatsList[nameof(FireRate)] = eventArgs.NewValue;
-      FiringComponent.BulletFirerate.Value = eventArgs.NewValue;
+     // FiringComponent.BulletFirerate.Value = eventArgs.NewValue;
+     PlayerWeapon.SetWeapon();
     }
 
     public void OnSpeedValueChanged(object target, Observable<int>.ChanedEventArgs eventArgs)
@@ -65,12 +66,14 @@ public class PlayerStats
     public void OnBulletSpeedValueChanged(object target, Observable<int>.ChanedEventArgs eventArgs)
     {
       PlayerStatsList[nameof(BulletSpeed)] = eventArgs.NewValue;
-      FiringComponent.BulletSpeed.Value = eventArgs.NewValue;
+      //FiringComponent.BulletSpeed.Value = eventArgs.NewValue;
+      PlayerWeapon.SetWeapon();
     }
     public void OnDamageValueChanged(object target, Observable<double>.ChanedEventArgs eventArgs)
     {
-    PlayerStatsList[nameof(Damage)] = eventArgs.NewValue;
-    FiringComponent.BulletDamage.Value = eventArgs.NewValue;
+      PlayerStatsList[nameof(Damage)] = eventArgs.NewValue;
+      //FiringComponent.BulletDamage.Value = eventArgs.NewValue;
+      PlayerWeapon.SetWeapon();
     }
     public void OnHealthValueChanged(object target, Observable<double>.ChanedEventArgs eventArgs)
     {

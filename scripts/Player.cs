@@ -46,7 +46,7 @@ public partial class Player : Area2D
 		Monitorable = true;
 
 		// New instance of PlayerStats
-		playerStats = new PlayerStats(PlayerWeapon.FiringComponent);
+		playerStats = new PlayerStats(PlayerWeapon);
 
 		// For moving the background
 		ScreenSize = GetViewportRect().Size;
