@@ -17,6 +17,25 @@ public partial class PlayerWeapon : Node
 	private bool _animationFinished = true;
 	const float WEAPON_CHANGE_TIME = 2F;
 
+	public struct WeaponStatsMultiplier
+	{
+		public readonly double BulletSpeedMultiplier;
+		public readonly double BulletDamageMultiplier;
+		public readonly double FireRateMultiplier;
+
+		public WeaponStatsMultiplier(double speedMultiplier, double damageMultiplier, double fireRateMultiplier)
+		{
+			BulletSpeedMultiplier = speedMultiplier;
+			BulletDamageMultiplier = damageMultiplier;
+			FireRateMultiplier = fireRateMultiplier;
+		}
+		public WeaponStatsMultiplier(){}
+	}
+
+	public WeaponStatsMultiplier MaschineGunStatsMultipier = new(1,1,1);
+	public WeaponStatsMultiplier RocketLauncherStatsMultiplier = new(0.5, 3, 0.5);
+	public WeaponStatsMultiplier LaserStatsMultiplier = new(10, 0.1, 5);
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -57,6 +76,9 @@ public partial class PlayerWeapon : Node
 
 		_currentWeapon = WeaponScenes[_weaponIndex];
 		_currentWeaponTexture = WeaponSprites[_weaponIndex];
+
+		SetWeapon();
+		SetWeaponToHUD();
 	}
 
 	/// <summary>
@@ -134,15 +156,19 @@ public partial class PlayerWeapon : Node
 		{
 			case WeaponTypes.MaschineGun:
 				{
-					SetWeaponVariables(PlayerStats.BulletSpeed.Value, PlayerStats.Damage.Value, PlayerStats.FireRate.Value);
+					SetWeaponVariables(
+						(int)(PlayerStats.BulletSpeed.Value * MaschineGunStatsMultipier.BulletSpeedMultiplier),
+						PlayerStats.Damage.Value * MaschineGunStatsMultipier.BulletDamageMultiplier, 
+						PlayerStats.FireRate.Value * MaschineGunStatsMultipier.FireRateMultiplier
+					);
 				}
 				break;
 			case WeaponTypes.RocketLauncher:
 				{
 					SetWeaponVariables(
-						(int)(PlayerStats.BulletSpeed.Value * 0.5),
-						PlayerStats.Damage.Value + 5,
-						PlayerStats.FireRate.Value / 0.3
+						(int)(PlayerStats.BulletSpeed.Value * RocketLauncherStatsMultiplier.BulletSpeedMultiplier),
+						PlayerStats.Damage.Value * RocketLauncherStatsMultiplier.BulletDamageMultiplier,
+						PlayerStats.FireRate.Value / RocketLauncherStatsMultiplier.FireRateMultiplier
 					);
 				}
 				break;
