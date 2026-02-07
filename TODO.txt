@@ -9,6 +9,11 @@ NEXT:
 	- Czarna dziura (wciąga przeciwników do środka i zadaje dmg w czasie)
 3. Przeciwnik poruszający się w losowe strony i atakujący gracza po zobaczeniu go
 4. Miejsce na HUD pokazujące aktualnie trzymaną broń:
-	- zwykłe pociski (normal dmg, normal firerate, mały hitbox)
+	- zwykłe pociski (normal dmg, normal firerate, mały hitbox) ^
 	- Wybuchające pociski (duży dmg, mały firerate, duże pole rażenia) ^
 	- laser (mały dmg, duży firerate, mały hitbox, ciągła wiązka)
+
+GAME DESIGN:
+System podobnie jak w Brotato czy PicklePete, Kilka poziomów do przejścia na końcu walka z bossem. 
+Koniec poziomu kończy się animacją przelotu do góry i pokazaniem panelu ulepszeń, po kliknięciu "Continue", przejście na następny poziom
+
