@@ -1,5 +1,7 @@
 using Godot;
 using GameEnums;
+using System.Collections.Generic;
+using System.Linq;
 public partial class PlayerWeapon : Node
 {
 	[Export]
@@ -17,7 +19,7 @@ public partial class PlayerWeapon : Node
 	private bool _animationFinished = true;
 	const float WEAPON_CHANGE_TIME = 2F;
 
-	public struct WeaponStatsMultiplier
+	public readonly struct WeaponStatsMultiplier
 	{
 		public readonly double BulletSpeedMultiplier;
 		public readonly double BulletDamageMultiplier;
@@ -31,10 +33,27 @@ public partial class PlayerWeapon : Node
 		}
 		public WeaponStatsMultiplier(){}
 	}
+	private readonly WeaponStatsMultiplier _maschineGunStatsMultipier = new(1,1,1);
+	private readonly WeaponStatsMultiplier _rocketLauncherStatsMultiplier = new(0.5, 3, 2);
+	private readonly WeaponStatsMultiplier _laserStatsMultiplier = new(10, 0.1, 5);
 
-	public WeaponStatsMultiplier MaschineGunStatsMultipier = new(1,1,1);
-	public WeaponStatsMultiplier RocketLauncherStatsMultiplier = new(0.5, 3, 0.5);
-	public WeaponStatsMultiplier LaserStatsMultiplier = new(10, 0.1, 5);
+	public struct WeaponStats
+	{
+		public readonly WeaponTypes WeaponType;
+		public double BulletSpeed;
+		public double BulletDamage;
+		public double FireRate;
+
+		public WeaponStats(WeaponTypes weaponType, PlayerStats playerStats, WeaponStatsMultiplier weaponStatsMultiplier)
+		{
+			WeaponType = weaponType;
+			BulletSpeed = playerStats.BulletSpeed.Value * weaponStatsMultiplier.BulletSpeedMultiplier;
+			BulletDamage = playerStats.Damage.Value * weaponStatsMultiplier.BulletDamageMultiplier;
+			FireRate = playerStats.FireRate.Value * weaponStatsMultiplier.FireRateMultiplier;
+		}
+		public WeaponStats(){}
+	}
+
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -43,9 +62,6 @@ public partial class PlayerWeapon : Node
 		FiringComponent.PlayerBullet = true;
 		WeaponChangeAnimation.SpeedScale = WEAPON_CHANGE_TIME;
 		Reset();
-
-		SetWeapon();
-		SetWeaponToHUD();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -54,16 +70,17 @@ public partial class PlayerWeapon : Node
 		FiringComponent.BulletSpawn.GlobalPosition = GetParent().GetNode<Marker2D>("BulletSpawn").GlobalPosition;
 		WeaponChangeAnimation.GlobalPosition = GetParent().GetNode<Marker2D>("BulletSpawn").GlobalPosition + new Vector2(20,0);
 
-		// Changing to next weapon
-		if (Input.IsActionJustPressed("next_weapon") && _animationFinished)
-		{
-			ChangeWeapon(true);
-		}
-		// Changing to previous weapon
-		if (Input.IsActionJustPressed("previous_weapon") && _animationFinished)
-		{
-			ChangeWeapon(false);
-		}
+		if(GetOwner<Player>().PlayerAlive)
+			// Changing to next weapon
+			if (Input.IsActionJustPressed("next_weapon") && _animationFinished)
+			{
+				ChangeWeapon(true);
+			}
+			// Changing to previous weapon
+			if (Input.IsActionJustPressed("previous_weapon") && _animationFinished)
+			{
+				ChangeWeapon(false);
+			}
 	}
 
 	/// <summary>
@@ -76,6 +93,17 @@ public partial class PlayerWeapon : Node
 
 		_currentWeapon = WeaponScenes[_weaponIndex];
 		_currentWeaponTexture = WeaponSprites[_weaponIndex];
+
+		if (PlayerStats == null)
+			return;
+
+		// MaschineGunStats = new( WeaponTypes.MaschineGun,PlayerStats, _maschineGunStatsMultipier);
+		// RocketLauncherStats = new(WeaponTypes.RocketLauncher, PlayerStats, _rocketLauncherStatsMultiplier);
+		// LaserStats = new(WeaponTypes.Laser, PlayerStats, _laserStatsMultiplier);
+		// WeaponStatsList =new List<WeaponStats>
+        // {
+        //     MaschineGunStats, RocketLauncherStats, LaserStats
+		// };
 
 		SetWeapon();
 		SetWeaponToHUD();
@@ -96,19 +124,7 @@ public partial class PlayerWeapon : Node
 
 		WeaponChangeAnim();
 	}
-	public async void WeaponChangeAnim()
-	{
-		WeaponChangeAnimation.Play();
-		_animationFinished = false;
-		FiringComponent.StopShooting();
-
-		await ToSignal(WeaponChangeAnimation, AnimatedSprite2D.SignalName.AnimationFinished);
-
-		_animationFinished = true;
-		SetWeapon();
-		SetWeaponToHUD();
-		FiringComponent.StartShooting();
-	}
+	
 	/// <summary>
 	/// Set weapon variables
 	/// </summary>
@@ -151,35 +167,36 @@ public partial class PlayerWeapon : Node
 	/// </summary>
 	public void SetWeapon()
 	{
+		if (PlayerStats == null)
+			return;
+
 		FiringComponent.BulletScene = _currentWeapon;
-		switch (CurrentWeaponType)
+		
+		// Recalculate weapon stats based on current player stats
+		WeaponStatsMultiplier multiplier = CurrentWeaponType switch
 		{
-			case WeaponTypes.MaschineGun:
-				{
-					SetWeaponVariables(
-						(int)(PlayerStats.BulletSpeed.Value * MaschineGunStatsMultipier.BulletSpeedMultiplier),
-						PlayerStats.Damage.Value * MaschineGunStatsMultipier.BulletDamageMultiplier, 
-						PlayerStats.FireRate.Value * MaschineGunStatsMultipier.FireRateMultiplier
-					);
-				}
-				break;
-			case WeaponTypes.RocketLauncher:
-				{
-					SetWeaponVariables(
-						(int)(PlayerStats.BulletSpeed.Value * RocketLauncherStatsMultiplier.BulletSpeedMultiplier),
-						PlayerStats.Damage.Value * RocketLauncherStatsMultiplier.BulletDamageMultiplier,
-						PlayerStats.FireRate.Value / RocketLauncherStatsMultiplier.FireRateMultiplier
-					);
-				}
-				break;
-			case WeaponTypes.Laser:
-				{
-					
-				}
-				break;
-		}
+			WeaponTypes.MaschineGun => _maschineGunStatsMultipier,
+			WeaponTypes.RocketLauncher => _rocketLauncherStatsMultiplier,
+			WeaponTypes.Laser => _laserStatsMultiplier,
+			_ => new WeaponStatsMultiplier()
+		};
+
+		double bulletSpeed = PlayerStats.BulletSpeed.Value * multiplier.BulletSpeedMultiplier;
+		double bulletDamage = PlayerStats.Damage.Value * multiplier.BulletDamageMultiplier;
+		double fireRate = PlayerStats.FireRate.Value * multiplier.FireRateMultiplier;
+
+		SetWeaponVariables((int)bulletSpeed, bulletDamage, fireRate);
 		FiringComponent.BulletSprite = _currentWeaponTexture;
 	}
+	
+	/// <summary>
+	/// </summary>
+	/// <returns>Currently held weapon stats</returns>
+	// public WeaponStats GetCurrentWeaponStats()
+	// {
+	// 	return WeaponStatsList.First(x => x.WeaponType == CurrentWeaponType);
+	// }
+
 	/// <summary>
 	/// Save picekd weapon to WeaponHolder UI
 	/// </summary>
@@ -188,5 +205,20 @@ public partial class PlayerWeapon : Node
 		 var weaponHolder = GetTree().GetNodesInGroup("weapon_holder");
 		weaponHolder[0].GetNode<Sprite2D>("PanelContainer/WeaponContainer").Texture = _currentWeaponTexture;
 	}
-	
+	/// <summary>
+	/// Weapon change aniamtion, while it's active stop shooting. Can't change weapon during the aniamtion
+	/// </summary>
+	private async void WeaponChangeAnim()
+	{
+		WeaponChangeAnimation.Play();
+		_animationFinished = false;
+		FiringComponent.StopShooting();
+
+		await ToSignal(WeaponChangeAnimation, AnimatedSprite2D.SignalName.AnimationFinished);
+
+		_animationFinished = true;
+		SetWeapon();
+		SetWeaponToHUD();
+		FiringComponent.StartShooting();
+	}
 }

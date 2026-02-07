@@ -30,6 +30,7 @@ public partial class Player : Area2D
 
 
 	public PlayerStats playerStats;
+	public bool PlayerAlive = true;
 
 	private Vector2 _velocity;
 	private Sprite2D _rocketSprite;
@@ -89,52 +90,53 @@ public partial class Player : Area2D
 		_rocketSprite.Texture = RocketTextures[2];
 		//PlayerWeapon.FiringComponent.BulletSpawn.Position = GetNode<Marker2D>("BulletSpawn").GlobalPosition;
 
-		if (Input.IsActionPressed("turn_left"))
-		{
-			_velocity.X -= 1;
-			_rocketSprite.Texture = RocketTextures[0];
-
-			// When the player moves LEFT, the background moves RIGHT and vice versa
-			if (MainBackground.Position.X < LeftMarginWindow.Position.X)
+		if(PlayerAlive){
+			if (Input.IsActionPressed("turn_left"))
 			{
-				MainBackground.Position += Vector2.Right * (float)delta * MainBackgroundMovementX;
+				_velocity.X -= 1;
+				_rocketSprite.Texture = RocketTextures[0];
+
+				// When the player moves LEFT, the background moves RIGHT and vice versa
+				if (MainBackground.Position.X < LeftMarginWindow.Position.X)
+				{
+					MainBackground.Position += Vector2.Right * (float)delta * MainBackgroundMovementX;
+				}
+				else
+				{
+					MainBackground.Position = new Vector2(LeftMarginWindow.Position.X, MainBackground.Position.Y);
+				}
 			}
-			else
+
+			if (Input.IsActionPressed("turn_right"))
 			{
-				MainBackground.Position = new Vector2(LeftMarginWindow.Position.X, MainBackground.Position.Y);
+				_velocity.X += 1;
+				_rocketSprite.Texture = RocketTextures[1];
+
+				if (MainBackground.Position.X > -120f) // Maximum left position that makes right border of MainBackground in the same position as right border of the Window
+				{
+					MainBackground.Position += Vector2.Left * (float)delta * MainBackgroundMovementX;
+				}
+				else
+				{
+					MainBackground.Position = new Vector2(LeftMarginWindow.Position.X - 120f, MainBackground.Position.Y);
+				}
 			}
-		}
 
-		if (Input.IsActionPressed("turn_right"))
-		{
-			_velocity.X += 1;
-			_rocketSprite.Texture = RocketTextures[1];
-
-			if (MainBackground.Position.X > -120f) // Maximum left position that makes right border of MainBackground in the same position as right border of the Window
+			if (Input.IsActionPressed("go_up"))
 			{
-				MainBackground.Position += Vector2.Left * (float)delta * MainBackgroundMovementX;
+				_velocity.Y -= 1;
 			}
-			else
+			if (Input.IsActionPressed("go_down"))
 			{
-				MainBackground.Position = new Vector2(LeftMarginWindow.Position.X - 120f, MainBackground.Position.Y);
+				_velocity.Y += 1;
 			}
-		}
 
-		if (Input.IsActionPressed("go_up"))
-		{
-			_velocity.Y -= 1;
+			if (_velocity.Length() > 0)
+			{
+				_velocity = _velocity.Normalized() * playerStats.Speed.Value;
+			}
+			Position += _velocity * (float)delta;
 		}
-		if (Input.IsActionPressed("go_down"))
-		{
-			_velocity.Y += 1;
-		}
-
-		if (_velocity.Length() > 0)
-		{
-			_velocity = _velocity.Normalized() * playerStats.Speed.Value;
-		}
-		Position += _velocity * (float)delta;
-
 		// Player can't go outside the screen boundaries
 		Position = new Vector2(
 			x: Mathf.Clamp(Position.X, 0, ScreenSize.X),
@@ -218,16 +220,19 @@ public partial class Player : Area2D
 	public void Start(Vector2 position)
     {
 		Position = position;
+		PlayerAlive = true;
 		Show();
 		GetNode<CollisionShape2D>("HurtboxComponent/CollisionShape2D").Disabled = false;
 		GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred(CollisionShape2D.PropertyName.Disabled, false);
+		
+		// Setting player weapon component BEFORE resetting stats to avoid null reference
+		PlayerWeapon.Reset();
+		
 		ResetStats();
 		GetNode<HurtboxComponent>("HurtboxComponent").HealthComponent = playerStats.Health;
 		PowerupEnded();
 		_isDashActive = false;
 
-		// Setting player weapon component
-		PlayerWeapon.Reset();
 		PlayerWeapon.SetWeaponVariables(playerStats.BulletSpeed.Value, playerStats.Damage.Value, playerStats.FireRate.Value);
 		PlayerWeapon.SetBulletQuantity(1);
 		PlayerWeapon.FiringComponent.StartShooting();
@@ -239,6 +244,7 @@ public partial class Player : Area2D
 	async public void PlayerDeath()
 	{
 		PlayerWeapon.FiringComponent.StopShooting();
+		PlayerAlive = false;
 
 		var explosionAnimation = GetNode<AnimatedSprite2D>("ExplosionAnimation");
 		explosionAnimation.SpriteFrames.SetAnimationLoop("default", false);

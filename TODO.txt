@@ -16,4 +16,3 @@ NEXT:
 GAME DESIGN:
 System podobnie jak w Brotato czy PicklePete, Kilka poziomów do przejścia na końcu walka z bossem. 
 Koniec poziomu kończy się animacją przelotu do góry i pokazaniem panelu ulepszeń, po kliknięciu "Continue", przejście na następny poziom
-
