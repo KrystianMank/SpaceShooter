@@ -8,30 +8,33 @@ public partial class Main : Node
 	public delegate void ShowPlayerStatsUpgradePanelEventHandler(bool show);
 	[Signal]
 	public delegate void ShowPlayerStatsUpgradePanelReadyEventHandler(Player player);
+	// [Export]
+	// public PackedScene MeteorScene { get; set; }
+	// [Export]
+	// public PackedScene AlienScene{get;set;}
+	// [Export]
+	// public PackedScene EntityHealthbarScene;
 	[Export]
-	public PackedScene MeteorScene { get; set; }
-	[Export]
-	public PackedScene AlienScene{get;set;}
-	[Export]
-	public PackedScene EntityHealthbarScene;
+	public EntitySpawnerComponent EntitySpawner;
 	[Export]
 	public Vector2 ScreenSize;
 	public Player PlayerNode;
 	public float BackgroundSpeed = 100f;
 	public Observable<int> Score = new Observable<int>();
+
 	public TextureRect Background;
 	public Vector2 BackgroundStartPosition;
 	public float BackgroundRepeatHeight;
 
-	private double _enititySpawnDificultyMultiplier = 0.1d;
-	private double _entityHealthMultipier = 0d;
+	// private double _enititySpawnDificultyMultiplier = 0.1d;
+	// private double _entityHealthMultipier = 0d;
 	private bool _increaseDificulty = false;
 	private int[] _difficultyTresholds = [5,15, 25, 50, 75, 100, 125, 150, 200, 250, 300, 400, 500,650,800, 1000, 1200, 1500, 2000, 2250];
 	private int _nextTresholdIndex = 0;
 
 
-	private int _horizontalLines;
-	private int _verticalLines;
+	// private int _horizontalLines;
+	// private int _verticalLines;
 
 	private bool _toogleStatsPanelView = false;
 	// Called when the node enters the scene tree for the first time.
@@ -44,12 +47,16 @@ public partial class Main : Node
 		BackgroundRepeatHeight = Background.Size.Y / 2;
 
 		ScreenSize = PlayerNode.ScreenSize;
-		_horizontalLines = (int)ScreenSize.Y / 30;
-		_verticalLines = (int)ScreenSize.X / 24;
+		//_horizontalLines = (int)ScreenSize.Y / 30;
+		//_verticalLines = (int)ScreenSize.X / 24;
 
 		Score.Changed += OnScoreValueChanged;
 
-		InstantiateAlienPaths();
+		//InstantiateAlienPaths();
+
+		// Subscribtion to Action<Entity> delegates
+		EntitySpawner.OnEntitySpawnerEntityHealthDepleted += OnEntitySpawnerEntityHealthDepleted;
+		EntitySpawner.OnEntitySpawnerEntityHealthValueChanged += OnEntitySpawnerEntityHealtValueChanged;
     }
 
 	public override void _Process(double delta)
@@ -84,19 +91,17 @@ public partial class Main : Node
 		PlayerNode.Start(startPosition.Position);
 		EmitSignal(SignalName.HudReady, GetNode<Player>("Player"));
 
-		GetNode<Timer>("MeteorSpawnTimer").WaitTime = 1d;
-
 		var hud = GetNode<Hud>("HUD");
 		hud.ShowMessage("Get Ready!");
 
-		GetTree().CallGroup("entities", Node.MethodName.QueueFree);
+		EntitySpawner.DestroyAllEntities();
 
 		GetNode<Timer>("StartTimer").Start();
 
 		GetNode<AudioStreamPlayer2D>("BackgroundMusic").Play();
 
 		_increaseDificulty = false;
-		_entityHealthMultipier = 0.5;
+		//_entityHealthMultipier = 0.5;
 		_nextTresholdIndex = 0;
 
 		hud.SetNewLVBarLevel(_nextTresholdIndex + 1,0 , _difficultyTresholds[_nextTresholdIndex]);
@@ -106,160 +111,117 @@ public partial class Main : Node
 	public void GameOver()
 	{
 		GetNode<Hud>("HUD").ShowGameOver();
-		GetNode<Timer>("MeteorSpawnTimer").Stop();
-		GetNode<Timer>("AlienSpawnTimer").Stop();
+		EntitySpawner.StopSpawning();
+		// GetNode<Timer>("MeteorSpawnTimer").Stop();
+		// GetNode<Timer>("AlienSpawnTimer").Stop();
 
-		GetTree().CallGroup("entities", Node.MethodName.QueueFree);
+		EntitySpawner.DestroyAllEntities();
+		//GetTree().CallGroup("entities", Node.MethodName.QueueFree);
 
 		GetNode<AudioStreamPlayer2D>("BackgroundMusic").Stop();
 		GetNode<AudioStreamPlayer2D>("DeathSound").Play();
     }
 
-	public void MetorSpawnTimeout()
-	{
-		// Instantiating the meteor
-		Meteor meteor = MeteorScene.Instantiate<Meteor>();
+	// public void MetorSpawnTimeout()
+	// {
+	// 	// Instantiating the meteor
+	// 	Meteor meteor = MeteorScene.Instantiate<Meteor>();
 
-		// Random spawn location
-		var meteorSpawnLocation = GetNode<PathFollow2D>("MeteorPath/MeteorSpawnLocation");
-		meteorSpawnLocation.ProgressRatio = GD.Randf();
+	// 	// Random spawn location
+	// 	var meteorSpawnLocation = GetNode<PathFollow2D>("MeteorPath/MeteorSpawnLocation");
+	// 	meteorSpawnLocation.ProgressRatio = GD.Randf();
 
-		meteor.Position = meteorSpawnLocation.Position;
+	// 	meteor.Position = meteorSpawnLocation.Position;
 
-		// Random direction
-		float direction = meteorSpawnLocation.Rotation + Mathf.Pi / 2;
-		direction += (float)GD.RandRange(-Mathf.Pi / 4, Mathf.Pi / 4);
-		meteor.Rotation = direction;
+	// 	// Random direction
+	// 	float direction = meteorSpawnLocation.Rotation + Mathf.Pi / 2;
+	// 	direction += (float)GD.RandRange(-Mathf.Pi / 4, Mathf.Pi / 4);
+	// 	meteor.Rotation = direction;
 
-		// Velocity
-		var velocity = new Vector2((float)GD.RandRange(150.0, 250.0), 0);
-		meteor.Velocity = velocity;
+	// 	// Velocity
+	// 	var velocity = new Vector2((float)GD.RandRange(150.0, 250.0), 0);
+	// 	meteor.Velocity = velocity;
 
-		meteor.PlayerStats = PlayerNode.playerStats;
+	// 	meteor.PlayerStats = PlayerNode.playerStats;
 
-		meteor.SetEnityHealthRandom(1 + _entityHealthMultipier, 3 + _entityHealthMultipier);
+	// 	meteor.SetEnityHealthRandom(1 + _entityHealthMultipier, 3 + _entityHealthMultipier);
 
-		// Meteor's healthbar
-		EntityHealthbar entityHealthbar = EntityHealthbarScene.Instantiate<EntityHealthbar>();
-		meteor.AddChild(entityHealthbar);
+	// 	// Meteor's healthbar
+	// 	EntityHealthbar entityHealthbar = EntityHealthbarScene.Instantiate<EntityHealthbar>();
+	// 	meteor.AddChild(entityHealthbar);
 
-		meteor.InitializeHealthBar();
+	// 	meteor.InitializeHealthBar();
 
-		meteor.EnitityHPDepleted += OnEntityHealthDepleted;
-		meteor.EntityHPValueChanged += OnEntityHealtValueChanged;
+	// 	meteor.EnitityHPDepleted += OnEntityHealthDepleted;
+	// 	meteor.EntityHPValueChanged += OnEntityHealtValueChanged;
 
-		AddChild(meteor);
+	// 	AddChild(meteor);
 
-		// meteor.SetHealthBarMaxValue(meteor.EntityHP.GetHP().Value);
-		// meteor.SetHealthBarValue(meteor.EntityHP.GetHP().Value);
-	}
+	// 	// meteor.SetHealthBarMaxValue(meteor.EntityHP.GetHP().Value);
+	// 	// meteor.SetHealthBarValue(meteor.EntityHP.GetHP().Value);
+	// }
 
-	public void AlienSpawnTimeout()
-    {
-		Alien alien = AlienScene.Instantiate<Alien>();
-		var velocity = (float)GD.RandRange(150.0, 250.0);
-		alien.VelocityValue = velocity;
-		alien.PlayerStats = PlayerNode.playerStats;
-		alien.BulletDamage += _nextTresholdIndex % 5 == 0 ? 0.5 : 0;
-		alien.BulletFireRate -= _nextTresholdIndex % 5 == 0 ? 0.1 : 0;
+	// public void AlienSpawnTimeout()
+    // {
+	// 	Alien alien = AlienScene.Instantiate<Alien>();
+	// 	var velocity = (float)GD.RandRange(150.0, 250.0);
+	// 	alien.VelocityValue = velocity;
+	// 	alien.PlayerStats = PlayerNode.playerStats;
+	// 	alien.BulletDamage += _nextTresholdIndex % 5 == 0 ? 0.5 : 0;
+	// 	alien.BulletFireRate -= _nextTresholdIndex % 5 == 0 ? 0.1 : 0;
 
-        int choosePath = GD.RandRange(0,1);
-        switch (choosePath)
-        {
-            case 0: // horizonatal path
-                {
-                    alien.SpawnDirection = SpawnDirection.Horizontal;
-					int randomHorizontalPath = GD.RandRange(0, _horizontalLines-1);
-					var alienSpawnLocation = GetNode<Path2D>($"AlienPath2DHorizontal_{randomHorizontalPath}");
+    //     int choosePath = GD.RandRange(0,1);
+    //     switch (choosePath)
+    //     {
+    //         case 0: // horizonatal path
+    //             {
+    //                 alien.SpawnDirection = SpawnDirection.Horizontal;
+	// 				int randomHorizontalPath = GD.RandRange(0, _horizontalLines-1);
+	// 				var alienSpawnLocation = GetNode<Path2D>($"AlienPath2DHorizontal_{randomHorizontalPath}");
 
-					int spawnSide = GD.RandRange(0,1);
-					alien.SpawnSide = spawnSide;
-					alien.Position = alienSpawnLocation.Curve.GetPointPosition(spawnSide);
-					alien.GetNode<Sprite2D>("Sprite2D").FlipH = spawnSide == 1;
+	// 				int spawnSide = GD.RandRange(0,1);
+	// 				alien.SpawnSide = spawnSide;
+	// 				alien.Position = alienSpawnLocation.Curve.GetPointPosition(spawnSide);
+	// 				alien.GetNode<Sprite2D>("Sprite2D").FlipH = spawnSide == 1;
 					
-                }
-				break;
-			case 1: // vertical path
-				{
-					alien.SpawnDirection = SpawnDirection.Vertical;
+    //             }
+	// 			break;
+	// 		case 1: // vertical path
+	// 			{
+	// 				alien.SpawnDirection = SpawnDirection.Vertical;
 
-					int randomVerticalPath = GD.RandRange(0, _verticalLines-1);
-					var alienSpawnLocation = GetNode<Path2D>($"AlienPath2DVertical_{randomVerticalPath}");
+	// 				int randomVerticalPath = GD.RandRange(0, _verticalLines-1);
+	// 				var alienSpawnLocation = GetNode<Path2D>($"AlienPath2DVertical_{randomVerticalPath}");
 
-					int spawnSide = GD.RandRange(0,1);
-					alien.SpawnSide = spawnSide;
-					alien.Position = alienSpawnLocation.Curve.GetPointPosition(spawnSide);
-				}
-				break;
-		}
+	// 				int spawnSide = GD.RandRange(0,1);
+	// 				alien.SpawnSide = spawnSide;
+	// 				alien.Position = alienSpawnLocation.Curve.GetPointPosition(spawnSide);
+	// 			}
+	// 			break;
+	// 	}
 
-		EntityHealthbar entityHealthbar = EntityHealthbarScene.Instantiate<EntityHealthbar>();
-		alien.AddChild(entityHealthbar);
+	// 	EntityHealthbar entityHealthbar = EntityHealthbarScene.Instantiate<EntityHealthbar>();
+	// 	alien.AddChild(entityHealthbar);
 
-		alien.SetEnityHealthRandom(2 + _entityHealthMultipier,5 + _entityHealthMultipier);
-		alien.InitializeHealthBar();
+	// 	alien.SetEnityHealthRandom(2 + _entityHealthMultipier,5 + _entityHealthMultipier);
+	// 	alien.InitializeHealthBar();
 
-		alien.EnitityHPDepleted += OnEntityHealthDepleted;
-		alien.EntityHPValueChanged += OnEntityHealtValueChanged;
+	// 	alien.EnitityHPDepleted += OnEntityHealthDepleted;
+	// 	alien.EntityHPValueChanged += OnEntityHealtValueChanged;
 
-		AddChild(alien);
+	// 	AddChild(alien);
 
-		// alien.SetHealthBarMaxValue(alien.EntityHP.GetHP().Value);
-		// alien.SetHealthBarValue(alien.EntityHP.GetHP().Value);
-    }
+	// 	// alien.SetHealthBarMaxValue(alien.EntityHP.GetHP().Value);
+	// 	// alien.SetHealthBarValue(alien.EntityHP.GetHP().Value);
+    // }
 
-	void InstantiateAlienPaths()
-    {
-
-		 // horizontal
-		for(int i = 0; i < _horizontalLines; i++)
-		{
-			Path2D path2D = new();
-			path2D.Name = "AlienPath2DHorizontal_"+i.ToString();
-			Curve2D curve2D = new();
-			var yPosition = _horizontalLines * i;
-			curve2D.AddPoint(new Vector2(0, yPosition)); // left point
-			curve2D.AddPoint(new Vector2(ScreenSize.X, yPosition)); // right point
-
-			path2D.Curve = curve2D;
-			path2D.MoveLocalY(yPosition);
-
-			PathFollow2D pathFollow2D = new();
-			pathFollow2D.Name = "AlienPathFollow2DHorizontal_"+i.ToString();
-			path2D.AddChild(pathFollow2D);
-
-			AddChild(path2D);
-		}
-
-		//vertical
-		for(int i = 0; i < _verticalLines; i++)
-        {
-            Path2D path2D = new();
-			path2D.Name = "AlienPath2DVertical_"+i.ToString();
-			Curve2D curve2D = new();
-			var xPosition = _verticalLines * i;
-			curve2D.AddPoint(new Vector2(xPosition, 0)); // up point
-			curve2D.AddPoint(new Vector2(xPosition, ScreenSize.Y)); // dowin point
-
-			path2D.Curve = curve2D;
-			path2D.MoveLocalX(xPosition);
-
-			PathFollow2D pathFollow2D = new();
-			pathFollow2D.Name = "AlienPathFollow2DVertical_"+i.ToString();
-			path2D.AddChild(pathFollow2D);
-
-			AddChild(path2D);
-        }
-
-    }
 
 	public void StartTimerTimeout()
     {
-		GetNode<Timer>("MeteorSpawnTimer").Start();
-		GetNode<Timer>("AlienSpawnTimer").Start();
+		EntitySpawner.BeginSpawning();
     }
 
-	public void OnEntityHealthDepleted(Entity entity)
+	public void OnEntitySpawnerEntityHealthDepleted(Entity entity)
     {
 		if(!entity.EntitiesHitEachOther){
 			Score.Value += (int)entity.EntityMaxHP.Value;
@@ -268,17 +230,20 @@ public partial class Main : Node
 
 		entity.EnityDeath();
 		
+		/*
+			TODO: Przenieść to do EntitySpawnerComponent i odpowiednio ustawić
+		*/
 		if (_increaseDificulty)
 		{
 			var waitTime = GetNode<Timer>("MeteorSpawnTimer").WaitTime;
-			waitTime -= waitTime * _enititySpawnDificultyMultiplier;
+			waitTime -= waitTime * EntitySpawner.EnititySpawnDificultyMultiplier;
 			GetNode<Timer>("MeteorSpawnTimer").WaitTime = waitTime;
 
 			_increaseDificulty = false;
 		}
     }
 
-	public void OnEntityHealtValueChanged(Entity entity)
+	public void OnEntitySpawnerEntityHealtValueChanged(Entity entity)
     {
 		entity.SetHealthBarValue(entity.EntityHP.GetHP().Value);
     }
@@ -310,7 +275,7 @@ public partial class Main : Node
 			&& Score.Value >= _difficultyTresholds[_nextTresholdIndex])
 		{
 			_increaseDificulty = true;
-			_entityHealthMultipier += 0.5;
+			EntitySpawner.EntityHealthMultiplier += 0.5;
 			_nextTresholdIndex++;
 
 			GetNode<Hud>("HUD").SetNewLVBarLevel(_nextTresholdIndex + 1,_difficultyTresholds[_nextTresholdIndex - 1] ,_difficultyTresholds[_nextTresholdIndex]);

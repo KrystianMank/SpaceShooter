@@ -1,21 +1,13 @@
 [gd_scene format=3 uid="uid://coofy7hsq27pt"]
 
 [ext_resource type="Script" uid="uid://ny0e4y7vbfx6" path="res://scripts/Main.cs" id="1_0xm2m"]
-[ext_resource type="PackedScene" uid="uid://c8ilhiox31kgv" path="res://meteor.tscn" id="2_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://cyltx3v7dkbpw" path="res://entity_spawner_component.tscn" id="2_5vw27"]
 [ext_resource type="PackedScene" uid="uid://ouxsv4v68ul7" path="res://player.tscn" id="2_h2yge"]
 [ext_resource type="PackedScene" uid="uid://coct2sxk5l3xy" path="res://hud.tscn" id="4_1bvp3"]
-[ext_resource type="PackedScene" uid="uid://pflh35lfqp4n" path="res://Alien.tscn" id="4_5vw27"]
-[ext_resource type="PackedScene" uid="uid://bgwot2idj6lhh" path="res://entity_healthbar.tscn" id="5_kek77"]
 [ext_resource type="AudioStream" uid="uid://buhfwkj3awnsm" path="res://sounds/cosmic-minimal-music-fragment-55131.mp3" id="5_lquwl"]
 [ext_resource type="AudioStream" uid="uid://dg7ycj234572q" path="res://sounds/gameover.wav" id="6_7mycd"]
 [ext_resource type="Texture2D" uid="uid://bggbt630fp2ca" path="res://sprites/background/backround_image.png" id="7_272bh"]
 [ext_resource type="Texture2D" uid="uid://du74q21rvnt6f" path="res://sprites/rocket/rocket_dash_blink.png" id="10_4c57u"]
-
-[sub_resource type="Curve2D" id="Curve2D_0xm2m"]
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, -3, 0, 0, 0, 0, 0, 476, -5, 0, 0, 0, 0, 478, 718, 0, 0, 0, 0, -7, 713, 0, 0, 0, 0, -3, 0)
-}
-point_count = 5
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qtqh7"]
 atlas = ExtResource("10_4c57u")
@@ -60,12 +52,11 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Main" type="Node" unique_id=359640060]
+[node name="Main" type="Node" unique_id=359640060 node_paths=PackedStringArray("EntitySpawner")]
 script = ExtResource("1_0xm2m")
-MeteorScene = ExtResource("2_1bvp3")
-PlayerScene = ExtResource("2_h2yge")
-AlienScene = ExtResource("4_5vw27")
-EntityHealthbarScene = ExtResource("5_kek77")
+EntitySpawner = NodePath("EntitySpawnerComponent")
+
+[node name="EntitySpawnerComponent" parent="." unique_id=1460464678 instance=ExtResource("2_5vw27")]
 
 [node name="LeftMarginWindow" type="Marker2D" parent="." unique_id=906078839]
 
@@ -89,18 +80,6 @@ priority = 2
 
 [node name="StartPosition" type="Marker2D" parent="." unique_id=659636138]
 position = Vector2(240, 600)
-
-[node name="MeteorPath" type="Path2D" parent="." unique_id=63936259]
-curve = SubResource("Curve2D_0xm2m")
-
-[node name="MeteorSpawnLocation" type="PathFollow2D" parent="MeteorPath" unique_id=1156145155]
-position = Vector2(-3, 0)
-rotation = -0.010438034
-
-[node name="MeteorSpawnTimer" type="Timer" parent="." unique_id=436762398 groups=["timers"]]
-
-[node name="AlienSpawnTimer" type="Timer" parent="." unique_id=2028748447 groups=["timers"]]
-wait_time = 2.0
 
 [node name="StartTimer" type="Timer" parent="." unique_id=1035437602]
 wait_time = 2.0
@@ -140,6 +119,4 @@ speed_scale = 2.0
 [connection signal="ShowPlayerStatsUpgradePanelReady" from="." to="HUD" method="OnShowPlayerStatsUpgradePanelReady"]
 [connection signal="StartGame" from="HUD" to="." method="NewGame"]
 [connection signal="PlayerHealthDepleted" from="Player" to="." method="GameOver"]
-[connection signal="timeout" from="MeteorSpawnTimer" to="." method="MetorSpawnTimeout"]
-[connection signal="timeout" from="AlienSpawnTimer" to="." method="AlienSpawnTimeout"]
 [connection signal="timeout" from="StartTimer" to="." method="StartTimerTimeout"]

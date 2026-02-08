@@ -50,7 +50,7 @@ public partial class Player : Area2D
 		playerStats = new PlayerStats(PlayerWeapon);
 
 		// For moving the background
-		ScreenSize = GetViewportRect().Size;
+		ScreenSize = GetViewportRect().Size; // DO USUNIECIA
 		MainBackground = GetParent().GetNode<TextureRect>("Background");
 		LeftMarginWindow = GetParent().GetNode<Marker2D>("LeftMarginWindow");
 		

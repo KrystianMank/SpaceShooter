@@ -13,7 +13,7 @@ public partial class Entity : RigidBody2D
 	[Export]
 	public HealthComponent EntityHP = new();
 	public Observable<double> EntityMaxHP = new();
-	public PlayerStats PlayerStats { get; set; }
+	//public PlayerStats PlayerStats { get; set; }
 	public bool EntitiesHitEachOther = false;
 	private bool _hit = false;
     public override void _Ready()
@@ -43,7 +43,7 @@ public partial class Entity : RigidBody2D
 
 	public void SpawnPowerup()
     {
-		var luck = PlayerStats.Luck.Value;
+		var luck = GetTree().GetNodesInGroup("player")[0].GetNode<Player>("Player").playerStats.Luck.Value;
 		double randomNumber = GD.RandRange(0.0, luck);
 
 		if (randomNumber > TresholdValues.POWERUP_SPAWN_TRESHOLD)

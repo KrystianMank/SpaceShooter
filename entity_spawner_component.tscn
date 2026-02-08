@@ -1,3 +1,24 @@
 [gd_scene format=3 uid="uid://cyltx3v7dkbpw"]
 
+[ext_resource type="Script" uid="uid://dcehteivarubj" path="res://scripts/EntitySpawnerComponent.cs" id="1_ll7ik"]
+[ext_resource type="PackedScene" uid="uid://c8ilhiox31kgv" path="res://meteor.tscn" id="2_ucpfx"]
+[ext_resource type="PackedScene" uid="uid://pflh35lfqp4n" path="res://Alien.tscn" id="3_753uf"]
+[ext_resource type="PackedScene" uid="uid://bgwot2idj6lhh" path="res://entity_healthbar.tscn" id="4_rn1kx"]
+
+[sub_resource type="Curve2D" id="Curve2D_ucpfx"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -3, 0, 0, 0, 0, 0, 476, -5, 0, 0, 0, 0, 478, 718, 0, 0, 0, 0, -7, 713, 0, 0, 0, 0, -3, 0)
+}
+point_count = 5
+
 [node name="EntitySpawnerComponent" type="Node" unique_id=1460464678]
+script = ExtResource("1_ll7ik")
+EntityScenes = Array[PackedScene]([ExtResource("2_ucpfx"), ExtResource("3_753uf")])
+EntityHealthbarScene = ExtResource("4_rn1kx")
+
+[node name="MeteorPath" type="Path2D" parent="." unique_id=1071048656]
+curve = SubResource("Curve2D_ucpfx")
+
+[node name="MeteorSpawnLocation" type="PathFollow2D" parent="MeteorPath" unique_id=1671582961]
+position = Vector2(-3, 0)
+rotation = -0.010438034

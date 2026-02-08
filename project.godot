@@ -44,6 +44,7 @@ entities=""
 bullet=""
 piercing=""
 weapon_holder=""
+player=""
 
 [input]
 
