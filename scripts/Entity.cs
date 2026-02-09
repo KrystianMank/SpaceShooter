@@ -43,8 +43,8 @@ public partial class Entity : RigidBody2D
 
 	public void SpawnPowerup()
     {
-		var luck = GetTree().GetNodesInGroup("player")[0].GetNode<Player>("Player").playerStats.Luck.Value;
-		double randomNumber = GD.RandRange(0.0, luck);
+		var player = (Player)GetTree().GetFirstNodeInGroup("player");
+		double randomNumber = GD.RandRange(0.0, player.playerStats.Luck.Value);
 
 		if (randomNumber > TresholdValues.POWERUP_SPAWN_TRESHOLD)
 		{
