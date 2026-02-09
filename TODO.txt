@@ -1,6 +1,6 @@
 1. Piercing powerup - poprawa działania
 2. Ustawić klasę Entity jako CharacterBody2D
-3. Utworzyć klase EntitySpawner
+3. Ustawić klase EntitySpawnerComponent bardziej modualrną (boss będzie wybierał jakich przeciwników tworzyć oraz main to samo)
 
  
 NEXT:

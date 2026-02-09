@@ -52,7 +52,7 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Main" type="Node" unique_id=359640060 node_paths=PackedStringArray("EntitySpawner")]
+[node name="Main" type="Node" unique_id=359640060 node_paths=PackedStringArray("EntitySpawner") groups=["main"]]
 script = ExtResource("1_0xm2m")
 EntitySpawner = NodePath("EntitySpawnerComponent")
 
@@ -73,9 +73,9 @@ offset_bottom = 1800.0
 grow_horizontal = 2
 texture = ExtResource("7_272bh")
 
-[node name="HUD" parent="." unique_id=1707379831 instance=ExtResource("4_1bvp3")]
+[node name="HUD" parent="." unique_id=1707379831 groups=["hud"] instance=ExtResource("4_1bvp3")]
 
-[node name="Player" parent="." unique_id=1454094639 instance=ExtResource("2_h2yge")]
+[node name="Player" parent="." unique_id=1454094639 groups=["player"] instance=ExtResource("2_h2yge")]
 priority = 2
 
 [node name="StartPosition" type="Marker2D" parent="." unique_id=659636138]

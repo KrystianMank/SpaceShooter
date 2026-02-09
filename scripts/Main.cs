@@ -95,13 +95,13 @@ public partial class Main : Node
 		hud.ShowMessage("Get Ready!");
 
 		EntitySpawner.DestroyAllEntities();
+		EntitySpawner.RestComponent();
 
 		GetNode<Timer>("StartTimer").Start();
 
 		GetNode<AudioStreamPlayer2D>("BackgroundMusic").Play();
 
 		_increaseDificulty = false;
-		//_entityHealthMultipier = 0.5;
 		_nextTresholdIndex = 0;
 
 		hud.SetNewLVBarLevel(_nextTresholdIndex + 1,0 , _difficultyTresholds[_nextTresholdIndex]);
@@ -112,11 +112,8 @@ public partial class Main : Node
 	{
 		GetNode<Hud>("HUD").ShowGameOver();
 		EntitySpawner.StopSpawning();
-		// GetNode<Timer>("MeteorSpawnTimer").Stop();
-		// GetNode<Timer>("AlienSpawnTimer").Stop();
 
 		EntitySpawner.DestroyAllEntities();
-		//GetTree().CallGroup("entities", Node.MethodName.QueueFree);
 
 		GetNode<AudioStreamPlayer2D>("BackgroundMusic").Stop();
 		GetNode<AudioStreamPlayer2D>("DeathSound").Play();
@@ -229,18 +226,7 @@ public partial class Main : Node
 		}
 
 		entity.EnityDeath();
-		
-		/*
-			TODO: Przenieść to do EntitySpawnerComponent i odpowiednio ustawić
-		*/
-		if (_increaseDificulty)
-		{
-			var waitTime = GetNode<Timer>("MeteorSpawnTimer").WaitTime;
-			waitTime -= waitTime * EntitySpawner.EnititySpawnDificultyMultiplier;
-			GetNode<Timer>("MeteorSpawnTimer").WaitTime = waitTime;
-
-			_increaseDificulty = false;
-		}
+	
     }
 
 	public void OnEntitySpawnerEntityHealtValueChanged(Entity entity)
@@ -275,8 +261,12 @@ public partial class Main : Node
 			&& Score.Value >= _difficultyTresholds[_nextTresholdIndex])
 		{
 			_increaseDificulty = true;
-			EntitySpawner.EntityHealthMultiplier += 0.5;
 			_nextTresholdIndex++;
+
+			if((_nextTresholdIndex + 1) % 4 == 0)
+			{
+				EntitySpawner.IncreaseDifficulty();
+			}
 
 			GetNode<Hud>("HUD").SetNewLVBarLevel(_nextTresholdIndex + 1,_difficultyTresholds[_nextTresholdIndex - 1] ,_difficultyTresholds[_nextTresholdIndex]);
 

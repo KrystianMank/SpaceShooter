@@ -45,6 +45,8 @@ bullet=""
 piercing=""
 weapon_holder=""
 player=""
+hud=""
+main=""
 
 [input]
 

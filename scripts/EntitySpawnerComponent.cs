@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class EntitySpawnerComponent : Node
 {
@@ -11,6 +12,7 @@ public partial class EntitySpawnerComponent : Node
 	{
 		public Timer SpawnTimer;
 		public Action OnTimeout;
+		private double _initialWaitTime;
 		public EntitySpawnTimer(double initialWaitTime)
 		{
 			SpawnTimer = new Timer
@@ -20,6 +22,7 @@ public partial class EntitySpawnerComponent : Node
 				OneShot = false,
 			};
 			SpawnTimer.Timeout += OnSpawnTimerTimeout;
+			_initialWaitTime = initialWaitTime;
 		}
 
 		public void ApplyNewWaitTime(double newWaitTime)
@@ -34,6 +37,10 @@ public partial class EntitySpawnerComponent : Node
 		{
 			SpawnTimer.Stop();
 		}
+		public void ResetWaitTime()
+		{
+			SpawnTimer.WaitTime = _initialWaitTime;
+		}
 		public virtual void OnSpawnTimerTimeout()
 		{
 			OnTimeout?.Invoke();
@@ -41,14 +48,16 @@ public partial class EntitySpawnerComponent : Node
 	}
 	public double EntityHealthMultiplier = 0d;
 	public double EnititySpawnDificultyMultiplier = 0.1d;
+	// Temporary
+	public double AlienFirerateMultiplier = 0, AlienBulletDamageMultiplier = 0;
 	public EntitySpawnTimer MeteorSpawnTimer, AlienSpawnTimer;
+	public List<EntitySpawnTimer> EntitySpawnTimers;
 
 	public Action<Entity> OnEntitySpawnerEntityHealthDepleted, OnEntitySpawnerEntityHealthValueChanged;
 
 	private int _horizontalLines;
 	private int _verticalLines;
 	private Vector2 _screenSize;
-
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -75,8 +84,6 @@ public partial class EntitySpawnerComponent : Node
                 var velocity = new Vector2((float)GD.RandRange(150.0, 250.0), 0);
                 meteor.Velocity = velocity;
 
-                //meteor.PlayerStats = PlayerNode.playerStats;
-
                 meteor.SetEnityHealthRandom(1 + EntityHealthMultiplier, 3 + EntityHealthMultiplier);
 
                 // Meteor's healthbar
@@ -98,7 +105,6 @@ public partial class EntitySpawnerComponent : Node
 				Alien alien = EntityScenes[1].Instantiate<Alien>();
 				var velocity = (float)GD.RandRange(150.0, 250.0);
 				alien.VelocityValue = velocity;
-				//alien.PlayerStats = PlayerNode.playerStats;
 				alien.BulletDamage += 1;//_nextTresholdIndex % 5 == 0 ? 0.5 : 0;
 				alien.BulletFireRate -= 1;//_nextTresholdIndex % 5 == 0 ? 0.1 : 0;
 
@@ -148,6 +154,8 @@ public partial class EntitySpawnerComponent : Node
 		AddChild(MeteorSpawnTimer.SpawnTimer);
 		AddChild(AlienSpawnTimer.SpawnTimer);
 
+		EntitySpawnTimers = [MeteorSpawnTimer, AlienSpawnTimer];
+
 		_screenSize = GetViewport().GetVisibleRect().Size;
 		_horizontalLines = (int)_screenSize.X / 30;
 		_verticalLines = (int)_screenSize.Y / 24;
@@ -167,7 +175,31 @@ public partial class EntitySpawnerComponent : Node
 
 	public void StopSpawning()
 	{
-		
+		MeteorSpawnTimer.Stop();
+		AlienSpawnTimer.Stop();
+	}
+
+	public void RestComponent()
+	{
+		EntitySpawnTimers.ForEach(timer =>
+		{
+			timer.ResetWaitTime();
+		});
+		EntityHealthMultiplier = 0d;
+		AlienFirerateMultiplier = 0;
+		AlienBulletDamageMultiplier = 0d;
+	}
+
+	public void IncreaseDifficulty()
+	{
+		EntitySpawnTimers.ForEach(timer =>
+		{
+			GD.Print(timer.SpawnTimer.WaitTime - EnititySpawnDificultyMultiplier);
+			timer.ApplyNewWaitTime(timer.SpawnTimer.WaitTime - EnititySpawnDificultyMultiplier);
+		});
+		EntityHealthMultiplier += 0.5d;
+		AlienFirerateMultiplier -= 0.1d;
+		AlienBulletDamageMultiplier += 0.5d;
 	}
 
 	public void DestroyAllEntities()
