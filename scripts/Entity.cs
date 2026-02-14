@@ -127,4 +127,6 @@ public partial class Entity : RigidBody2D
 			EntitiesHitEachOther = false;
 		}
 	}
+
+	
 }

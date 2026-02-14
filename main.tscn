@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://ny0e4y7vbfx6" path="res://scripts/Main.cs" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://cyltx3v7dkbpw" path="res://entity_spawner_component.tscn" id="2_5vw27"]
 [ext_resource type="PackedScene" uid="uid://ouxsv4v68ul7" path="res://player.tscn" id="2_h2yge"]
+[ext_resource type="Resource" uid="uid://c50bscnbsd1m5" path="res://resources/Meteor.tres" id="3_kek77"]
 [ext_resource type="PackedScene" uid="uid://coct2sxk5l3xy" path="res://hud.tscn" id="4_1bvp3"]
 [ext_resource type="AudioStream" uid="uid://buhfwkj3awnsm" path="res://sounds/cosmic-minimal-music-fragment-55131.mp3" id="5_lquwl"]
 [ext_resource type="AudioStream" uid="uid://dg7ycj234572q" path="res://sounds/gameover.wav" id="6_7mycd"]
@@ -57,6 +58,7 @@ script = ExtResource("1_0xm2m")
 EntitySpawner = NodePath("EntitySpawnerComponent")
 
 [node name="EntitySpawnerComponent" parent="." unique_id=1460464678 instance=ExtResource("2_5vw27")]
+EntityResources = Array[Resource]([ExtResource("3_kek77")])
 
 [node name="LeftMarginWindow" type="Marker2D" parent="." unique_id=906078839]
 

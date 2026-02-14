@@ -28,4 +28,10 @@ namespace GameEnums
         RocketLauncher,
         Laser
     }
+    public enum EntityType
+    {
+        Meteor,
+        ShootingAlien,
+        SeekingAlien
+    }
 }

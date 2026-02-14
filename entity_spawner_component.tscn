@@ -4,6 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://c8ilhiox31kgv" path="res://meteor.tscn" id="2_ucpfx"]
 [ext_resource type="PackedScene" uid="uid://pflh35lfqp4n" path="res://Alien.tscn" id="3_753uf"]
 [ext_resource type="PackedScene" uid="uid://bgwot2idj6lhh" path="res://entity_healthbar.tscn" id="4_rn1kx"]
+[ext_resource type="Resource" uid="uid://c50bscnbsd1m5" path="res://resources/Meteor.tres" id="4_vr5e1"]
+[ext_resource type="Resource" uid="uid://cerjimvspnwdo" path="res://resources/ShotingAlien.tres" id="5_y5m6v"]
 
 [sub_resource type="Curve2D" id="Curve2D_ucpfx"]
 _data = {
@@ -14,6 +16,7 @@ point_count = 5
 [node name="EntitySpawnerComponent" type="Node" unique_id=1460464678]
 script = ExtResource("1_ll7ik")
 EntityScenes = Array[PackedScene]([ExtResource("2_ucpfx"), ExtResource("3_753uf")])
+EntityResources = Array[Resource]([ExtResource("4_vr5e1"), ExtResource("5_y5m6v")])
 EntityHealthbarScene = ExtResource("4_rn1kx")
 
 [node name="MeteorPath" type="Path2D" parent="." unique_id=1071048656]

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" format=3 uid="uid://cerjimvspnwdo"]
+
+[ext_resource type="PackedScene" uid="uid://pflh35lfqp4n" path="res://Alien.tscn" id="1_l88kq"]
+[ext_resource type="Script" uid="uid://d08mlsbkercgh" path="res://scripts/EntityResource.cs" id="2_i743q"]
+
+[resource]
+script = ExtResource("2_i743q")
+EntityScene = ExtResource("1_l88kq")
+EntityType = 1
+InitialSpawnTime = 2.0

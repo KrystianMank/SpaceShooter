@@ -100,11 +100,11 @@ public partial class Alien : Entity
     }
 
 
-	// async public void ShootCooldownTimeout()
-	// {
-	// 	_enemyBullet = EnemyBulletScene.Instantiate<EnemyBullet>();
+    // async public void ShootCooldownTimeout()
+    // {
+    // 	_enemyBullet = EnemyBulletScene.Instantiate<EnemyBullet>();
 
-	// 	var bulletFireAnimation = GetNode<AnimatedSprite2D>("BulletFireAnimation");
+    // 	var bulletFireAnimation = GetNode<AnimatedSprite2D>("BulletFireAnimation");
     //     var bulletFireAnimationRotation = bulletFireAnimation.Rotation;
 
     //     Vector2 bulletPosition = Vector2.Zero;
@@ -129,7 +129,7 @@ public partial class Alien : Entity
     //                     bulletFireAnimation.Rotate(-90f);
     //                 }
     //                 direction = SpawnSide == 0 ? Vector2.Right : Vector2.Left;
-                                    
+
     //             }
     //             break;
     //         case SpawnDirection.Vertical:
@@ -156,11 +156,11 @@ public partial class Alien : Entity
 
     //     bulletFireAnimation.Position = animationPosition;
 
-	// 	bulletFireAnimation.Play();
-	// 	await ToSignal(bulletFireAnimation, AnimatedSprite2D.SignalName.AnimationFinished);
-	// 	bulletFireAnimation.Stop();
+    // 	bulletFireAnimation.Play();
+    // 	await ToSignal(bulletFireAnimation, AnimatedSprite2D.SignalName.AnimationFinished);
+    // 	bulletFireAnimation.Stop();
 
-	// 	//GetNode<AudioStreamPlayer2D>("ShootSound").Play();
+    // 	//GetNode<AudioStreamPlayer2D>("ShootSound").Play();
 
     //     if (_enemyBullet.GetParent() != null)
     //     {
@@ -168,8 +168,10 @@ public partial class Alien : Entity
     //     }
     //     _enemyBullet.AddToGroup("entities");
 
-	// 	GetParent().AddChild(_enemyBullet);
-	// }
+    // 	GetParent().AddChild(_enemyBullet);
+    // }
+
+
 
 }
 public enum SpawnDirection

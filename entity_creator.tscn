@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://crqsvabmw13wh"]
+
+[ext_resource type="Script" uid="uid://bmxkbowvd1oxr" path="res://scripts/EntityCreator.cs" id="1_fau4q"]
+
+[node name="EntityCreator" type="Node" unique_id=759448632]
+script = ExtResource("1_fau4q")

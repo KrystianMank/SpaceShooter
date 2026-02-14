@@ -1,0 +1,9 @@
+[gd_resource type="Resource" format=3 uid="uid://c50bscnbsd1m5"]
+
+[ext_resource type="PackedScene" uid="uid://c8ilhiox31kgv" path="res://meteor.tscn" id="1_ykpfe"]
+[ext_resource type="Script" uid="uid://d08mlsbkercgh" path="res://scripts/EntityResource.cs" id="2_5g2ej"]
+
+[resource]
+script = ExtResource("2_5g2ej")
+EntityScene = ExtResource("1_ykpfe")
+InitialSpawnTime = 1.0
