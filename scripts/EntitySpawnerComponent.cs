@@ -112,103 +112,58 @@ public partial class EntitySpawnerComponent : Node
 						};
 					}
 					break;
+				case GameEnums.EntityType.ShootingAlien:
+					{
+						spawner.OnTimeout = () =>
+						{
+							Alien alien = spawner.EntityCreator.EntityScene.Instantiate<Alien>();
+							spawner.EntityCreator.SetHealthBar(alien, EntityHealthbarScene);
+							spawner.EntityCreator.SetHealth(alien, 2,5, EntityHealthMultiplier);
+
+							alien.EnitityHPDepleted += OnEntityHealthDepleted;
+							alien.EntityHPValueChanged += OnEntityHealthValueChanged;
+
+							var velocity = (float)GD.RandRange(150.0, 250.0);
+							alien.VelocityValue = velocity;
+							alien.BulletDamage += 1;//_nextTresholdIndex % 5 == 0 ? 0.5 : 0;
+							alien.BulletFireRate -= 1;//_nextTresholdIndex % 5 == 0 ? 0.1 : 0;
+
+							int choosePath = GD.RandRange(0,1);
+							switch (choosePath)
+							{
+								case 0: // horizonatal path
+									{
+										alien.SpawnDirection = SpawnDirection.Horizontal;
+										int randomHorizontalPath = GD.RandRange(0, _horizontalLines-1);
+										var alienSpawnLocation = GetNode<Path2D>($"AlienPath2DHorizontal_{randomHorizontalPath}");
+
+										int spawnSide = GD.RandRange(0,1);
+										alien.SpawnSide = spawnSide;
+										alien.Position = alienSpawnLocation.Curve.GetPointPosition(spawnSide);
+										alien.GetNode<Sprite2D>("Sprite2D").FlipH = spawnSide == 1;
+										
+									}
+									break;
+								case 1: // vertical path
+									{
+										alien.SpawnDirection = SpawnDirection.Vertical;
+
+										int randomVerticalPath = GD.RandRange(0, _verticalLines-1);
+										var alienSpawnLocation = GetNode<Path2D>($"AlienPath2DVertical_{randomVerticalPath}");
+
+										int spawnSide = GD.RandRange(0,1);
+										alien.SpawnSide = spawnSide;
+										alien.Position = alienSpawnLocation.Curve.GetPointPosition(spawnSide);
+									}
+									break;
+							}
+
+							spawner.EntityCreator.Spawn(alien, this);
+						};
+					}
+					break;
 			}
 		}
-
-
-        // MeteorSpawnTimer = new(1)
-        // {
-        //     OnTimeout = () =>
-        //     {
-        //         // Instantiating the meteor
-        //         Meteor meteor = EntityScenes[0].Instantiate<Meteor>();
-
-        //         // Random spawn location
-        //         var meteorSpawnLocation = GetNode<PathFollow2D>("MeteorPath/MeteorSpawnLocation");
-        //         meteorSpawnLocation.ProgressRatio = GD.Randf();
-
-        //         meteor.Position = meteorSpawnLocation.Position;
-
-        //         // Random direction
-        //         float direction = meteorSpawnLocation.Rotation + Mathf.Pi / 2;
-        //         direction += (float)GD.RandRange(-Mathf.Pi / 4, Mathf.Pi / 4);
-        //         meteor.Rotation = direction;
-
-        //         // Velocity
-        //         var velocity = new Vector2((float)GD.RandRange(150.0, 250.0), 0);
-        //         meteor.Velocity = velocity;
-
-        //         meteor.SetEnityHealthRandom(1 + EntityHealthMultiplier, 3 + EntityHealthMultiplier);
-
-        //         // Meteor's healthbar
-        //         EntityHealthbar entityHealthbar = EntityHealthbarScene.Instantiate<EntityHealthbar>();
-        //         meteor.AddChild(entityHealthbar);
-
-        //         meteor.InitializeHealthBar();
-
-        //         meteor.EnitityHPDepleted += OnEntityHealthDepleted;
-        //         meteor.EntityHPValueChanged += OnEntityHealthValueChanged;
-
-        //         GetTree().Root.AddChild(meteor);
-        //     }
-        // };
-        // AlienSpawnTimer = new(2)
-		// {
-		// 	OnTimeout = () =>
-		// 	{
-		// 		Alien alien = EntityScenes[1].Instantiate<Alien>();
-		// 		var velocity = (float)GD.RandRange(150.0, 250.0);
-		// 		alien.VelocityValue = velocity;
-		// 		alien.BulletDamage += 1;//_nextTresholdIndex % 5 == 0 ? 0.5 : 0;
-		// 		alien.BulletFireRate -= 1;//_nextTresholdIndex % 5 == 0 ? 0.1 : 0;
-
-		// 		int choosePath = GD.RandRange(0,1);
-		// 		switch (choosePath)
-		// 		{
-		// 			case 0: // horizonatal path
-		// 				{
-		// 					alien.SpawnDirection = SpawnDirection.Horizontal;
-		// 					int randomHorizontalPath = GD.RandRange(0, _horizontalLines-1);
-		// 					var alienSpawnLocation = GetNode<Path2D>($"AlienPath2DHorizontal_{randomHorizontalPath}");
-
-		// 					int spawnSide = GD.RandRange(0,1);
-		// 					alien.SpawnSide = spawnSide;
-		// 					alien.Position = alienSpawnLocation.Curve.GetPointPosition(spawnSide);
-		// 					alien.GetNode<Sprite2D>("Sprite2D").FlipH = spawnSide == 1;
-							
-		// 				}
-		// 				break;
-		// 			case 1: // vertical path
-		// 				{
-		// 					alien.SpawnDirection = SpawnDirection.Vertical;
-
-		// 					int randomVerticalPath = GD.RandRange(0, _verticalLines-1);
-		// 					var alienSpawnLocation = GetNode<Path2D>($"AlienPath2DVertical_{randomVerticalPath}");
-
-		// 					int spawnSide = GD.RandRange(0,1);
-		// 					alien.SpawnSide = spawnSide;
-		// 					alien.Position = alienSpawnLocation.Curve.GetPointPosition(spawnSide);
-		// 				}
-		// 				break;
-		// 		}
-
-		// 		EntityHealthbar entityHealthbar = EntityHealthbarScene.Instantiate<EntityHealthbar>();
-		// 		alien.AddChild(entityHealthbar);
-
-		// 		alien.SetEnityHealthRandom(2 + EntityHealthMultiplier,5 + EntityHealthMultiplier);
-		// 		alien.InitializeHealthBar();
-
-		// 		alien.EnitityHPDepleted += OnEntityHealthDepleted;
-		// 		alien.EntityHPValueChanged += OnEntityHealthValueChanged;
-
-		// 		GetTree().Root.AddChild(alien);
-		// 	}	
-		// };
-
-		// AddChild(MeteorSpawnTimer.SpawnTimer);
-		// AddChild(AlienSpawnTimer.SpawnTimer);
-
-		//EntitySpawnTimers = [MeteorSpawnTimer, AlienSpawnTimer];
 
 		_screenSize = GetViewport().GetVisibleRect().Size;
 		_horizontalLines = (int)_screenSize.X / 30;
@@ -226,7 +181,6 @@ public partial class EntitySpawnerComponent : Node
 		foreach(var spawner in EntitySpawnTimers)
 		{
 			spawner.Start();
-			GD.Print(EntitySpawnTimers.Count);
 		}
 	}
 
