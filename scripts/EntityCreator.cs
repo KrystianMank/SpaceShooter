@@ -2,31 +2,22 @@ using Godot;
 using System;
 using GameEnums;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 public partial class EntityCreator : Node, IEntitySpawn
 {
 	[Export]
 	public PackedScene EntityScene;
 	public EntityType EntityType;
+    private EntitySpawnParams _spawnParams;
     public override void _Ready()
     {
     }
 
 	public void Spawn(Entity entity, Node parent)
     {
+        entity.InitializeValues(_spawnParams);
         parent.GetTree().Root.AddChild(entity);
-    }
-
-    public Entity Instantiate(EntityType entityType, PackedScene entityScene)
-    {
-        Entity entity = entityType switch
-		{
-			EntityType.Meteor => entityScene.Instantiate<Meteor>(),
-			EntityType.ShootingAlien => entityScene.Instantiate<Alien>(),
-			//EntityType.SeekingAlien => entityScene.Instantiate<SeekingAlien>(),
-			_ => entityScene.Instantiate<Meteor>()
-		};
-		return entity;
     }
 
     public void SetHealth(Entity entity, double minHealth, double maxHealth, double healthMultiplier)
@@ -41,8 +32,9 @@ public partial class EntityCreator : Node, IEntitySpawn
 		entity.AddChild(entityHealthbar);
     }
 
-    public Array SpawnSpecs()
+    public void SetSpawnSpecs(EntitySpawnParams entitySpawnParams)
     {
-        throw new NotImplementedException();
+        _spawnParams = entitySpawnParams;
     }
+
 }

@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using StaticClasses;
 
@@ -99,79 +100,18 @@ public partial class Alien : Entity
          
     }
 
+    public override void InitializeValues(EntitySpawnParams spawnParams)
+    {
+		if (spawnParams is not AlienSpawnParams alienParams)
+            throw new ArgumentException("Nieprawidłowy typ parametrów");
 
-    // async public void ShootCooldownTimeout()
-    // {
-    // 	_enemyBullet = EnemyBulletScene.Instantiate<EnemyBullet>();
-
-    // 	var bulletFireAnimation = GetNode<AnimatedSprite2D>("BulletFireAnimation");
-    //     var bulletFireAnimationRotation = bulletFireAnimation.Rotation;
-
-    //     Vector2 bulletPosition = Vector2.Zero;
-    //     Vector2 animationPosition = Vector2.Zero;
-    //     Vector2 direction = Vector2.Zero;
-
-    //     switch (SpawnDirection)
-    //     {
-    //         case SpawnDirection.Horizontal:
-    //             {
-    //                 bulletFireAnimation.Rotation = bulletFireAnimationRotation;
-    //                 if(SpawnSide == 0) // left
-    //                 {
-    //                     bulletPosition = GetNode<Marker2D>("RightShootPosition").GlobalPosition;
-    //                     animationPosition = GetNode<Marker2D>("RightShootPosition").GlobalPosition;
-    //                     bulletFireAnimation.Rotate(90f);
-    //                 }
-    //                 else // right
-    //                 {
-    //                     bulletPosition = GetNode<Marker2D>("LeftShootPosition").GlobalPosition;
-    //                     animationPosition = GetNode<Marker2D>("LeftShootPosition").GlobalPosition;
-    //                     bulletFireAnimation.Rotate(-90f);
-    //                 }
-    //                 direction = SpawnSide == 0 ? Vector2.Right : Vector2.Left;
-
-    //             }
-    //             break;
-    //         case SpawnDirection.Vertical:
-    //             {
-    //                 bulletFireAnimation.Rotation = bulletFireAnimationRotation;
-    //                 if(SpawnSide == 0) // up
-    //                 {
-    //                     bulletPosition = GetNode<Marker2D>("UpShootPosition").GlobalPosition;
-    //                     animationPosition = GetNode<Marker2D>("UpShootPosition").GlobalPosition;
-    //                 }
-    //                 else // down
-    //                 {
-    //                     bulletPosition = GetNode<Marker2D>("DownShootPosition").GlobalPosition;
-    //                     animationPosition = GetNode<Marker2D>("DownShootPosition").GlobalPosition;
-    //                 }
-    //                 direction = SpawnSide == 0 ? Vector2.Up : Vector2.Down;
-    //                 _enemyBullet.Rotate(90f);
-    //                 bulletFireAnimation.FlipV = true;
-    //             }
-    //             break;
-    //     }
-    //     _enemyBullet.Position = bulletPosition;
-    //     _enemyBullet.Direction = direction;
-
-    //     bulletFireAnimation.Position = animationPosition;
-
-    // 	bulletFireAnimation.Play();
-    // 	await ToSignal(bulletFireAnimation, AnimatedSprite2D.SignalName.AnimationFinished);
-    // 	bulletFireAnimation.Stop();
-
-    // 	//GetNode<AudioStreamPlayer2D>("ShootSound").Play();
-
-    //     if (_enemyBullet.GetParent() != null)
-    //     {
-    //         _enemyBullet.GetParent().RemoveChild(_enemyBullet);
-    //     }
-    //     _enemyBullet.AddToGroup("entities");
-
-    // 	GetParent().AddChild(_enemyBullet);
-    // }
-
-
+		VelocityValue = alienParams.VelocityValue;
+		Position = alienParams.Position;
+		SpawnSide = alienParams.SpawnSide;
+        SpawnDirection = alienParams.SpawnDirection;
+        BulletDamage = alienParams.AlienBulletDamage;
+        BulletFireRate = alienParams.AlienFirerate;
+    }
 
 }
 public enum SpawnDirection

@@ -30,6 +30,7 @@ public partial class Entity : RigidBody2D
 		// };
     }
 
+	public virtual void InitializeValues(EntitySpawnParams entitySpawnParams){}
 
 	public void SetHealthBarMaxValue(double value)
     {

@@ -1,3 +1,4 @@
+using System;
 using Godot;
 public partial class Meteor : Entity
 {
@@ -18,6 +19,16 @@ public partial class Meteor : Entity
     {
        Position += Velocity.Rotated(Rotation) * (float)delta;
 	   GetNode<AnimatedSprite2D>("MeteorAnimation").Rotate((float)delta);
+    }
+
+    public override void InitializeValues(EntitySpawnParams spawnParams)
+    {
+		if (spawnParams is not MeteorSpawnParams meteorParams)
+            throw new ArgumentException("Nieprawidłowy typ parametrów");
+
+		Velocity = meteorParams.Velocity;
+		Position = meteorParams.Position;
+		Rotation = meteorParams.RotationDirection;
     }
 
 

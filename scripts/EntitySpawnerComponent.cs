@@ -51,7 +51,6 @@ public partial class EntitySpawnerComponent : Node
 	public double EnititySpawnDificultyMultiplier = 0.1d;
 	// Temporary
 	public double AlienFirerateMultiplier = 0, AlienBulletDamageMultiplier = 0;
-	//public EntitySpawnTimer MeteorSpawnTimer, AlienSpawnTimer;
 	public List<EntitySpawnTimer> EntitySpawnTimers = [];
 
 	public Action<Entity> OnEntitySpawnerEntityHealthDepleted, OnEntitySpawnerEntityHealthValueChanged;
@@ -69,6 +68,12 @@ public partial class EntitySpawnerComponent : Node
 			};
 			EntitySpawnTimers.Add(timer);
 			AddChild(timer.SpawnTimer);
+			
+
+			// if(resource.EntityType == GameEnums.EntityType.ShootingAlien)
+			// {
+			// 	InstantiateAlienPaths();
+			// }
 		}
 	}
 
@@ -97,16 +102,24 @@ public partial class EntitySpawnerComponent : Node
 							var meteorSpawnLocation = GetNode<PathFollow2D>("MeteorPath/MeteorSpawnLocation");
 							meteorSpawnLocation.ProgressRatio = GD.Randf();
 
-							meteor.Position = meteorSpawnLocation.Position;
+							//meteor.Position = meteorSpawnLocation.Position;
 
 							// Random direction
 							float direction = meteorSpawnLocation.Rotation + Mathf.Pi / 2;
 							direction += (float)GD.RandRange(-Mathf.Pi / 4, Mathf.Pi / 4);
-							meteor.Rotation = direction;
+							//meteor.Rotation = direction;
 
 							// Velocity
 							var velocity = new Vector2((float)GD.RandRange(150.0, 250.0), 0);
-							meteor.Velocity = velocity;
+							//meteor.Velocity = velocity;
+							MeteorSpawnParams meteorParams = new()
+                            {
+								Position = meteorSpawnLocation.Position,
+								RotationDirection = direction,
+								Velocity = velocity
+							};
+
+							spawner.EntityCreator.SetSpawnSpecs(meteorParams);
 
 							spawner.EntityCreator.Spawn(meteor, this);
 						};
@@ -124,39 +137,52 @@ public partial class EntitySpawnerComponent : Node
 							alien.EntityHPValueChanged += OnEntityHealthValueChanged;
 
 							var velocity = (float)GD.RandRange(150.0, 250.0);
-							alien.VelocityValue = velocity;
-							alien.BulletDamage += 1;//_nextTresholdIndex % 5 == 0 ? 0.5 : 0;
-							alien.BulletFireRate -= 1;//_nextTresholdIndex % 5 == 0 ? 0.1 : 0;
+							//alien.VelocityValue = velocity;
+							float bulletDamage = 0f;
+							bulletDamage += MathF.Round((float)(double)(alien.BulletDamage * AlienBulletDamageMultiplier), 2);
+							//alien.BulletFireRate -= MathF.Round((float)(double)(alien.BulletFireRate * AlienFirerateMultiplier), 2);
+							float firerate = 1f;
+							firerate -= MathF.Round((float)(double)(alien.BulletFireRate * AlienFirerateMultiplier), 2);
+
+							SpawnDirection spawnDirection = SpawnDirection.Horizontal;
+							int spawnSide = GD.RandRange(0,1);
+							Vector2 position = Vector2.Zero;
 
 							int choosePath = GD.RandRange(0,1);
 							switch (choosePath)
 							{
 								case 0: // horizonatal path
 									{
-										alien.SpawnDirection = SpawnDirection.Horizontal;
 										int randomHorizontalPath = GD.RandRange(0, _horizontalLines-1);
 										var alienSpawnLocation = GetNode<Path2D>($"AlienPath2DHorizontal_{randomHorizontalPath}");
 
-										int spawnSide = GD.RandRange(0,1);
-										alien.SpawnSide = spawnSide;
-										alien.Position = alienSpawnLocation.Curve.GetPointPosition(spawnSide);
+										position = alienSpawnLocation.Curve.GetPointPosition(spawnSide);
+										spawnDirection = SpawnDirection.Horizontal;
 										alien.GetNode<Sprite2D>("Sprite2D").FlipH = spawnSide == 1;
 										
 									}
 									break;
 								case 1: // vertical path
 									{
-										alien.SpawnDirection = SpawnDirection.Vertical;
-
 										int randomVerticalPath = GD.RandRange(0, _verticalLines-1);
 										var alienSpawnLocation = GetNode<Path2D>($"AlienPath2DVertical_{randomVerticalPath}");
 
-										int spawnSide = GD.RandRange(0,1);
-										alien.SpawnSide = spawnSide;
-										alien.Position = alienSpawnLocation.Curve.GetPointPosition(spawnSide);
+										spawnDirection = SpawnDirection.Vertical;
+										position = alienSpawnLocation.Curve.GetPointPosition(spawnSide);
 									}
 									break;
 							}
+
+							AlienSpawnParams alienSpawnParams = new()
+							{
+								VelocityValue = velocity,
+								Position = position,
+								SpawnDirection = spawnDirection,
+								SpawnSide = spawnSide,
+								AlienBulletDamage = bulletDamage,
+								AlienFirerate = firerate
+							};
+							spawner.EntityCreator.SetSpawnSpecs(alienSpawnParams);
 
 							spawner.EntityCreator.Spawn(alien, this);
 						};
@@ -168,6 +194,7 @@ public partial class EntitySpawnerComponent : Node
 		_screenSize = GetViewport().GetVisibleRect().Size;
 		_horizontalLines = (int)_screenSize.X / 30;
 		_verticalLines = (int)_screenSize.Y / 24;
+
 		InstantiateAlienPaths();
 	}
 
