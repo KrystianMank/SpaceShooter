@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dqv5yge1mfqvs"]
+[gd_scene format=3 uid="uid://dqv5yge1mfqvs"]
 
 [ext_resource type="Texture2D" uid="uid://di2sutndtvnac" path="res://sprites/explosion/explosion_sheet.png" id="1_6e8rh"]
 [ext_resource type="Script" uid="uid://cr7kg8xmd3hvn" path="res://scripts/Entity.cs" id="1_nwmpt"]
@@ -46,39 +46,36 @@ animations = [{
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_pb85n"]
 
-[node name="Entity" type="RigidBody2D"]
+[node name="Entity" type="RigidBody2D" unique_id=1527348025]
 gravity_scale = 0.0
-contact_monitor = true
-max_contacts_reported = 1
 script = ExtResource("1_nwmpt")
 PowerupScene = ExtResource("2_03rkj")
 
-[node name="EntityHealthbar" parent="." instance=ExtResource("3_pimh3")]
+[node name="EntityHealthbar" parent="." unique_id=1964934661 instance=ExtResource("3_pimh3")]
 script = null
 
-[node name="ExplosionAnimation" type="AnimatedSprite2D" parent="."]
+[node name="ExplosionAnimation" type="AnimatedSprite2D" parent="." unique_id=549005712]
 position = Vector2(4, -3)
 scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_6tppj")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=133313048]
 shape = SubResource("CircleShape2D_pb85n")
 
-[node name="ExplosionSound" type="AudioStreamPlayer2D" parent="."]
+[node name="ExplosionSound" type="AudioStreamPlayer2D" parent="." unique_id=82247124]
 stream = ExtResource("2_uqc13")
 
-[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1951187867]
 
-[node name="HitboxComponent" parent="." instance=ExtResource("6_6tppj")]
+[node name="HitboxComponent" parent="." unique_id=1967578923 instance=ExtResource("6_6tppj")]
 Damage = 5.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent" unique_id=2346869]
 shape = SubResource("CircleShape2D_pb85n")
 
-[node name="HurtboxComponent" parent="." instance=ExtResource("7_pb85n")]
+[node name="HurtboxComponent" parent="." unique_id=1179802092 instance=ExtResource("7_pb85n")]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=192002963]
 shape = SubResource("CircleShape2D_pb85n")
 
-[connection signal="body_entered" from="." to="." method="OnBodyEntered"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="VisibleOnScreenNotifier2D"]

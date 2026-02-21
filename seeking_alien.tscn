@@ -1,0 +1,100 @@
+[gd_scene format=3 uid="uid://bd4rlcueenm1x"]
+
+[ext_resource type="Script" uid="uid://b065moquf28xc" path="res://scripts/SeekingAlien.cs" id="1_se815"]
+[ext_resource type="PackedScene" uid="uid://crjbmcvbllf4d" path="res://powerup.tscn" id="2_65bm3"]
+[ext_resource type="Texture2D" uid="uid://phklvrhvyyk1" path="res://icon.svg" id="2_r0736"]
+[ext_resource type="Texture2D" uid="uid://di2sutndtvnac" path="res://sprites/explosion/explosion_sheet.png" id="3_65bm3"]
+[ext_resource type="AudioStream" uid="uid://ce5u5ujrrhkan" path="res://sounds/bomb-explosion-type-02-265506.mp3" id="4_um4xl"]
+[ext_resource type="PackedScene" uid="uid://t6ijqvc73rcj" path="res://hitbox_component.tscn" id="5_775kp"]
+[ext_resource type="PackedScene" uid="uid://coc5dbts0k4k8" path="res://hurtbox_component.tscn" id="6_0u2np"]
+[ext_resource type="PackedScene" uid="uid://dkt81sis8jce8" path="res://health_component.tscn" id="7_e6asy"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uqc13"]
+atlas = ExtResource("3_65bm3")
+region = Rect2(0, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nwmpt"]
+atlas = ExtResource("3_65bm3")
+region = Rect2(0, 50, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_03rkj"]
+atlas = ExtResource("3_65bm3")
+region = Rect2(0, 100, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pimh3"]
+atlas = ExtResource("3_65bm3")
+region = Rect2(0, 150, 50, 50)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6tppj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uqc13")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nwmpt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_03rkj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pimh3")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r0736"]
+size = Vector2(77, 82.24675)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nb7do"]
+size = Vector2(79, 83)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w3ndh"]
+size = Vector2(79, 82)
+
+[node name="SeekingAlien" type="RigidBody2D" unique_id=1527348025]
+gravity_scale = 0.0
+max_contacts_reported = 2
+script = ExtResource("1_se815")
+Speed = 300.0
+PowerupScene = ExtResource("2_65bm3")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1956165166]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_r0736")
+
+[node name="ExplosionAnimation" type="AnimatedSprite2D" parent="." unique_id=549005712]
+position = Vector2(4, -3)
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_6tppj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=133313048]
+position = Vector2(-2.5, -1)
+scale = Vector2(1, 0.997)
+shape = SubResource("RectangleShape2D_r0736")
+
+[node name="ExplosionSound" type="AudioStreamPlayer2D" parent="." unique_id=82247124]
+stream = ExtResource("4_um4xl")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1951187867]
+
+[node name="HitboxComponent" parent="." unique_id=1967578923 instance=ExtResource("5_775kp")]
+Damage = 5.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent" unique_id=2346869]
+position = Vector2(-1.5, -0.5)
+shape = SubResource("RectangleShape2D_nb7do")
+
+[node name="HurtboxComponent" parent="." unique_id=1179802092 instance=ExtResource("6_0u2np")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=192002963]
+position = Vector2(-1.5, 0)
+shape = SubResource("RectangleShape2D_w3ndh")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=469490356]
+
+[node name="HealthComponent" parent="." unique_id=814165643 instance=ExtResource("7_e6asy")]
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="VisibleOnScreenNotifier2D"]

@@ -1,27 +1,89 @@
 [gd_scene format=3 uid="uid://cyltx3v7dkbpw"]
 
 [ext_resource type="Script" uid="uid://dcehteivarubj" path="res://scripts/EntitySpawnerComponent.cs" id="1_ll7ik"]
-[ext_resource type="PackedScene" uid="uid://c8ilhiox31kgv" path="res://meteor.tscn" id="2_ucpfx"]
-[ext_resource type="PackedScene" uid="uid://pflh35lfqp4n" path="res://Alien.tscn" id="3_753uf"]
 [ext_resource type="PackedScene" uid="uid://bgwot2idj6lhh" path="res://entity_healthbar.tscn" id="4_rn1kx"]
-[ext_resource type="Resource" uid="uid://c50bscnbsd1m5" path="res://resources/Meteor.tres" id="4_vr5e1"]
-[ext_resource type="Resource" uid="uid://cerjimvspnwdo" path="res://resources/ShotingAlien.tres" id="5_y5m6v"]
+[ext_resource type="Texture2D" uid="uid://dffspdqxug2xv" path="res://sprites/seeking_alien/seeking_alien_spawn_anim.png" id="5_753uf"]
 
 [sub_resource type="Curve2D" id="Curve2D_ucpfx"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, -3, 0, 0, 0, 0, 0, 476, -5, 0, 0, 0, 0, 478, 718, 0, 0, 0, 0, -7, 713, 0, 0, 0, 0, -3, 0)
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 480, 0, 0, 0, 0, 0, 480, 720, 0, 0, 0, 0, 0, 720, 0, 0, 0, 0, 0, 0)
 }
 point_count = 5
 
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_ucpfx"]
+vertices = PackedVector2Array(467.03906, 8.96875, 469.95313, 710.03906, 8, 711.9531, 8, 8.0234375)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(477, -1, 480, 720, -2, 722, -2, -2)])
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rn1kx"]
+atlas = ExtResource("5_753uf")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vr5e1"]
+atlas = ExtResource("5_753uf")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y5m6v"]
+atlas = ExtResource("5_753uf")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dlkpm"]
+atlas = ExtResource("5_753uf")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5wf1h"]
+atlas = ExtResource("5_753uf")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vrika"]
+atlas = ExtResource("5_753uf")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ykdmy"]
+atlas = ExtResource("5_753uf")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_k1fux"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rn1kx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vr5e1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y5m6v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dlkpm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5wf1h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vrika")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ykdmy")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
 [node name="EntitySpawnerComponent" type="Node" unique_id=1460464678]
 script = ExtResource("1_ll7ik")
-EntityScenes = Array[PackedScene]([ExtResource("2_ucpfx"), ExtResource("3_753uf")])
-EntityResources = Array[Resource]([ExtResource("4_vr5e1"), ExtResource("5_y5m6v")])
 EntityHealthbarScene = ExtResource("4_rn1kx")
 
 [node name="MeteorPath" type="Path2D" parent="." unique_id=1071048656]
 curve = SubResource("Curve2D_ucpfx")
 
 [node name="MeteorSpawnLocation" type="PathFollow2D" parent="MeteorPath" unique_id=1671582961]
-position = Vector2(-3, 0)
-rotation = -0.010438034
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="." unique_id=540084033]
+navigation_polygon = SubResource("NavigationPolygon_ucpfx")
+
+[node name="SpawnAnimation" type="AnimatedSprite2D" parent="." unique_id=2125008714]
+sprite_frames = SubResource("SpriteFrames_k1fux")
+speed_scale = 0.9

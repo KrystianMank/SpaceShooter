@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://pflh35lfqp4n"]
+[gd_scene format=3 uid="uid://pflh35lfqp4n"]
 
 [ext_resource type="Script" uid="uid://b34fnen8g4p5p" path="res://scripts/Alien.cs" id="1_81ydp"]
 [ext_resource type="Texture2D" uid="uid://cndrrmpbuosns" path="res://sprites/bullet_fire/enemy_bullet.png" id="2_7ln68"]
@@ -6,8 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://di2sutndtvnac" path="res://sprites/explosion/explosion_sheet.png" id="3_r7ktv"]
 [ext_resource type="PackedScene" uid="uid://crjbmcvbllf4d" path="res://powerup.tscn" id="3_u3w5v"]
 [ext_resource type="AudioStream" uid="uid://ce5u5ujrrhkan" path="res://sounds/bomb-explosion-type-02-265506.mp3" id="4_pmswm"]
-[ext_resource type="Script" uid="uid://bywk6cyj22wx5" path="res://scripts/HitboxComponent.cs" id="8_16pl2"]
-[ext_resource type="Script" uid="uid://yei0wnvrm3he" path="res://scripts/HurtboxComponent.cs" id="10_7ln68"]
 [ext_resource type="PackedScene" uid="uid://t6ijqvc73rcj" path="res://hitbox_component.tscn" id="11_p3oh4"]
 [ext_resource type="PackedScene" uid="uid://coc5dbts0k4k8" path="res://hurtbox_component.tscn" id="12_32ygt"]
 [ext_resource type="PackedScene" uid="uid://dkt81sis8jce8" path="res://health_component.tscn" id="13_81ydp"]
@@ -53,64 +51,59 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qtl1n"]
 size = Vector2(36, 17)
 
-[node name="Alien" type="RigidBody2D" node_paths=PackedStringArray("FiringComponent", "EntityHP") groups=["entities"]]
+[node name="Alien" type="RigidBody2D" unique_id=234025309 node_paths=PackedStringArray("FiringComponent", "EntityHP") groups=["entities"]]
 gravity_scale = 0.0
-contact_monitor = true
-max_contacts_reported = 5
 script = ExtResource("1_81ydp")
 FiringComponent = NodePath("FiringComponent")
 EnemyBulletSprite = ExtResource("2_7ln68")
 PowerupScene = ExtResource("3_u3w5v")
 EntityHP = NodePath("HealthComponent")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1864895192]
 position = Vector2(0, -11)
 texture = ExtResource("2_jhomo")
 
-[node name="ExplosionAnimation" type="AnimatedSprite2D" parent="."]
+[node name="ExplosionAnimation" type="AnimatedSprite2D" parent="." unique_id=1826127459]
 scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_6tppj")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1394506667]
 position = Vector2(0, -1.5)
 shape = SubResource("RectangleShape2D_qtl1n")
 
-[node name="ExplosionSound" type="AudioStreamPlayer2D" parent="."]
+[node name="ExplosionSound" type="AudioStreamPlayer2D" parent="." unique_id=30407899]
 stream = ExtResource("4_pmswm")
 
-[node name="DownShootPosition" type="Marker2D" parent="."]
+[node name="DownShootPosition" type="Marker2D" parent="." unique_id=1950856162]
 position = Vector2(0, 13)
 
-[node name="UpShootPosition" type="Marker2D" parent="."]
+[node name="UpShootPosition" type="Marker2D" parent="." unique_id=725502900]
 position = Vector2(0, -13)
 
-[node name="RightShootPosition" type="Marker2D" parent="."]
+[node name="RightShootPosition" type="Marker2D" parent="." unique_id=1978242346]
 position = Vector2(29, 0)
 
-[node name="LeftShootPosition" type="Marker2D" parent="."]
+[node name="LeftShootPosition" type="Marker2D" parent="." unique_id=1723511607]
 position = Vector2(-30, 0)
 
-[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1692498556]
 
-[node name="HitboxComponent" parent="." instance=ExtResource("11_p3oh4")]
-script = ExtResource("8_16pl2")
+[node name="HitboxComponent" parent="." unique_id=1982976924 instance=ExtResource("11_p3oh4")]
 Damage = 5.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent" unique_id=1836775880]
 position = Vector2(0, -1.5)
 shape = SubResource("RectangleShape2D_qtl1n")
 
-[node name="HurtboxComponent" parent="." instance=ExtResource("12_32ygt")]
-script = ExtResource("10_7ln68")
+[node name="HurtboxComponent" parent="." unique_id=1234895241 instance=ExtResource("12_32ygt")]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=3647797]
 position = Vector2(0, -1.5)
 shape = SubResource("RectangleShape2D_qtl1n")
 
-[node name="HealthComponent" parent="." instance=ExtResource("13_81ydp")]
+[node name="HealthComponent" parent="." unique_id=1702251547 instance=ExtResource("13_81ydp")]
 
-[node name="FiringComponent" parent="." instance=ExtResource("14_7ln68")]
+[node name="FiringComponent" parent="." unique_id=718198195 instance=ExtResource("14_7ln68")]
 BulletScene = ExtResource("15_koeq7")
 
-[connection signal="body_entered" from="." to="." method="OnBodyEntered"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="VisibleOnScreenNotifier2D"]

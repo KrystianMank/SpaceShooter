@@ -3,8 +3,11 @@
 [ext_resource type="Script" uid="uid://ny0e4y7vbfx6" path="res://scripts/Main.cs" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://cyltx3v7dkbpw" path="res://entity_spawner_component.tscn" id="2_5vw27"]
 [ext_resource type="PackedScene" uid="uid://ouxsv4v68ul7" path="res://player.tscn" id="2_h2yge"]
+[ext_resource type="Resource" uid="uid://c50bscnbsd1m5" path="res://resources/Meteor.tres" id="3_efxa6"]
 [ext_resource type="PackedScene" uid="uid://coct2sxk5l3xy" path="res://hud.tscn" id="4_1bvp3"]
+[ext_resource type="Resource" uid="uid://cerjimvspnwdo" path="res://resources/ShotingAlien.tres" id="4_dg77c"]
 [ext_resource type="AudioStream" uid="uid://buhfwkj3awnsm" path="res://sounds/cosmic-minimal-music-fragment-55131.mp3" id="5_lquwl"]
+[ext_resource type="Resource" uid="uid://dy2iy2jivvtof" path="res://resources/SeekingAlien.tres" id="5_ycdy4"]
 [ext_resource type="AudioStream" uid="uid://dg7ycj234572q" path="res://sounds/gameover.wav" id="6_7mycd"]
 [ext_resource type="Texture2D" uid="uid://bggbt630fp2ca" path="res://sprites/background/backround_image.png" id="7_272bh"]
 [ext_resource type="Texture2D" uid="uid://du74q21rvnt6f" path="res://sprites/rocket/rocket_dash_blink.png" id="10_4c57u"]
@@ -52,11 +55,14 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_efxa6"]
+vertices = PackedVector2Array(467.03906, 8.96875, 469.95313, 710.03906, 8, 711.9531, 8, 8.0234375)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(477, -1, 480, 720, -2, 722, -2, -2)])
+
 [node name="Main" type="Node" unique_id=359640060 node_paths=PackedStringArray("EntitySpawner") groups=["main"]]
 script = ExtResource("1_0xm2m")
 EntitySpawner = NodePath("EntitySpawnerComponent")
-
-[node name="EntitySpawnerComponent" parent="." unique_id=1460464678 instance=ExtResource("2_5vw27")]
 
 [node name="LeftMarginWindow" type="Marker2D" parent="." unique_id=906078839]
 
@@ -80,9 +86,6 @@ priority = 2
 
 [node name="StartPosition" type="Marker2D" parent="." unique_id=659636138]
 position = Vector2(240, 600)
-
-[node name="StartTimer" type="Timer" parent="." unique_id=1035437602]
-wait_time = 2.0
 
 [node name="BackgroundMusic" type="AudioStreamPlayer2D" parent="." unique_id=329586429]
 stream = ExtResource("5_lquwl")
@@ -113,6 +116,16 @@ vertical_alignment = 1
 position = Vector2(0.8333333, -8.333333)
 sprite_frames = SubResource("SpriteFrames_efxa6")
 speed_scale = 2.0
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="." unique_id=2048399356]
+navigation_polygon = SubResource("NavigationPolygon_efxa6")
+
+[node name="EntitySpawnerComponent" parent="." unique_id=1460464678 instance=ExtResource("2_5vw27")]
+EntityResources = Array[Resource]([ExtResource("3_efxa6"), ExtResource("4_dg77c"), ExtResource("5_ycdy4")])
+
+[node name="StartTimer" type="Timer" parent="." unique_id=1035437602]
+wait_time = 2.0
+one_shot = true
 
 [connection signal="HudReady" from="." to="HUD" method="OnHudReady"]
 [connection signal="ShowPlayerStatsUpgradePanel" from="." to="HUD" method="ShowPlayerUpgradeStatsPanel"]

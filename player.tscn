@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://cxenkd82ju2u5" path="res://sprites/rocket/Rocket_right.png" id="3_n7ghd"]
 [ext_resource type="Texture2D" uid="uid://cdqfpe7yh47jj" path="res://sprites/rocket/Rocket_straight.png" id="4_nvl01"]
 [ext_resource type="Texture2D" uid="uid://wu0ftdjfxggx" path="res://sprites/poweups/powerup_frame.png" id="6_urp6f"]
+[ext_resource type="PackedScene" uid="uid://t6ijqvc73rcj" path="res://hitbox_component.tscn" id="8_ivps1"]
 [ext_resource type="Texture2D" uid="uid://di2sutndtvnac" path="res://sprites/explosion/explosion_sheet.png" id="11_ivps1"]
 [ext_resource type="PackedScene" uid="uid://c4bdp8uav35em" path="res://player_weapon.tscn" id="11_nvl01"]
 [ext_resource type="AudioStream" uid="uid://ce5u5ujrrhkan" path="res://sounds/bomb-explosion-type-02-265506.mp3" id="12_urp6f"]
@@ -173,6 +174,12 @@ sprite_frames = SubResource("SpriteFrames_bwjto")
 [node name="ExplosionSound" type="AudioStreamPlayer2D" parent="." unique_id=1854468703]
 stream = ExtResource("12_urp6f")
 
+[node name="HitboxComponent" parent="." unique_id=1896230338 instance=ExtResource("8_ivps1")]
+Damage = 10.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent" unique_id=104532471]
+shape = SubResource("CapsuleShape2D_bwjto")
+
 [node name="HurtboxComponent" parent="." unique_id=940410500 instance=ExtResource("14_bwjto")]
 collision_layer = 3
 
@@ -194,12 +201,6 @@ speed_scale = 2.0
 one_shot = true
 
 [node name="PlayerWeapon" parent="." unique_id=1499773877 instance=ExtResource("11_nvl01")]
-
-[node name="TextureProgressBar" parent="PlayerWeapon" index="1" unique_id=1463742021]
-offset_left = 11.0
-offset_top = -48.0
-offset_right = 27.0
-offset_bottom = -32.0
 
 [connection signal="area_entered" from="." to="." method="OnAreaEntered"]
 

@@ -19,3 +19,11 @@ public class AlienSpawnParams : EntitySpawnParams
     public double AlienBulletDamage {get;set;}
     public double AlienFirerate {get; set;}
 }
+
+public class SeekingAlienParams : EntitySpawnParams
+{
+    public Vector2 Position {get; set;}
+    public float VelocityValue {get; set;}
+    public float RotationDirection {get; set;}
+    public Player Player {get; set;}
+}

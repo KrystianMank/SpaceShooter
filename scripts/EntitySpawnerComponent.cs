@@ -1,3 +1,4 @@
+using GameEnums;
 using Godot;
 using System;
 using System.Collections.Generic;
@@ -56,11 +57,16 @@ public partial class EntitySpawnerComponent : Node
 
 	public Action<Entity> OnEntitySpawnerEntityHealthDepleted, OnEntitySpawnerEntityHealthValueChanged;
 
+	public AnimatedSprite2D EntitySpawnAnimation;
 	private int _horizontalLines;
 	private int _verticalLines;
 	private Vector2 _screenSize;
+	private Player _player;
 	public void CreateEntitySpawners()
 	{
+		_screenSize = GetViewport().GetVisibleRect().Size;
+		_horizontalLines = (int)_screenSize.X / 30;
+		_verticalLines = (int)_screenSize.Y / 24;
 		foreach(var resource in EntityResources)
 		{
 			EntitySpawnTimer timer = new(resource.InitialSpawnTime)
@@ -69,26 +75,37 @@ public partial class EntitySpawnerComponent : Node
 			};
 			EntitySpawnTimers.Add(timer);
 			AddChild(timer.SpawnTimer);
+			GD.Print($"Loaded entity type: {resource.EntityType}, spawn time: {resource.InitialSpawnTime}");
 
-			if(resource.EntityType == GameEnums.EntityType.ShootingAlien)
+			if(resource.EntityType == EntityType.ShootingAlien)
 			{	
-				_screenSize = GetViewport().GetVisibleRect().Size;
-				_horizontalLines = (int)_screenSize.X / 30;
-				_verticalLines = (int)_screenSize.Y / 24;
 				InstantiateAlienPaths();
 			}
 		}
 	}
 
 	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
+	async public override void _Ready()
 	{
+		EntitySpawnAnimation = GetNode<AnimatedSprite2D>("SpawnAnimation");
+		
+		// Wait one frame to ensure Player has added itself to group
+		_player = null;
+		await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+		_player = (Player)GetTree().GetFirstNodeInGroup("player");
+		
+		if (_player == null)
+		{
+			GD.PrintErr("ERROR: Player not found in 'player' group!");
+			return;
+		}
+		
 		CreateEntitySpawners();
 		foreach(var spawner in EntitySpawnTimers)
 		{
 			switch (spawner.EntityCreator.EntityType)
 			{
-				case GameEnums.EntityType.Meteor:
+				case EntityType.Meteor:
 					{
 						spawner.OnTimeout = () =>
 						{
@@ -105,16 +122,13 @@ public partial class EntitySpawnerComponent : Node
 							var meteorSpawnLocation = GetNode<PathFollow2D>("MeteorPath/MeteorSpawnLocation");
 							meteorSpawnLocation.ProgressRatio = GD.Randf();
 
-							//meteor.Position = meteorSpawnLocation.Position;
-
 							// Random direction
 							float direction = meteorSpawnLocation.Rotation + Mathf.Pi / 2;
 							direction += (float)GD.RandRange(-Mathf.Pi / 4, Mathf.Pi / 4);
-							//meteor.Rotation = direction;
 
 							// Velocity
 							var velocity = new Vector2((float)GD.RandRange(150.0, 250.0), 0);
-							//meteor.Velocity = velocity;
+
 							MeteorSpawnParams meteorParams = new()
                             {
 								Position = meteorSpawnLocation.Position,
@@ -128,7 +142,7 @@ public partial class EntitySpawnerComponent : Node
 						};
 					}
 					break;
-				case GameEnums.EntityType.ShootingAlien:
+				case EntityType.ShootingAlien:
 					{
 						spawner.OnTimeout = () =>
 						{
@@ -191,15 +205,49 @@ public partial class EntitySpawnerComponent : Node
 						};
 					}
 					break;
+				case EntityType.SeekingAlien:
+					{
+						spawner.OnTimeout = async () =>
+						{
+							SeekingAlien seekingAlien = spawner.EntityCreator.EntityScene.Instantiate<SeekingAlien>();
+							spawner.EntityCreator.SetHealthBar(seekingAlien, EntityHealthbarScene);
+							spawner.EntityCreator.SetHealth(seekingAlien, 2,5, EntityHealthMultiplier);	
+
+							seekingAlien.EnitityHPDepleted += OnEntityHealthDepleted;
+							seekingAlien.EntityHPValueChanged += OnEntityHealthValueChanged;
+
+							float velocityValue = (float)GD.RandRange(150.0, 250.0);
+
+							float randomSpawnXPosition = (float)GD.RandRange(20, _screenSize.X - 20);
+							float randomSpawnYPosition = (float)GD.RandRange(20, _screenSize.Y - 20);
+							Vector2 spawnPosition = new Vector2(randomSpawnXPosition, randomSpawnYPosition);
+
+							float direction = seekingAlien.Rotation + Mathf.Pi / 2;
+							direction += (float)GD.RandRange(-Mathf.Pi / 4, Mathf.Pi / 4);
+
+							SeekingAlienParams seekingAlienParams = new()
+							{
+								VelocityValue = velocityValue,
+								Position = spawnPosition,
+								RotationDirection = direction,
+								Player = _player
+							};
+
+							spawner.EntityCreator.SetSpawnSpecs(seekingAlienParams);
+
+							EntitySpawnAnimation.Position = spawnPosition;
+							EntitySpawnAnimation.Play();
+
+							await ToSignal(EntitySpawnAnimation, AnimatedSprite2D.SignalName.AnimationFinished);
+
+							spawner.EntityCreator.Spawn(seekingAlien, this);
+						};
+						
+					}
+					break;
 			}
 		}
-
 		//InstantiateAlienPaths();
-	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
 	}
 
 	public void BeginSpawning()
@@ -246,10 +294,16 @@ public partial class EntitySpawnerComponent : Node
 		GetTree().CallGroup("entities", Node.MethodName.QueueFree);
 	}
 
+	async private void SpawnAnimation(Vector2 position)
+	{
+		EntitySpawnAnimation.Position = position;
+		EntitySpawnAnimation.Play();
 
+		await ToSignal(EntitySpawnAnimation, AnimatedSprite2D.SignalName.AnimationFinished);
+	}
 	private void InstantiateAlienPaths()
     {
-		GD.Print(_horizontalLines + " " + _verticalLines);
+		//GD.Print(_horizontalLines + " " + _verticalLines);
 		 // horizontal
 		for(int i = 0; i < _horizontalLines; i++)
 		{

@@ -86,7 +86,7 @@ public partial class Entity : RigidBody2D
 		if(_hit) return;
 
 		_hit = true;
-		GD.Print(EntitiesHitEachOther);
+		GD.Print("entities hit eachother: " + EntitiesHitEachOther);
         EmitSignal(SignalName.EnitityHPDepleted, this);
     }
 
