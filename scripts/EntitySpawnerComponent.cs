@@ -24,6 +24,7 @@ public partial class EntitySpawnerComponent : Node
 			};
 			SpawnTimer.Timeout += OnSpawnTimerTimeout;
 			_initialWaitTime = initialWaitTime;
+			SpawnTimer.AddToGroup("timers");
 		}
 
 		public void ApplyNewWaitTime(double newWaitTime)
@@ -68,12 +69,14 @@ public partial class EntitySpawnerComponent : Node
 			};
 			EntitySpawnTimers.Add(timer);
 			AddChild(timer.SpawnTimer);
-			
 
-			// if(resource.EntityType == GameEnums.EntityType.ShootingAlien)
-			// {
-			// 	InstantiateAlienPaths();
-			// }
+			if(resource.EntityType == GameEnums.EntityType.ShootingAlien)
+			{	
+				_screenSize = GetViewport().GetVisibleRect().Size;
+				_horizontalLines = (int)_screenSize.X / 30;
+				_verticalLines = (int)_screenSize.Y / 24;
+				InstantiateAlienPaths();
+			}
 		}
 	}
 
@@ -191,11 +194,7 @@ public partial class EntitySpawnerComponent : Node
 			}
 		}
 
-		_screenSize = GetViewport().GetVisibleRect().Size;
-		_horizontalLines = (int)_screenSize.X / 30;
-		_verticalLines = (int)_screenSize.Y / 24;
-
-		InstantiateAlienPaths();
+		//InstantiateAlienPaths();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -250,12 +249,15 @@ public partial class EntitySpawnerComponent : Node
 
 	private void InstantiateAlienPaths()
     {
+		GD.Print(_horizontalLines + " " + _verticalLines);
 		 // horizontal
 		for(int i = 0; i < _horizontalLines; i++)
 		{
-			Path2D path2D = new();
-			path2D.Name = "AlienPath2DHorizontal_"+i.ToString();
-			Curve2D curve2D = new();
+            Path2D path2D = new()
+            {
+                Name = "AlienPath2DHorizontal_" + i.ToString()
+            };
+            Curve2D curve2D = new();
 			var yPosition = _horizontalLines * i;
 			curve2D.AddPoint(new Vector2(0, yPosition)); // left point
 			curve2D.AddPoint(new Vector2(_screenSize.X, yPosition)); // right point
@@ -263,9 +265,11 @@ public partial class EntitySpawnerComponent : Node
 			path2D.Curve = curve2D;
 			path2D.MoveLocalY(yPosition);
 
-			PathFollow2D pathFollow2D = new();
-			pathFollow2D.Name = "AlienPathFollow2DHorizontal_"+i.ToString();
-			path2D.AddChild(pathFollow2D);
+            PathFollow2D pathFollow2D = new()
+            {
+                Name = "AlienPathFollow2DHorizontal_" + i.ToString()
+            };
+            path2D.AddChild(pathFollow2D);
 
 			AddChild(path2D);
 		}
@@ -273,9 +277,11 @@ public partial class EntitySpawnerComponent : Node
 		//vertical
 		for(int i = 0; i < _verticalLines; i++)
         {
-            Path2D path2D = new();
-			path2D.Name = "AlienPath2DVertical_"+i.ToString();
-			Curve2D curve2D = new();
+            Path2D path2D = new()
+            {
+                Name = "AlienPath2DVertical_" + i.ToString()
+            };
+            Curve2D curve2D = new();
 			var xPosition = _verticalLines * i;
 			curve2D.AddPoint(new Vector2(xPosition, 0)); // up point
 			curve2D.AddPoint(new Vector2(xPosition, _screenSize.Y)); // dowin point
@@ -283,9 +289,11 @@ public partial class EntitySpawnerComponent : Node
 			path2D.Curve = curve2D;
 			path2D.MoveLocalX(xPosition);
 
-			PathFollow2D pathFollow2D = new();
-			pathFollow2D.Name = "AlienPathFollow2DVertical_"+i.ToString();
-			path2D.AddChild(pathFollow2D);
+            PathFollow2D pathFollow2D = new()
+            {
+                Name = "AlienPathFollow2DVertical_" + i.ToString()
+            };
+            path2D.AddChild(pathFollow2D);
 
 			AddChild(path2D);
         }

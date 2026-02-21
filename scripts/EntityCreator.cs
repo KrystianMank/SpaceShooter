@@ -1,18 +1,12 @@
 using Godot;
-using System;
 using GameEnums;
-using System.Diagnostics;
-using System.Collections.Generic;
 
-public partial class EntityCreator : Node, IEntitySpawn
+public partial class EntityCreator : IEntitySpawn
 {
 	[Export]
 	public PackedScene EntityScene;
 	public EntityType EntityType;
     private EntitySpawnParams _spawnParams;
-    public override void _Ready()
-    {
-    }
 
 	public void Spawn(Entity entity, Node parent)
     {

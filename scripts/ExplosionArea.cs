@@ -63,8 +63,8 @@ public partial class ExplosionArea : Area2D
 				var direction = entity.GlobalPosition - GlobalPosition;
 				if(direction.Length() < ExplosionRadius)
 				{
-					var impulse = direction.Normalized() * ExplosionForce * (1 - (direction.Length() / ExplosionRadius));
-					entity.ApplyImpulse(impulse);
+					// var impulse = direction.Normalized() * ExplosionForce * (1 - (direction.Length() / ExplosionRadius));
+					// entity.ApplyImpulse(impulse);
 					double damage = ExplosionDamageMultiplier * Math.Ceiling(Mathf.Sqrt(Mathf.Abs(ExplosionRadius - direction.Length())));
 					GD.Print(entity.Name + " is in Range of explosion "+damage);
 					// farthest - 1dmg, closest - 3.5dmg
