@@ -281,7 +281,6 @@ public partial class EntitySpawnerComponent : Node
 	{
 		EntitySpawnTimers.ForEach(timer =>
 		{
-			GD.Print(timer.SpawnTimer.WaitTime - EnititySpawnDificultyMultiplier);
 			timer.ApplyNewWaitTime(timer.SpawnTimer.WaitTime - EnititySpawnDificultyMultiplier);
 		});
 		EntityHealthMultiplier += 0.5d;
@@ -303,7 +302,6 @@ public partial class EntitySpawnerComponent : Node
 	}
 	private void InstantiateAlienPaths()
     {
-		//GD.Print(_horizontalLines + " " + _verticalLines);
 		 // horizontal
 		for(int i = 0; i < _horizontalLines; i++)
 		{

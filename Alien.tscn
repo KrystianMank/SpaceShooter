@@ -53,6 +53,8 @@ size = Vector2(36, 17)
 
 [node name="Alien" type="RigidBody2D" unique_id=234025309 node_paths=PackedStringArray("FiringComponent", "EntityHP") groups=["entities"]]
 gravity_scale = 0.0
+contact_monitor = true
+max_contacts_reported = 2
 script = ExtResource("1_81ydp")
 FiringComponent = NodePath("FiringComponent")
 EnemyBulletSprite = ExtResource("2_7ln68")
@@ -106,4 +108,5 @@ shape = SubResource("RectangleShape2D_qtl1n")
 [node name="FiringComponent" parent="." unique_id=718198195 instance=ExtResource("14_7ln68")]
 BulletScene = ExtResource("15_koeq7")
 
+[connection signal="body_entered" from="." to="." method="OnBodyEntered"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="VisibleOnScreenNotifier2D"]

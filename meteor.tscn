@@ -114,6 +114,8 @@ animations = [{
 
 [node name="Meteor" type="RigidBody2D" unique_id=1523011807 groups=["entities"]]
 gravity_scale = 0.0
+contact_monitor = true
+max_contacts_reported = 2
 script = ExtResource("1_ohe0j")
 PowerupScene = ExtResource("2_yfp5j")
 
@@ -148,4 +150,5 @@ shape = SubResource("CircleShape2D_pb85n")
 
 [node name="HealthComponent" parent="." unique_id=1136855809 instance=ExtResource("8_58b82")]
 
+[connection signal="body_entered" from="." to="." method="OnBodyEntered"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="VisibleOnScreenNotifier2D"]

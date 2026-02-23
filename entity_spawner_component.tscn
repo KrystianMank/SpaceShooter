@@ -10,11 +10,6 @@ _data = {
 }
 point_count = 5
 
-[sub_resource type="NavigationPolygon" id="NavigationPolygon_ucpfx"]
-vertices = PackedVector2Array(467.03906, 8.96875, 469.95313, 710.03906, 8, 711.9531, 8, 8.0234375)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(477, -1, 480, 720, -2, 722, -2, -2)])
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_rn1kx"]
 atlas = ExtResource("5_753uf")
 region = Rect2(0, 0, 64, 64)
@@ -80,9 +75,6 @@ EntityHealthbarScene = ExtResource("4_rn1kx")
 curve = SubResource("Curve2D_ucpfx")
 
 [node name="MeteorSpawnLocation" type="PathFollow2D" parent="MeteorPath" unique_id=1671582961]
-
-[node name="NavigationRegion2D" type="NavigationRegion2D" parent="." unique_id=540084033]
-navigation_polygon = SubResource("NavigationPolygon_ucpfx")
 
 [node name="SpawnAnimation" type="AnimatedSprite2D" parent="." unique_id=2125008714]
 sprite_frames = SubResource("SpriteFrames_k1fux")

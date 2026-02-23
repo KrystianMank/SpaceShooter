@@ -32,7 +32,6 @@ public partial class ExplosionArea : Area2D
 	{
 		if(body is not Bullet)
 			Explode();
-		GD.Print(body.Name);
 	}
 
 

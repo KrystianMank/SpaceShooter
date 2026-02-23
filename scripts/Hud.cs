@@ -103,27 +103,34 @@ public partial class Hud : CanvasLayer
 		GetNode<Label>("Message").Hide();
 	}
 
-	public void ShowPlayerUpgradeStatsPanel(bool show)
+	async public void ShowPlayerUpgradeStatsPanel(bool show)
 	{
 		GetNode<CanvasLayer>("StatsUpgradePanel").Visible = show;
-		foreach (var child in GetParent().GetChildren())
+		foreach (var child in GetTree().Root.GetChildren())
 		{
-			child.SetProcess(!show);
 			if(child is Entity entity)
             {
-				if(entity.LinearVelocity != Vector2.Zero)
-				{
-					entityVelocity = entity.LinearVelocity;
-				}
-                if (show)
-                {
-					entity.LinearVelocity = Vector2.Zero;
-                }
-                else
-                {
-					entity.LinearVelocity = entityVelocity;
-                }
+				// if(entity.LinearVelocity != Vector2.Zero)
+				// {
+				// 	entityVelocity = entity.LinearVelocity;
+				// }
+                // if (show)
+                // {
+				// 	entity.LinearVelocity = Vector2.Zero;
+                // }
+                // else
+                // {
+				// 	entity.LinearVelocity = entityVelocity;
+                // }
+				entity.SetPhysicsProcess(!show);
             }
+			if(child is Main main)
+			{
+				foreach(var mainChild in main.GetChildren())
+				{
+					mainChild.SetProcess(!show);
+				}
+			}
 		}
 		SetAllTimersEnabled(!show);
 	}

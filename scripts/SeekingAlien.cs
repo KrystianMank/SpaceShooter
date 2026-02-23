@@ -31,7 +31,6 @@ public partial class SeekingAlien : Entity
         _points = [];
         CalculateNewPosition();
 		StartNavigation();
-        GD.Print("GO");
     }
 
     public override void _Process(double delta)
@@ -70,8 +69,6 @@ public partial class SeekingAlien : Entity
 			NavigationAgent.TargetPosition = _newPosition;
 
 			await ToSignal(GetTree().CreateTimer(0.8), Timer.SignalName.Timeout);
-
-			GD.Print("Dotarłem!");
 		}
 
 		_isNavigating = false;
@@ -96,12 +93,18 @@ public partial class SeekingAlien : Entity
 
 		Vector2 nextPathPosition = NavigationAgent.GetNextPathPosition();
 		_newVelocity = GlobalPosition.DirectionTo(nextPathPosition) * Speed;
-		Position += _newVelocity * delta;
+		//Position += _newVelocity * delta;
+		var collision = MoveAndCollide(_newVelocity * delta);
+		
+		if(collision != null)
+		{
+			OnBodyEntered((Node)collision.GetCollider());
+		}
 
 		if(_newVelocity.Length() > 0)
 		{
 			var targetRotation = _newVelocity.Angle() + Mathf.Pi/2;
-			Rotation = Mathf.LerpAngle(Rotation, targetRotation, 6 * (float)delta);
+			Rotation = Mathf.LerpAngle(Rotation, targetRotation, 6 * delta);
 		}
     }
 
@@ -131,7 +134,6 @@ public partial class SeekingAlien : Entity
 					_points.Add(_newPosition);
 					NavigationAgent.TargetPosition = _newPosition;
 					_points.Add(newPosition);
-					GD.Print($"Punkt po odbiciu: {newPosition}");
 					_isTouchingWall = false; // Reset flagi
 					return;
 				}

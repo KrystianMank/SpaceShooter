@@ -156,7 +156,6 @@ public partial class Player : Area2D
 
 				if (Input.IsActionJustPressed("shoot"))
 				{
-					GD.Print("lefr");
 					_leftRightDashAnimation.FlipH = false;
 					_leftRightDashAnimation.Play();
 
@@ -173,7 +172,6 @@ public partial class Player : Area2D
 
 				if (Input.IsActionJustPressed("shoot"))
 				{
-					GD.Print("right");
 					_leftRightDashAnimation.FlipH = true;
 					_leftRightDashAnimation.Play();
 
@@ -188,7 +186,6 @@ public partial class Player : Area2D
 
 				if (Input.IsActionJustPressed("shoot"))
 				{
-					GD.Print("up");
 					_upDownDashAnimation.Play();
 
 					Position = upDashPos;	
@@ -235,7 +232,7 @@ public partial class Player : Area2D
 
 		PlayerWeapon.SetWeaponVariables(playerStats.BulletSpeed.Value, playerStats.Damage.Value, playerStats.FireRate.Value);
 		PlayerWeapon.SetBulletQuantity(1);
-		PlayerWeapon.FiringComponent.StartShooting();
+		//PlayerWeapon.FiringComponent.StartShooting();
     }
 
 	/// <summary>

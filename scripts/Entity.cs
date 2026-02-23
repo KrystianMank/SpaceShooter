@@ -19,8 +19,10 @@ public partial class Entity : RigidBody2D
     public override void _Ready()
     {
         ContactMonitor = true;
+		MaxContactsReported = 2;
 		EntityHP.HPDepleted += OnEnityHpDepleted;
 		EntityHP.HPValueChanged += OnEnityHpValueChanged;
+		BodyEntered += OnBodyEntered;
 
 		GetNode<HurtboxComponent>("HurtboxComponent").HealthComponent = EntityHP;
 		// GetNode<HurtboxComponent>("HurtboxComponent").AreaEntered += (area) =>
@@ -86,7 +88,6 @@ public partial class Entity : RigidBody2D
 		if(_hit) return;
 
 		_hit = true;
-		GD.Print("entities hit eachother: " + EntitiesHitEachOther);
         EmitSignal(SignalName.EnitityHPDepleted, this);
     }
 
@@ -122,10 +123,7 @@ public partial class Entity : RigidBody2D
 		if(body is Entity)
 		{
 			EntitiesHitEachOther = true;
-		}
-		else
-		{
-			EntitiesHitEachOther = false;
+			GD.Print(Name + " collided " + body.GetType());
 		}
 	}
 

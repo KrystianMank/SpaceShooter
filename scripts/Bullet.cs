@@ -64,7 +64,6 @@ public partial class Bullet : RigidBody2D
 		
 		if(body == _shooter)
 		{
-			GD.Print("Ignored collision with shooter");
 			return;
 		}
 
@@ -101,7 +100,6 @@ public partial class Bullet : RigidBody2D
 		
 		if(area is Player player && PlayerBullet == false)
 		{
-			GD.Print("Damaging player!");
 			_hit = true;
 			ShowDamageLabel(hitbox.Damage);
 			player.playerStats.Health.DealDamage(hitbox.Damage);

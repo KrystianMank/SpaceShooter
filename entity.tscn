@@ -4,7 +4,6 @@
 [ext_resource type="Script" uid="uid://cr7kg8xmd3hvn" path="res://scripts/Entity.cs" id="1_nwmpt"]
 [ext_resource type="PackedScene" uid="uid://crjbmcvbllf4d" path="res://powerup.tscn" id="2_03rkj"]
 [ext_resource type="AudioStream" uid="uid://ce5u5ujrrhkan" path="res://sounds/bomb-explosion-type-02-265506.mp3" id="2_uqc13"]
-[ext_resource type="PackedScene" uid="uid://bgwot2idj6lhh" path="res://entity_healthbar.tscn" id="3_pimh3"]
 [ext_resource type="PackedScene" uid="uid://t6ijqvc73rcj" path="res://hitbox_component.tscn" id="6_6tppj"]
 [ext_resource type="PackedScene" uid="uid://coc5dbts0k4k8" path="res://hurtbox_component.tscn" id="7_pb85n"]
 
@@ -51,9 +50,6 @@ gravity_scale = 0.0
 script = ExtResource("1_nwmpt")
 PowerupScene = ExtResource("2_03rkj")
 
-[node name="EntityHealthbar" parent="." unique_id=1964934661 instance=ExtResource("3_pimh3")]
-script = null
-
 [node name="ExplosionAnimation" type="AnimatedSprite2D" parent="." unique_id=549005712]
 position = Vector2(4, -3)
 scale = Vector2(1.5, 1.5)
@@ -78,4 +74,5 @@ shape = SubResource("CircleShape2D_pb85n")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=192002963]
 shape = SubResource("CircleShape2D_pb85n")
 
+[connection signal="body_entered" from="." to="." method="OnBodyEntered"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="VisibleOnScreenNotifier2D"]
