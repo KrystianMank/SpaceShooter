@@ -19,5 +19,11 @@ public partial class PlayerHealthBar : CanvasLayer
         GetNode<Label>("TextureProgressBar/Label").Text = _currentHP > 0 ? $"{_currentHP}/{_maxHP}" : $"{0}/{_maxHP}";
     }
 
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+        GetNode<TextureProgressBar>("TextureProgressBar").Value = _currentHP;
+        GetNode<TextureProgressBar>("TextureProgressBar").MaxValue = _maxHP;
+    }
 
 }

@@ -232,7 +232,7 @@ public partial class Player : Area2D
 
 		PlayerWeapon.SetWeaponVariables(playerStats.BulletSpeed.Value, playerStats.Damage.Value, playerStats.FireRate.Value);
 		PlayerWeapon.SetBulletQuantity(1);
-		//PlayerWeapon.FiringComponent.StartShooting();
+		PlayerWeapon.FiringComponent.StartShooting();
     }
 
 	/// <summary>
