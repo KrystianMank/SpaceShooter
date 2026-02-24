@@ -5,6 +5,7 @@ using Godot;
 public partial class SeekingAlien : Entity
 {
     public NavigationAgent2D NavigationAgent;
+	public AnimatedSprite2D SpriteAnimation;
     [Export]
     public float Speed;
 
@@ -19,6 +20,8 @@ public partial class SeekingAlien : Entity
     {
         base._Ready();
         NavigationAgent = GetNode<NavigationAgent2D>(nameof(NavigationAgent2D));
+		SpriteAnimation= GetNode<AnimatedSprite2D>("SpriteAnimation");
+		SpriteAnimation.SpeedScale = 0.8f;
 
         AddToGroup("entities");
         SetHitboxShape(GetNode<CollisionShape2D>("CollisionShape2D").Shape);
@@ -67,6 +70,7 @@ public partial class SeekingAlien : Entity
 			
 			_newPosition = _points[0]; // Zawsze pierwszy element
 			NavigationAgent.TargetPosition = _newPosition;
+			SpriteAnimation.Play();
 
 			await ToSignal(GetTree().CreateTimer(0.8), Timer.SignalName.Timeout);
 		}
@@ -87,6 +91,8 @@ public partial class SeekingAlien : Entity
 		{
 			_newPosition = Player.GlobalPosition;
 			NavigationAgent.TargetPosition = _newPosition;
+			SpriteAnimation.SpriteFrames.SetAnimationLoop("default", _playerFound);
+			SpriteAnimation.Play();
 		}
 
 		

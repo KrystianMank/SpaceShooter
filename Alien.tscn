@@ -91,7 +91,7 @@ position = Vector2(-30, 0)
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1692498556]
 
 [node name="HitboxComponent" parent="." unique_id=1982976924 instance=ExtResource("11_p3oh4")]
-Damage = 5.0
+Damage = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent" unique_id=1836775880]
 position = Vector2(0, -1.5)

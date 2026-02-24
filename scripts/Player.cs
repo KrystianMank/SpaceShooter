@@ -286,7 +286,7 @@ public partial class Player : Area2D
 						x.AddToGroup("piercing");
 					});
 					PowerupTimer.WaitTime = playerStats.PiercingPowerupDuration.Value;
-					_powerupCallable = new Callable(this, nameof(OnPiercingTimeout));
+					_powerupCallable = new Callable(this, nameof(OnPowerupTimeout));
 					break;
                 }
 			case PowerupEnum.invincibility_powerup:
@@ -294,7 +294,7 @@ public partial class Player : Area2D
 					GetNode<HurtboxComponent>("HurtboxComponent").GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred(CollisionShape2D.PropertyName.Disabled, true);
 
 					PowerupTimer.WaitTime = playerStats.InvincibilityPowerupDuration.Value;
-					_powerupCallable = new Callable(this, nameof(OnInvincibilityTimeout));
+					_powerupCallable = new Callable(this, nameof(OnPowerupTimeout));
 					
 					break;
                 }
@@ -303,7 +303,7 @@ public partial class Player : Area2D
 					PlayerWeapon.SetBulletQuantity(2);			
 
 					PowerupTimer.WaitTime = playerStats.MultishotPowerupDuration.Value;
-					_powerupCallable = new Callable(this, nameof(OnMultishotTimeout));
+					_powerupCallable = new Callable(this, nameof(OnPowerupTimeout));
 					
 					
                     break;
@@ -314,7 +314,7 @@ public partial class Player : Area2D
 					GetParent().GetNode<Label>("DashLandLabel").Visible = true;
 
 					PowerupTimer.WaitTime = playerStats.DashPowerupDuration.Value;
-					_powerupCallable = new Callable(this, nameof(OnDashTimeout));
+					_powerupCallable = new Callable(this, nameof(OnPowerupTimeout));
 					
                     break;
                 }
@@ -356,27 +356,27 @@ public partial class Player : Area2D
 
 		_currentPowerup = null;
 	}
-	void OnPiercingTimeout()
+	void OnPowerupTimeout()
 	{
 		EndCurrentPowerup();
 		PowerupEnded();
 	}
-	void OnInvincibilityTimeout()
-	{
-		EndCurrentPowerup();
-		PowerupEnded();
-	}
-	void OnMultishotTimeout()
-	{
-		EndCurrentPowerup();
-		PowerupEnded();
+	// void OnInvincibilityTimeout()
+	// {
+	// 	EndCurrentPowerup();
+	// 	PowerupEnded();
+	// }
+	// void OnMultishotTimeout()
+	// {
+	// 	EndCurrentPowerup();
+	// 	PowerupEnded();
 
-	}
-	void OnDashTimeout()
-	{
-		EndCurrentPowerup();
-		PowerupEnded();
-	}
+	// }
+	// void OnDashTimeout()
+	// {
+	// 	EndCurrentPowerup();
+	// 	PowerupEnded();
+	// }
 
 	/// <summary>
     /// Change the powerup container to empty one and stop powerup timer
