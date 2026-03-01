@@ -77,10 +77,12 @@ visible = false
 [node name="PlayerHealthBar" parent="." unique_id=2053359214 instance=ExtResource("6_1xsix")]
 
 [node name="MainMenuButton" type="Button" parent="." unique_id=445888677]
-offset_left = 412.0
-offset_top = 10.0
-offset_right = 470.0
-offset_bottom = 68.0
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -58.0
+offset_bottom = 58.0
+grow_horizontal = 0
 icon = SubResource("CompressedTexture2D_1xsix")
 
 [node name="LVBar" parent="." unique_id=1287005651 instance=ExtResource("8_61f8s")]

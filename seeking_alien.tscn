@@ -99,6 +99,8 @@ animations = [{
 }]
 
 [node name="SeekingAlien" type="RigidBody2D" unique_id=1527348025 node_paths=PackedStringArray("EntityHP")]
+collision_layer = 0
+collision_mask = 0
 gravity_scale = 0.0
 freeze = true
 contact_monitor = true
@@ -116,6 +118,7 @@ sprite_frames = SubResource("SpriteFrames_6tppj")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=133313048]
 scale = Vector2(1, 0.997)
 shape = SubResource("RectangleShape2D_r0736")
+disabled = true
 
 [node name="ExplosionSound" type="AudioStreamPlayer2D" parent="." unique_id=82247124]
 stream = ExtResource("4_um4xl")
@@ -123,6 +126,8 @@ stream = ExtResource("4_um4xl")
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1951187867]
 
 [node name="HitboxComponent" parent="." unique_id=1967578923 instance=ExtResource("5_775kp")]
+collision_layer = 8
+collision_mask = 4
 Damage = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent" unique_id=142972271]
@@ -130,6 +135,8 @@ scale = Vector2(1, 0.997)
 shape = SubResource("RectangleShape2D_r0736")
 
 [node name="HurtboxComponent" parent="." unique_id=1179802092 instance=ExtResource("6_0u2np")]
+collision_layer = 16
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=413863655]
 scale = Vector2(1, 0.997)

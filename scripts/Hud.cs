@@ -103,7 +103,7 @@ public partial class Hud : CanvasLayer
 		GetNode<Label>("Message").Hide();
 	}
 
-	async public void ShowPlayerUpgradeStatsPanel(bool show)
+	public void ShowPlayerUpgradeStatsPanel(bool show)
 	{
 		GetNode<CanvasLayer>("StatsUpgradePanel").Visible = show;
 		foreach (var child in GetTree().Root.GetChildren())

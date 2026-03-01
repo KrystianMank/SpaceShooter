@@ -123,7 +123,6 @@ public partial class Entity : RigidBody2D
 		if(body is Entity)
 		{
 			EntitiesHitEachOther = true;
-			GD.Print(Name + " collided " + body.GetType());
 		}
 	}
 

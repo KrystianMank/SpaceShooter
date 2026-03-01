@@ -91,6 +91,8 @@ position = Vector2(-30, 0)
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1692498556]
 
 [node name="HitboxComponent" parent="." unique_id=1982976924 instance=ExtResource("11_p3oh4")]
+collision_layer = 8
+collision_mask = 4
 Damage = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent" unique_id=1836775880]
@@ -98,6 +100,8 @@ position = Vector2(0, -1.5)
 shape = SubResource("RectangleShape2D_qtl1n")
 
 [node name="HurtboxComponent" parent="." unique_id=1234895241 instance=ExtResource("12_32ygt")]
+collision_layer = 16
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=3647797]
 position = Vector2(0, -1.5)

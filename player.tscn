@@ -9,13 +9,14 @@
 [ext_resource type="Texture2D" uid="uid://di2sutndtvnac" path="res://sprites/explosion/explosion_sheet.png" id="11_ivps1"]
 [ext_resource type="PackedScene" uid="uid://c4bdp8uav35em" path="res://player_weapon.tscn" id="11_nvl01"]
 [ext_resource type="AudioStream" uid="uid://ce5u5ujrrhkan" path="res://sounds/bomb-explosion-type-02-265506.mp3" id="12_urp6f"]
+[ext_resource type="PackedScene" uid="uid://dkt81sis8jce8" path="res://health_component.tscn" id="13_urp6f"]
 [ext_resource type="PackedScene" uid="uid://coc5dbts0k4k8" path="res://hurtbox_component.tscn" id="14_bwjto"]
 [ext_resource type="Texture2D" uid="uid://c413eb45oha4y" path="res://sprites/rocket/dash_to_left.png" id="15_606se"]
 [ext_resource type="Texture2D" uid="uid://craxdohx2abi" path="res://sprites/rocket/dash_updown.png" id="16_u1c27"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hqtel"]
-radius = 13.333333
-height = 53.333332
+radius = 6.6666665
+height = 18.333332
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ivps1"]
 atlas = ExtResource("11_ivps1")
@@ -61,6 +62,8 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_bwjto"]
+radius = 11.666666
+height = 43.333332
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_op7ga"]
 atlas = ExtResource("15_606se")
@@ -148,7 +151,7 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Player" type="Area2D" unique_id=2018958441 node_paths=PackedStringArray("PowerupTimer", "PlayerWeapon")]
+[node name="Player" type="Area2D" unique_id=2018958441 node_paths=PackedStringArray("PowerupTimer", "PlayerWeapon", "HealthComponent")]
 scale = Vector2(1.2, 1.2)
 collision_layer = 3
 script = ExtResource("1_op7ga")
@@ -156,12 +159,14 @@ RocketTextures = Array[Texture2D]([ExtResource("2_b26j0"), ExtResource("3_n7ghd"
 PowerupContainerEmpty = ExtResource("6_urp6f")
 PowerupTimer = NodePath("PowerupTimer")
 PlayerWeapon = NodePath("PlayerWeapon")
+HealthComponent = NodePath("HealthComponent")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=911577782]
 texture = ExtResource("4_nvl01")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1597506381]
 shape = SubResource("CapsuleShape2D_hqtel")
+disabled = true
 
 [node name="BulletSpawn" type="Marker2D" parent="." unique_id=793124666]
 position = Vector2(0, -40)
@@ -175,16 +180,20 @@ sprite_frames = SubResource("SpriteFrames_bwjto")
 stream = ExtResource("12_urp6f")
 
 [node name="HitboxComponent" parent="." unique_id=1896230338 instance=ExtResource("8_ivps1")]
+collision_layer = 2
+collision_mask = 16
 Damage = 10.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent" unique_id=104532471]
 shape = SubResource("CapsuleShape2D_bwjto")
 
 [node name="HurtboxComponent" parent="." unique_id=940410500 instance=ExtResource("14_bwjto")]
-collision_layer = 3
+collision_layer = 4
+collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=522185143]
 shape = SubResource("CapsuleShape2D_bwjto")
+debug_color = Color(1.540184e-06, 0.5709664, 0.84412307, 0.41960785)
 
 [node name="DashAnimationLeftRight" type="AnimatedSprite2D" parent="." unique_id=1898508718]
 position = Vector2(0, 14.999999)
@@ -201,6 +210,8 @@ speed_scale = 2.0
 one_shot = true
 
 [node name="PlayerWeapon" parent="." unique_id=1499773877 instance=ExtResource("11_nvl01")]
+
+[node name="HealthComponent" parent="." unique_id=1107344304 instance=ExtResource("13_urp6f")]
 
 [connection signal="area_entered" from="." to="." method="OnAreaEntered"]
 

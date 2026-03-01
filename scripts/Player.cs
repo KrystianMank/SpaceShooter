@@ -15,6 +15,8 @@ public partial class Player : Area2D
 	public Godot.Timer PowerupTimer;
 	[Export]
 	public PlayerWeapon PlayerWeapon;
+	[Export]
+	public HealthComponent HealthComponent;
 	// [Export]
 	// public FiringComponent FiringComponent;
 	// [Export]
@@ -68,15 +70,17 @@ public partial class Player : Area2D
 		// GetNode<Godot.Timer>("ShootCooldown").WaitTime = playerStats.FireRate.Value;
 
         playerStats.Health.HPDepleted += OnHealthDepleted;
+		HealthComponent = playerStats.Health;
+		GetNode<HurtboxComponent>(nameof(HurtboxComponent)).HealthComponent = playerStats.Health;
 
 		// Showing damage that player received
-        GetNode<HurtboxComponent>(nameof(HurtboxComponent)).AreaEntered += (area2D) =>
-        {
-            if(area2D is HitboxComponent hitboxComponent)
-            {
-                ShowDamageLabel(hitboxComponent);
-            }
-        };
+        // GetNode<HurtboxComponent>(nameof(HurtboxComponent)).AreaEntered += (area2D) =>
+        // {
+        //     if(area2D is HitboxComponent hitboxComponent)
+        //     {
+        //         ShowDamageLabel(hitboxComponent);
+        //     }
+        // };
 
 		PlayerWeapon.PlayerStats = playerStats;
     }
@@ -281,10 +285,7 @@ public partial class Player : Area2D
         {
 			case PowerupEnum.piercing_powerup:
 				{
-					var bullets = GetTree().Root.GetNode<Main>("Main").GetChildren().Where(x => x.IsInGroup("bullet")).ToList();
-					bullets.ForEach(x => {
-						x.AddToGroup("piercing");
-					});
+					PlayerWeapon.FiringComponent.MaxPierce = 2;
 					PowerupTimer.WaitTime = playerStats.PiercingPowerupDuration.Value;
 					_powerupCallable = new Callable(this, nameof(OnPowerupTimeout));
 					break;
@@ -338,9 +339,7 @@ public partial class Player : Area2D
 		switch (_currentPowerup.Value)
 		{
 			case PowerupEnum.piercing_powerup:
-				GetTree().Root.GetNode<Main>("Main").GetChildren().Where(x => x.IsInGroup("bullet")).ToList().ForEach(x => {
-					x.RemoveFromGroup("piercing");
-				});
+				PlayerWeapon.FiringComponent.MaxPierce = 1;
 				break;
 			case PowerupEnum.invincibility_powerup:
 				GetNode<HurtboxComponent>("HurtboxComponent").GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred(CollisionShape2D.PropertyName.Disabled, false);
@@ -426,30 +425,30 @@ public partial class Player : Area2D
     /// Shows label with damage text
     /// </summary>
     /// <param name="hitboxComponent">Entity's hitbox that entered the Player's area</param>
-	public void ShowDamageLabel(HitboxComponent hitboxComponent)
-    {
-        Label label = new()
-        {
-            Text = $"-{hitboxComponent.Damage}",
-			Position = GlobalPosition
-		};
-		var customTheme = new Theme();
-		customTheme.SetColor("font_color", "Label", Colors.Red);
-		label.Theme = customTheme;
+	// public void ShowDamageLabel(HitboxComponent hitboxComponent)
+    // {
+    //     Label label = new()
+    //     {
+    //         Text = $"-{hitboxComponent.Damage}",
+	// 		Position = GlobalPosition
+	// 	};
+	// 	var customTheme = new Theme();
+	// 	customTheme.SetColor("font_color", "Label", Colors.Red);
+	// 	label.Theme = customTheme;
 
-		GetParent().AddChild(label);
+	// 	GetParent().AddChild(label);
 
-		Godot.Timer timer = new();
-		label.AddChild(timer);
-		timer.WaitTime = 0.5;
-		timer.OneShot = true;
-		timer.Timeout += () => 
-		{
-			if (IsInstanceValid(label))
-				label.QueueFree();
-		};
-		timer.Start();
-    }
+	// 	Godot.Timer timer = new();
+	// 	label.AddChild(timer);
+	// 	timer.WaitTime = 0.5;
+	// 	timer.OneShot = true;
+	// 	timer.Timeout += () => 
+	// 	{
+	// 		if (IsInstanceValid(label))
+	// 			label.QueueFree();
+	// 	};
+	// 	timer.Start();
+    // }
 
 	void ShowDashLandLabel(Vector2 position)
 	{

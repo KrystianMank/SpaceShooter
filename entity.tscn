@@ -64,12 +64,16 @@ stream = ExtResource("2_uqc13")
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1951187867]
 
 [node name="HitboxComponent" parent="." unique_id=1967578923 instance=ExtResource("6_6tppj")]
+collision_layer = 8
+collision_mask = 4
 Damage = 5.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent" unique_id=2346869]
 shape = SubResource("CircleShape2D_pb85n")
 
 [node name="HurtboxComponent" parent="." unique_id=1179802092 instance=ExtResource("7_pb85n")]
+collision_layer = 16
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=192002963]
 shape = SubResource("CircleShape2D_pb85n")

@@ -56,9 +56,9 @@ animations = [{
 }]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_efxa6"]
-vertices = PackedVector2Array(467.03906, 8.96875, 469.95313, 710.03906, 8, 711.9531, 8, 8.0234375)
+vertices = PackedVector2Array(710.89844, 8.9765625, 704.09375, 716.9297, 8, 712.0625, 8, 8.0078125)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(477, -1, 480, 720, -2, 722, -2, -2)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(721, -1, 714, 727, -2, 722, -2, -2)])
 
 [node name="Main" type="Node" unique_id=359640060 node_paths=PackedStringArray("EntitySpawner") groups=["main"]]
 script = ExtResource("1_0xm2m")
@@ -73,8 +73,8 @@ position = Vector2(480, 0)
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -323.0
-offset_right = 317.0
+offset_left = -802.0
+offset_right = 799.0
 offset_bottom = 1800.0
 grow_horizontal = 2
 texture = ExtResource("7_272bh")
@@ -85,7 +85,7 @@ texture = ExtResource("7_272bh")
 priority = 2
 
 [node name="StartPosition" type="Marker2D" parent="." unique_id=659636138]
-position = Vector2(240, 600)
+position = Vector2(368, 543)
 
 [node name="BackgroundMusic" type="AudioStreamPlayer2D" parent="." unique_id=329586429]
 stream = ExtResource("5_lquwl")

@@ -1,43 +1,46 @@
-[gd_scene load_steps=6 format=3 uid="uid://ddxe1pjlkw2uk"]
+[gd_scene format=3 uid="uid://ddxe1pjlkw2uk"]
 
 [ext_resource type="Script" uid="uid://bilam6tfrs0s0" path="res://scripts/Bullet.cs" id="1_2b2rl"]
 [ext_resource type="Texture2D" uid="uid://ck48mexpggqpu" path="res://sprites/bullet_fire/bullet.png" id="2_t4vbm"]
 [ext_resource type="PackedScene" uid="uid://t6ijqvc73rcj" path="res://hitbox_component.tscn" id="3_t4vbm"]
-[ext_resource type="Script" uid="uid://bywk6cyj22wx5" path="res://scripts/HitboxComponent.cs" id="4_b7duk"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2b2rl"]
-radius = 6.0
+radius = 5.0
 height = 14.0
 
-[node name="Bullet" type="RigidBody2D" node_paths=PackedStringArray("hitbox") groups=["bullet"]]
-collision_mask = 3
+[node name="Bullet" type="RigidBody2D" unique_id=851378216 node_paths=PackedStringArray("hitbox") groups=["bullet"]]
+collision_layer = 10
+collision_mask = 20
+mass = 0.001
 gravity_scale = 0.0
 contact_monitor = true
-max_contacts_reported = 10
+max_contacts_reported = 1
 script = ExtResource("1_2b2rl")
 BulletSprite = ExtResource("2_t4vbm")
 hitbox = NodePath("HitboxComponent")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=291365741]
 position = Vector2(1, -21)
 texture = ExtResource("2_t4vbm")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1869879113]
 shape = SubResource("CapsuleShape2D_2b2rl")
 
-[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=652960708]
 
-[node name="HitboxComponent" parent="." instance=ExtResource("3_t4vbm")]
-collision_layer = 2
-script = ExtResource("4_b7duk")
+[node name="HitboxComponent" parent="." unique_id=161353114 instance=ExtResource("3_t4vbm")]
+collision_layer = 10
+collision_mask = 20
 Damage = 1.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent" unique_id=1595195562]
 shape = SubResource("CapsuleShape2D_2b2rl")
 
-[node name="AreaCollision" type="Area2D" parent="."]
+[node name="AreaCollision" type="Area2D" parent="." unique_id=1078715081]
+collision_layer = 10
+collision_mask = 20
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AreaCollision"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AreaCollision" unique_id=683556909]
 shape = SubResource("CapsuleShape2D_2b2rl")
 
 [connection signal="body_entered" from="." to="." method="OnBodyEntered"]
