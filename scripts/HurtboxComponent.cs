@@ -16,13 +16,13 @@ public partial class HurtboxComponent : Area2D
         // //if(area2D.GetParent().GetType() == GetParent().GetType()) return;
         if(area2D is HitboxComponent hitbox)
         {
-            ShowDamageLabel(hitbox.Damage);
+            ShowDamageLabel(GetParent(), hitbox.Damage);
             HealthComponent.DealDamage(hitbox.Damage);
             //ShowDamageLabel(hitbox);
             //GD.Print(area2D.GetParent().GetType() + " " + hitbox.GetCollisionLayerValue(5));
         }
     }
-    public void ShowDamageLabel(double damage)
+    public void ShowDamageLabel(Node receiver, double damage)
     {
         Label label = new()
         {
@@ -30,9 +30,10 @@ public partial class HurtboxComponent : Area2D
 			Position = GlobalPosition,
 		};
 		var customTheme = new Theme();
-		customTheme.SetColor("font_color", "Label", Colors.White);
+		customTheme.SetColor("font_color", "Label", receiver is Player ? Colors.Crimson : Colors.White);
+		customTheme.SetFontSize("font_size", "Label", 20);
 		label.Theme = customTheme;
-		GetParent().AddChild(label);
+		GetTree().Root.AddChild(label);
 
 		var timer = new Timer();
 		label.AddChild(timer);
