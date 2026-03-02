@@ -23,12 +23,12 @@ public partial class StatsUpgradePanel : CanvasLayer
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
     {
-		OptionButton1 = GetNode<Button>("Animation/PanelContainer/MarginContainer/Control/GridContainer/Option_1_Button");
-		OptionButton2 = GetNode<Button>("Animation/PanelContainer/MarginContainer/Control/GridContainer/Option_2_Button");
-		HealButton = GetNode<Button>("Animation/PanelContainer/MarginContainer/Control/GridContainer2/HealButton");
-		RefreshButton = GetNode<Button>("Animation/PanelContainer/MarginContainer/Control/GridContainer2/RefreshStatsButton");
-		_container = GetNode<PanelContainer>("Animation/PanelContainer");
-		Animation = GetNode<AnimatedSprite2D>("Animation");
+		OptionButton1 = GetNode<Button>("MarginContainer/Animation/PanelContainer/MarginContainer/Control/GridContainer/Option_1_Button");
+		OptionButton2 = GetNode<Button>("MarginContainer/Animation/PanelContainer/MarginContainer/Control/GridContainer/Option_2_Button");
+		HealButton = GetNode<Button>("MarginContainer/Animation/PanelContainer/MarginContainer/Control/GridContainer2/HealButton");
+		RefreshButton = GetNode<Button>("MarginContainer/Animation/PanelContainer/MarginContainer/Control/GridContainer2/RefreshStatsButton");
+		_container = GetNode<PanelContainer>("MarginContainer/Animation/PanelContainer");
+		Animation = GetNode<AnimatedSprite2D>("MarginContainer/Animation");
 		UpgradableStats = new Dictionary<UpgradableStatsEnum, double>
         {
             {UpgradableStatsEnum.Speed, PlayerStatsMultipliers.SPEED_MULTIPLIER},
@@ -67,7 +67,7 @@ public partial class StatsUpgradePanel : CanvasLayer
 		DisableButton(CallerButton.Option1, DrawnUpgradableStats.Keys.First(), DrawnUpgradableStats[DrawnUpgradableStats.Keys.First()]);
 		DisableButton(CallerButton.Option2, DrawnUpgradableStats.Keys.Last(), DrawnUpgradableStats[DrawnUpgradableStats.Keys.Last()]);
 
-		GetNode<Label>("Animation/PanelContainer/MarginContainer/Control/SkillPointsLabel").Text = $"Skill points: {_playerStats.SkillPoints.Value}";
+		GetNode<Label>("MarginContainer/Animation/PanelContainer/MarginContainer/Control/SkillPointsLabel").Text = $"Skill points: {_playerStats.SkillPoints.Value}";
 
 		DisableHealButton();
 		
@@ -334,7 +334,7 @@ public partial class StatsUpgradePanel : CanvasLayer
 
 	public void OnPlayerStatsSkillPointsChanged(object target, Observable<int>.ChanedEventArgs eventArgs)
     {
-        GetNode<Label>("Animation/PanelContainer/MarginContainer/Control/SkillPointsLabel").Text = $"Skill points: {eventArgs.NewValue}";
+        GetNode<Label>("MarginContainer/Animation/PanelContainer/MarginContainer/Control/SkillPointsLabel").Text = $"Skill points: {eventArgs.NewValue}";
 		if(eventArgs.NewValue <= 0)
         {
             DisableButton(CallerButton.Option1, true);
