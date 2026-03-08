@@ -12,6 +12,11 @@ public partial class Laser : RayCast2D
 	public double CastSpeed = 7000.0;
 	[Export]
 	public float MaxLenght = 500f;
+
+	public int MaxPierce = 1;
+	public int Quantity;
+	public double Damage;
+
 	private double _temperature = 0d;
 	const double MIN_TEMPERATURE = 0d;
 	const double MAX_TEMPERATURE = 100d;
@@ -142,6 +147,8 @@ public partial class Laser : RayCast2D
 		CastingParticles.Position = line2D.Points[0];
 
 		RaycastCollide += OnRaycastCollide;
+
+		AddToGroup("laser");
     }
 
     public override void _PhysicsProcess(double delta)
@@ -155,6 +162,7 @@ public partial class Laser : RayCast2D
 			laserEndPosition = ToLocal(GetCollisionPoint());
 			CollisionParticles.GlobalRotation = GetCollisionNormal().Angle();
 			CollisionParticles.Position = laserEndPosition;
+			GD.Print("colliding");
 		}
 		line2D.SetPointPosition(1, laserEndPosition);
 
@@ -169,13 +177,19 @@ public partial class Laser : RayCast2D
 			material.EmissionBoxExtents = extents;
 		}
 
-		var hits = GetAllRayHits(ToGlobal(laserStartPosition), ToGlobal(laserEndPosition), 5);
+		var hits = GetAllRayHits(ToGlobal(laserStartPosition), ToGlobal(laserEndPosition), MaxPierce);
 
 		foreach(var hit in hits)
 		{
-			var collider = hit["collider"].As<Entity>();
-			GD.Print(collider);
-			EmitSignal(SignalName.RaycastCollide, 0.2d, collider);
+			try{
+				var collider = hit["collider"].As<Entity>();
+				EmitSignal(SignalName.RaycastCollide, Damage, collider);
+			}
+			catch(System.InvalidCastException)
+			{
+				continue;
+			}
+
 		}
     }
 

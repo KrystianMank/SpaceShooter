@@ -9,10 +9,19 @@
 [ext_resource type="Texture2D" uid="uid://di2sutndtvnac" path="res://sprites/explosion/explosion_sheet.png" id="11_ivps1"]
 [ext_resource type="PackedScene" uid="uid://c4bdp8uav35em" path="res://player_weapon.tscn" id="11_nvl01"]
 [ext_resource type="AudioStream" uid="uid://ce5u5ujrrhkan" path="res://sounds/bomb-explosion-type-02-265506.mp3" id="12_urp6f"]
+[ext_resource type="PackedScene" uid="uid://ddxe1pjlkw2uk" path="res://bullet.tscn" id="13_u1c27"]
 [ext_resource type="PackedScene" uid="uid://dkt81sis8jce8" path="res://health_component.tscn" id="13_urp6f"]
+[ext_resource type="PackedScene" uid="uid://c4vm0pvcq87pa" path="res://laser.tscn" id="14_606se"]
 [ext_resource type="PackedScene" uid="uid://coc5dbts0k4k8" path="res://hurtbox_component.tscn" id="14_bwjto"]
+[ext_resource type="PackedScene" uid="uid://c1gslxc722a82" path="res://rocket_projectile.tscn" id="14_op7ga"]
 [ext_resource type="Texture2D" uid="uid://c413eb45oha4y" path="res://sprites/rocket/dash_to_left.png" id="15_606se"]
+[ext_resource type="Texture2D" uid="uid://ck48mexpggqpu" path="res://sprites/bullet_fire/bullet.png" id="15_q13i1"]
+[ext_resource type="Texture2D" uid="uid://bhnjy00ckemy4" path="res://sprites/bullet_fire/rocket_projectile.png" id="16_pylmc"]
 [ext_resource type="Texture2D" uid="uid://craxdohx2abi" path="res://sprites/rocket/dash_updown.png" id="16_u1c27"]
+[ext_resource type="Texture2D" uid="uid://dl7bcymn7k3v8" path="res://sprites/poweups/weapon_laser.png" id="17_pbfsw"]
+[ext_resource type="Texture2D" uid="uid://phklvrhvyyk1" path="res://icon.svg" id="18_7ahtn"]
+[ext_resource type="Texture2D" uid="uid://caxumhxer8jde" path="res://sprites/poweups/weapon_maschinegun.png" id="19_7lmhl"]
+[ext_resource type="Texture2D" uid="uid://5um6ooqryp0k" path="res://sprites/poweups/weapon_rocket.png" id="20_dx0e4"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hqtel"]
 radius = 6.6666665
@@ -208,6 +217,9 @@ speed_scale = 2.0
 one_shot = true
 
 [node name="PlayerWeapon" parent="." unique_id=1499773877 instance=ExtResource("11_nvl01")]
+WeaponScenes = Array[PackedScene]([ExtResource("13_u1c27"), ExtResource("14_op7ga"), ExtResource("14_606se")])
+WeaponSprites = Array[Texture2D]([ExtResource("15_q13i1"), ExtResource("16_pylmc"), ExtResource("18_7ahtn")])
+WeaponFrames = Array[Texture2D]([ExtResource("19_7lmhl"), ExtResource("20_dx0e4"), ExtResource("17_pbfsw")])
 
 [node name="HealthComponent" parent="." unique_id=1107344304 instance=ExtResource("13_urp6f")]
 

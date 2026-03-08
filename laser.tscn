@@ -6,6 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://8pl333hg8pkk" path="res://sounds/steam-pipe-burst-str3.mp3" id="6_3gdm7"]
 [ext_resource type="Texture2D" uid="uid://c1h4udcm53mos" path="res://sprites/termometr/termometr_frame.png" id="6_5ny2x"]
 [ext_resource type="Texture2D" uid="uid://dftwtgfdflfkl" path="res://sprites/termometr/terometer_fill.png" id="7_3gdm7"]
+[ext_resource type="AudioStream" uid="uid://dshv1qkpwh4qg" path="res://sounds/lasers.mp3" id="7_yfymw"]
 [ext_resource type="Texture2D" uid="uid://eefcd6kdk1s1" path="res://sprites/steam.png" id="9_yfymw"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2hs0m"]
@@ -84,10 +85,12 @@ scale_max = 0.29999998
 scale_curve = SubResource("CurveTexture_xw5cg")
 color_ramp = SubResource("GradientTexture1D_xw5cg")
 
-[node name="Laser" type="RayCast2D" unique_id=1052263225]
+[node name="Laser" type="RayCast2D" unique_id=1052263225 groups=["laser"]]
 material = SubResource("ShaderMaterial_2hs0m")
 target_position = Vector2(0, -500)
 collision_mask = 16
+collide_with_areas = true
+collide_with_bodies = false
 script = ExtResource("2_g6b45")
 
 [node name="Line2D" type="Line2D" parent="." unique_id=1744580704]
@@ -148,6 +151,7 @@ metadata/_edit_use_anchors_ = true
 [node name="SoundEffects" type="Node" parent="." unique_id=1003539945]
 
 [node name="ShootSound" type="AudioStreamPlayer2D" parent="SoundEffects" unique_id=1475975518]
+stream = ExtResource("7_yfymw")
 
 [node name="CooldownSound" type="AudioStreamPlayer2D" parent="SoundEffects" unique_id=1861265813]
 stream = ExtResource("6_3gdm7")

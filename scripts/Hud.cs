@@ -133,6 +133,8 @@ public partial class Hud : CanvasLayer
 			}
 		}
 		SetAllTimersEnabled(!show);
+		var laser = (Laser)GetTree().GetFirstNodeInGroup("laser");
+		if(laser != null) laser.IsCasting = false;
 	}
 
 	public void SetAllTimersEnabled(bool enabled)

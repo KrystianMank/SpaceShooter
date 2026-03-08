@@ -21,11 +21,14 @@ public partial class FiringComponent : Node
 	private AudioStreamPlayer2D _shootSound;
 	private AnimatedSprite2D _firingAnimation;
 	private Bullet _bullet;
+	private bool _canShoot = true;
+	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		BulletSpawn = GetNode<Marker2D>("BulletSpawn");
 		_shootCooldown = GetNode<Timer>("ShootCooldown");
+		_shootCooldown.Timeout += OnShootCooldownTimeout;
 		_firingAnimation = BulletSpawn.GetNode<AnimatedSprite2D>("FiringAnimation");
 		
 		_shootSound = GetNode<AudioStreamPlayer2D>("ShootSound");
@@ -39,7 +42,7 @@ public partial class FiringComponent : Node
 	{
 	}
 
-	public void SpawnBullets() 
+	async public void SpawnBullets() 
     {
         for(int i = 1; i <= BulletQuantity; i++)
         {
@@ -59,11 +62,33 @@ public partial class FiringComponent : Node
 			GetTree().Root.GetNode("Main").AddChild(_bullet);
 			_bullet.AddToGroup("bullet");
 			_bullet.GetNode<HitboxComponent>(nameof(HitboxComponent)).Damage = BulletDamage.Value;
+
+			if (i < BulletQuantity)
+			{
+				await ToSignal(GetTree().CreateTimer(0.05), Timer.SignalName.Timeout);
+			}
         }
+		
 		_firingAnimation.Frame = 0;
 		_firingAnimation.Play();
 		_shootSound.Play();
+
+		_canShoot = false;
+		_shootCooldown.Start();
     }
+
+	/// <summary>
+	/// Tries to shoot if cooldown is off
+	/// </summary>
+	public bool TryShoot()
+	{
+		if (_canShoot)
+		{
+			SpawnBullets();
+			return true;
+		}
+		return false;
+	}
 
 	public void StartShooting()
 	{
@@ -76,9 +101,9 @@ public partial class FiringComponent : Node
 		_shootCooldown.Stop();
 	}
 
-	public void ShootCooldownTimeout()
+	public void OnShootCooldownTimeout()
 	{
-		SpawnBullets();
+		_canShoot = true;
 	}
 
 	public void SetBulletSpawnVariables(int quantity, float firingAngle)

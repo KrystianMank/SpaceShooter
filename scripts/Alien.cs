@@ -28,7 +28,6 @@ public partial class Alien : Entity
         FiringComponent.BulletSprite = EnemyBulletSprite;
         FiringComponent.PlayerBullet = false;
         FiringComponent.SetBulletSpawnVariables(1,0f);
-        FiringComponent.StartShooting();
     }
 
     public override void _Process(double delta)
@@ -97,6 +96,8 @@ public partial class Alien : Entity
             _ => 0f
 
         };
+
+        FiringComponent.TryShoot();
          
     }
 

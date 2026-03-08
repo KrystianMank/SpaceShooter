@@ -7,10 +7,11 @@
 [ext_resource type="PackedScene" uid="uid://coct2sxk5l3xy" path="res://hud.tscn" id="4_1bvp3"]
 [ext_resource type="Resource" uid="uid://cerjimvspnwdo" path="res://resources/entityResource/ShotingAlien.tres" id="4_dg77c"]
 [ext_resource type="AudioStream" uid="uid://buhfwkj3awnsm" path="res://sounds/cosmic-minimal-music-fragment-55131.mp3" id="5_lquwl"]
-[ext_resource type="Resource" uid="uid://dy2iy2jivvtof" path="res://resources/entityResource/SeekingAlien.tres" id="5_ycdy4"]
 [ext_resource type="AudioStream" uid="uid://dg7ycj234572q" path="res://sounds/gameover.wav" id="6_7mycd"]
 [ext_resource type="Texture2D" uid="uid://bggbt630fp2ca" path="res://sprites/background/backround_image.png" id="7_272bh"]
 [ext_resource type="Texture2D" uid="uid://du74q21rvnt6f" path="res://sprites/rocket/rocket_dash_blink.png" id="10_4c57u"]
+[ext_resource type="PackedScene" uid="uid://bd4rlcueenm1x" path="res://seeking_alien.tscn" id="11_dg77c"]
+[ext_resource type="Script" uid="uid://d08mlsbkercgh" path="res://scripts/EntityResource.cs" id="12_ycdy4"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qtqh7"]
 atlas = ExtResource("10_4c57u")
@@ -59,6 +60,12 @@ animations = [{
 vertices = PackedVector2Array(710.89844, 8.9765625, 704.09375, 716.9297, 8, 712.0625, 8, 8.0078125)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(721, -1, 714, 727, -2, 722, -2, -2)])
+
+[sub_resource type="Resource" id="Resource_w48qg"]
+script = ExtResource("12_ycdy4")
+EntityScene = ExtResource("11_dg77c")
+EntityType = 2
+InitialSpawnTime = 3.0
 
 [node name="Main" type="Node" unique_id=359640060 node_paths=PackedStringArray("EntitySpawner") groups=["main"]]
 script = ExtResource("1_0xm2m")
@@ -121,7 +128,7 @@ speed_scale = 2.0
 navigation_polygon = SubResource("NavigationPolygon_efxa6")
 
 [node name="EntitySpawnerComponent" parent="." unique_id=1460464678 instance=ExtResource("2_5vw27")]
-EntityResources = Array[Resource]([ExtResource("3_efxa6"), ExtResource("4_dg77c"), ExtResource("5_ycdy4")])
+EntityResources = Array[Resource]([ExtResource("3_efxa6"), ExtResource("4_dg77c"), SubResource("Resource_w48qg")])
 
 [node name="StartTimer" type="Timer" parent="." unique_id=1035437602]
 wait_time = 2.0

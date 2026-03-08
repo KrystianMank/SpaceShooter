@@ -16,7 +16,8 @@ public partial class PlayerWeapon : Node
 	public PlayerStats PlayerStats;
 	public WeaponTypes CurrentWeaponType;
 	private int _weaponIndex;
-	private PackedScene _currentWeapon;
+	public PackedScene CurrentWeapon;
+	public Laser Laser = null;
 	private Texture2D _currentWeaponTexture;
 	private Texture2D _currentWeaponFrame;
 	private bool _animationFinished = true;
@@ -94,7 +95,7 @@ public partial class PlayerWeapon : Node
 		_weaponIndex = 0;
 		CurrentWeaponType = WeaponTypes.MaschineGun;
 
-		_currentWeapon = WeaponScenes[_weaponIndex];
+		CurrentWeapon = WeaponScenes[_weaponIndex];
 		_currentWeaponTexture = WeaponSprites[_weaponIndex];
 		_currentWeaponFrame = WeaponFrames[_weaponIndex];
 
@@ -123,7 +124,7 @@ public partial class PlayerWeapon : Node
 			? (_weaponIndex < WeaponScenes.Length -1 ? ++_weaponIndex : _weaponIndex = 0)
 			: (_weaponIndex > 0 ? --_weaponIndex : _weaponIndex = WeaponScenes.Length - 1);
 		CurrentWeaponType = (WeaponTypes)_weaponIndex;
-		_currentWeapon = WeaponScenes[_weaponIndex];
+		CurrentWeapon = WeaponScenes[_weaponIndex];
 		_currentWeaponTexture = WeaponSprites[_weaponIndex];
 		_currentWeaponFrame = WeaponFrames[_weaponIndex];
 
@@ -175,7 +176,6 @@ public partial class PlayerWeapon : Node
 		if (PlayerStats == null)
 			return;
 
-		FiringComponent.BulletScene = _currentWeapon;
 		
 		// Recalculate weapon stats based on current player stats
 		WeaponStatsMultiplier multiplier = CurrentWeaponType switch
@@ -192,6 +192,20 @@ public partial class PlayerWeapon : Node
 
 		SetWeaponVariables((int)bulletSpeed, bulletDamage, fireRate);
 		FiringComponent.BulletSprite = _currentWeaponTexture;
+
+		if(CurrentWeaponType == WeaponTypes.Laser)
+		{
+			Laser = CurrentWeapon.Instantiate<Laser>();
+			GetOwner<Player>().AddChild(Laser);
+			Laser.Damage = bulletDamage;
+			Laser.CastSpeed = bulletSpeed;
+			Laser.MaxPierce = FiringComponent.MaxPierce;
+		}
+		else
+		{
+			if(IsInstanceValid(Laser)) Laser.QueueFree();
+			FiringComponent.BulletScene = CurrentWeapon;
+		}
 	}
 	
 	/// <summary>

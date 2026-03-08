@@ -146,6 +146,19 @@ public partial class Player : Area2D
 			x: Mathf.Clamp(Position.X, 0, ScreenSize.X),
 			y: Mathf.Clamp(Position.Y, 0, ScreenSize.Y)
 		);
+		if(PlayerWeapon.CurrentWeaponType == WeaponTypes.Laser && PlayerWeapon.Laser != null)
+		{
+			PlayerWeapon.Laser.IsCasting = Input.IsActionPressed("shoot");
+		}
+		else
+		{
+			if(Input.IsActionPressed("shoot"))
+				PlayerWeapon.FiringComponent.TryShoot();
+		}
+		// else
+		// {
+		// 	PlayerWeapon.FiringComponent.StopShooting();
+		// }
 		
 		if (_isDashActive)
 		{
@@ -236,7 +249,7 @@ public partial class Player : Area2D
 
 		PlayerWeapon.SetWeaponVariables(playerStats.BulletSpeed.Value, playerStats.Damage.Value, playerStats.FireRate.Value);
 		PlayerWeapon.SetBulletQuantity(1);
-		PlayerWeapon.FiringComponent.StartShooting();
+		//PlayerWeapon.FiringComponent.StartShooting();
     }
 
 	/// <summary>
@@ -244,7 +257,7 @@ public partial class Player : Area2D
     /// </summary>
 	async public void PlayerDeath()
 	{
-		PlayerWeapon.FiringComponent.StopShooting();
+		//PlayerWeapon.FiringComponent.StopShooting();
 		PlayerAlive = false;
 
 		var explosionAnimation = GetNode<AnimatedSprite2D>("ExplosionAnimation");

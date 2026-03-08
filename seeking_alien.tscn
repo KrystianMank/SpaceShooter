@@ -118,7 +118,6 @@ sprite_frames = SubResource("SpriteFrames_6tppj")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=133313048]
 scale = Vector2(1, 0.997)
 shape = SubResource("RectangleShape2D_r0736")
-disabled = true
 
 [node name="ExplosionSound" type="AudioStreamPlayer2D" parent="." unique_id=82247124]
 stream = ExtResource("4_um4xl")

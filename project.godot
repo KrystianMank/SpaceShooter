@@ -47,6 +47,7 @@ weapon_holder=""
 player=""
 hud=""
 main=""
+laser=""
 
 [input]
 
