@@ -153,7 +153,6 @@ animations = [{
 
 [node name="Player" type="Area2D" unique_id=2018958441 node_paths=PackedStringArray("PowerupTimer", "PlayerWeapon", "HealthComponent")]
 scale = Vector2(1.2, 1.2)
-collision_layer = 3
 script = ExtResource("1_op7ga")
 RocketTextures = Array[Texture2D]([ExtResource("2_b26j0"), ExtResource("3_n7ghd"), ExtResource("4_nvl01")])
 PowerupContainerEmpty = ExtResource("6_urp6f")
@@ -166,7 +165,6 @@ texture = ExtResource("4_nvl01")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1597506381]
 shape = SubResource("CapsuleShape2D_hqtel")
-disabled = true
 
 [node name="BulletSpawn" type="Marker2D" parent="." unique_id=793124666]
 position = Vector2(0, -40)

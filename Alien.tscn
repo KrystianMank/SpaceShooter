@@ -77,16 +77,16 @@ shape = SubResource("RectangleShape2D_qtl1n")
 stream = ExtResource("4_pmswm")
 
 [node name="DownShootPosition" type="Marker2D" parent="." unique_id=1950856162]
-position = Vector2(0, 13)
+position = Vector2(0, 19)
 
 [node name="UpShootPosition" type="Marker2D" parent="." unique_id=725502900]
-position = Vector2(0, -13)
+position = Vector2(0, -20)
 
 [node name="RightShootPosition" type="Marker2D" parent="." unique_id=1978242346]
-position = Vector2(29, 0)
+position = Vector2(34, 0)
 
 [node name="LeftShootPosition" type="Marker2D" parent="." unique_id=1723511607]
-position = Vector2(-30, 0)
+position = Vector2(-34, 0)
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1692498556]
 

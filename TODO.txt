@@ -1,4 +1,3 @@
-- Alien strzelając uderza siebie samego
 - Przeciwnik nie niszczy się po uderzeniu innego przeciwnika
 
  
