@@ -1,0 +1,154 @@
+[gd_scene format=3 uid="uid://c4vm0pvcq87pa"]
+
+[ext_resource type="Script" uid="uid://bdlo7tacbv4cf" path="res://scripts/Laser.cs" id="2_g6b45"]
+[ext_resource type="Texture2D" uid="uid://biuqgwd5tenq4" path="res://sprites/glowing_particle.png" id="3_g6b45"]
+[ext_resource type="Texture2D" uid="uid://cqm64i3gpqy02" path="res://resources/scale_curve.tres" id="4_7vci3"]
+[ext_resource type="AudioStream" uid="uid://8pl333hg8pkk" path="res://sounds/steam-pipe-burst-str3.mp3" id="6_3gdm7"]
+[ext_resource type="Texture2D" uid="uid://c1h4udcm53mos" path="res://sprites/termometr/termometr_frame.png" id="6_5ny2x"]
+[ext_resource type="Texture2D" uid="uid://dftwtgfdflfkl" path="res://sprites/termometr/terometer_fill.png" id="7_3gdm7"]
+[ext_resource type="Texture2D" uid="uid://eefcd6kdk1s1" path="res://sprites/steam.png" id="9_yfymw"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2hs0m"]
+
+[sub_resource type="Gradient" id="Gradient_7vci3"]
+offsets = PackedFloat32Array(0, 0.8407258, 1, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.23921569, 0, 0, 0, 0.23921569)
+
+[sub_resource type="Curve" id="Curve_wyhtk"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_7e0re"]
+curve = SubResource("Curve_wyhtk")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_sh4yq"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(75, 1, 1)
+gravity = Vector3(0, -100, 0)
+radial_accel_min = 160.0
+radial_accel_max = 160.0
+scale_min = 0.29999998
+scale_max = 0.59999996
+scale_curve = SubResource("CurveTexture_7e0re")
+color = Color(0.82947975, 0.8294798, 0.82947975, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_roivt"]
+gradient = SubResource("Gradient_7vci3")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_roivt"]
+particle_flag_disable_z = true
+initial_velocity_min = 100.0
+initial_velocity_max = 100.0
+gravity = Vector3(0, 98, 0)
+scale_min = 0.5
+scale_max = 0.5
+scale_curve = ExtResource("4_7vci3")
+color_ramp = SubResource("GradientTexture1D_roivt")
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_7vci3"]
+gradient = SubResource("Gradient_7vci3")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_7vci3"]
+particle_flag_disable_z = true
+spread = 50.0
+initial_velocity_min = 300.0
+initial_velocity_max = 300.0
+gravity = Vector3(0, 98, 0)
+scale_min = 0.5
+scale_max = 0.5
+scale_curve = ExtResource("4_7vci3")
+color_ramp = SubResource("GradientTexture1D_7vci3")
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_xw5cg"]
+gradient = SubResource("Gradient_7vci3")
+
+[sub_resource type="Curve" id="Curve_7vci3"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.50216454, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_xw5cg"]
+curve = SubResource("Curve_7vci3")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_xw5cg"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(230, 1, 1)
+direction = Vector3(-1, 0, 0)
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+tangential_accel_min = 99.99999
+tangential_accel_max = 99.99999
+scale_min = 0.29999998
+scale_max = 0.29999998
+scale_curve = SubResource("CurveTexture_xw5cg")
+color_ramp = SubResource("GradientTexture1D_xw5cg")
+
+[node name="Laser" type="RayCast2D" unique_id=1052263225]
+material = SubResource("ShaderMaterial_2hs0m")
+target_position = Vector2(0, -500)
+collision_mask = 16
+script = ExtResource("2_g6b45")
+
+[node name="Line2D" type="Line2D" parent="." unique_id=1744580704]
+visible = false
+points = PackedVector2Array(0, -40, 0, -500)
+gradient = SubResource("Gradient_7vci3")
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="CooldownParticles" type="GPUParticles2D" parent="." unique_id=1379052016]
+emitting = false
+amount = 30
+texture = ExtResource("9_yfymw")
+lifetime = 0.7
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_sh4yq")
+
+[node name="CastingParticles" type="GPUParticles2D" parent="." unique_id=416948762]
+position = Vector2(0, -40)
+rotation = -1.5707964
+emitting = false
+texture = ExtResource("3_g6b45")
+lifetime = 0.3
+process_material = SubResource("ParticleProcessMaterial_roivt")
+
+[node name="CollisionParticles" type="GPUParticles2D" parent="." unique_id=1944988497]
+emitting = false
+amount = 16
+texture = ExtResource("3_g6b45")
+lifetime = 0.3
+process_material = SubResource("ParticleProcessMaterial_7vci3")
+
+[node name="BeamParticles" type="GPUParticles2D" parent="." unique_id=858156263]
+position = Vector2(0, -270)
+rotation = 1.5707964
+emitting = false
+amount = 50
+texture = ExtResource("3_g6b45")
+process_material = SubResource("ParticleProcessMaterial_xw5cg")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=644563512]
+
+[node name="Termometr" type="TextureProgressBar" parent="CanvasLayer" unique_id=642271764]
+anchors_preset = -1
+anchor_left = 0.9537037
+anchor_top = 0.22222222
+anchor_right = 1.0
+anchor_bottom = 0.7777778
+grow_horizontal = 0
+grow_vertical = 2
+fill_mode = 3
+texture_under = ExtResource("6_5ny2x")
+texture_progress = ExtResource("7_3gdm7")
+texture_progress_offset = Vector2(9, 21)
+tint_progress = Color(0, 1, 0, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="SoundEffects" type="Node" parent="." unique_id=1003539945]
+
+[node name="ShootSound" type="AudioStreamPlayer2D" parent="SoundEffects" unique_id=1475975518]
+
+[node name="CooldownSound" type="AudioStreamPlayer2D" parent="SoundEffects" unique_id=1861265813]
+stream = ExtResource("6_3gdm7")
+pitch_scale = 1.5
