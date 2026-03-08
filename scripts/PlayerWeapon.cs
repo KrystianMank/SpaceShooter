@@ -9,6 +9,8 @@ public partial class PlayerWeapon : Node
 	[Export]
 	public Texture2D[] WeaponSprites;
 	[Export]
+	public Texture2D[] WeaponFrames;
+	[Export]
 	public AnimatedSprite2D WeaponChangeAnimation;
 	public FiringComponent FiringComponent;
 	public PlayerStats PlayerStats;
@@ -16,6 +18,7 @@ public partial class PlayerWeapon : Node
 	private int _weaponIndex;
 	private PackedScene _currentWeapon;
 	private Texture2D _currentWeaponTexture;
+	private Texture2D _currentWeaponFrame;
 	private bool _animationFinished = true;
 	const float WEAPON_CHANGE_TIME = 2F;
 
@@ -93,6 +96,7 @@ public partial class PlayerWeapon : Node
 
 		_currentWeapon = WeaponScenes[_weaponIndex];
 		_currentWeaponTexture = WeaponSprites[_weaponIndex];
+		_currentWeaponFrame = WeaponFrames[_weaponIndex];
 
 		if (PlayerStats == null)
 			return;
@@ -121,6 +125,7 @@ public partial class PlayerWeapon : Node
 		CurrentWeaponType = (WeaponTypes)_weaponIndex;
 		_currentWeapon = WeaponScenes[_weaponIndex];
 		_currentWeaponTexture = WeaponSprites[_weaponIndex];
+		_currentWeaponFrame = WeaponFrames[_weaponIndex];
 
 		WeaponChangeAnim();
 	}
@@ -203,7 +208,7 @@ public partial class PlayerWeapon : Node
 	private void SetWeaponToHUD()
 	{
 		 var weaponHolder = GetTree().GetNodesInGroup("weapon_holder");
-		weaponHolder[0].GetNode<Sprite2D>("PanelContainer/WeaponContainer").Texture = _currentWeaponTexture;
+		weaponHolder[0].GetNode<Sprite2D>("PanelContainer/WeaponContainer").Texture = _currentWeaponFrame;
 	}
 	/// <summary>
 	/// Weapon change aniamtion, while it's active stop shooting. Can't change weapon during the aniamtion
@@ -212,13 +217,13 @@ public partial class PlayerWeapon : Node
 	{
 		WeaponChangeAnimation.Play();
 		_animationFinished = false;
-		FiringComponent.StopShooting();
+		//FiringComponent.StopShooting();
 
 		await ToSignal(WeaponChangeAnimation, AnimatedSprite2D.SignalName.AnimationFinished);
 
 		_animationFinished = true;
 		SetWeapon();
 		SetWeaponToHUD();
-		FiringComponent.StartShooting();
+		//FiringComponent.StartShooting();
 	}
 }
