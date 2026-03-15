@@ -1,14 +1,30 @@
+IN PROGRESS:
+ - PlayerWeapon, strzelanie z różnych rodzajów broni, poprawa bugów
+
+TODO:
 - Przeciwnik nie niszczy się po uderzeniu innego przeciwnika
+- Panel upgrade pojawia się po śmierci gracza
+- Seeking alien nie otrzymuje obrażeń od lasera
+- Zmienić bind do powerup skok
+- Piering, multishoot do lasera
 
  
 NEXT:
 1. Sterowanie na telefon i desktop (panel ustawień) 
 2. Nowe powerup: 
 	- Czarna dziura (wciąga przeciwników do środka i zadaje dmg w czasie)
-4. Miejsce na HUD pokazujące aktualnie trzymaną broń:
-	- zwykłe pociski (normal dmg, normal firerate, mały hitbox) ^
-	- Wybuchające pociski (duży dmg, mały firerate, duże pole rażenia) ^
-	- laser (mały dmg, duży firerate, mały hitbox, ciągła wiązka)
+3. Odpowiednie dźwięki do rakiet
+4. W stats upgrade panel przycisk zmieniający na weapon upgrade panel:
+ - Maschinegun: 
+ 	4.1: większe pociski, 
+	4.2: strzał serią 3 pocisków
+ - RocketLauncher: 
+ 	4.3: większe pole rażenia, 
+	4.4: wybuch zostawia trujący gaz?, płomień? Plama rozpływa się po 5s
+ - Laser: 
+ 	4.5: ładowanie temperatury (przytrzymując przycisk strzału ładujesz temperaturę, nie strzelając. 
+			Zwiększanie temperatury zwiększy damage, strzał można rozpocząc po naciśnięciu prawego przycisku, resetując temperature do 0 ),
+	4.6: zniszczenie przeciwnika wyleczy 0.1 HP
 
 GAME DESIGN:
 System podobnie jak w Brotato czy PicklePete, Kilka poziomów do przejścia na końcu walka z bossem. 
@@ -18,3 +34,7 @@ DONE:
 1. Piercing powerup - poprawa działania ^
 2. Ustawić klase EntitySpawnerComponent bardziej modualrną (boss będzie wybierał jakich przeciwników tworzyć oraz main to samo) ^
 3. Przeciwnik poruszający się w losowe strony i atakujący gracza po zobaczeniu go ^
+4. Miejsce na HUD pokazujące aktualnie trzymaną broń:
+	- zwykłe pociski (normal dmg, normal firerate, mały hitbox) ^
+	- Wybuchające pociski (duży dmg, mały firerate, duże pole rażenia) ^
+	- laser (mały dmg, duży firerate, mały hitbox, ciągła wiązka) ^
