@@ -1,10 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://bqfkb43wagh2r"]
+[gd_scene format=3 uid="uid://bqfkb43wagh2r"]
 
 [ext_resource type="Texture2D" uid="uid://wu0ftdjfxggx" path="res://sprites/poweups/powerup_frame.png" id="1_hqmbj"]
+[ext_resource type="Script" uid="uid://dgxkjinp3s7f5" path="res://scripts/TimeLeftLabel.cs" id="1_in76b"]
 
-[node name="PowerupHolder" type="CanvasLayer" groups=["powerup_holders"]]
+[node name="PowerupHolder" type="CanvasLayer" unique_id=674008850 groups=["powerup_holders"]]
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=2040609481]
+clip_children = 2
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -14,6 +16,17 @@ offset_right = 60.0
 offset_bottom = -55.0
 grow_vertical = 0
 
-[node name="PowerupContainer" type="Sprite2D" parent="PanelContainer"]
+[node name="TimeLeftLabel" type="Label" parent="PanelContainer" unique_id=189855395]
+z_index = 1
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "11"
+script = ExtResource("1_in76b")
+
+[node name="Timer" type="Timer" parent="PanelContainer/TimeLeftLabel" unique_id=843377417]
+
+[node name="PowerupContainer" type="Sprite2D" parent="PanelContainer" unique_id=1699957851]
 position = Vector2(25, 24)
 texture = ExtResource("1_hqmbj")

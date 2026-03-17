@@ -332,7 +332,12 @@ public partial class Player : Area2D
         }
 
 		PowerupTimer.Connect(Godot.Timer.SignalName.Timeout, _powerupCallable);
+
+		var timeLeftTimer = GetTree().GetNodesInGroup("powerup_holders")[0].GetNode<TimeLeftLabel>("PanelContainer/TimeLeftLabel");
+		timeLeftTimer.TimeLeft = PowerupTimer.WaitTime;
 		PowerupTimer.Start();
+		timeLeftTimer.TimeLeftTimer.Start();
+
     }
 	// Cleanup effects for the current powerup
 	private void EndCurrentPowerup()
@@ -378,6 +383,7 @@ public partial class Player : Area2D
     {
         var powerupContainer = GetTree().GetNodesInGroup("powerup_holders");
 		powerupContainer[0].GetNode<Sprite2D>("PanelContainer/PowerupContainer").Texture = PowerupContainerEmpty;	
+
     }
 
 	public void AddSkillPoint()

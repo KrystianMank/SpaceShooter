@@ -47,6 +47,7 @@ animations = [{
 
 [node name="Entity" type="RigidBody2D" unique_id=1527348025]
 gravity_scale = 0.0
+freeze_mode = 1
 script = ExtResource("1_nwmpt")
 PowerupScene = ExtResource("2_03rkj")
 
@@ -73,7 +74,7 @@ shape = SubResource("CircleShape2D_pb85n")
 
 [node name="HurtboxComponent" parent="." unique_id=1179802092 instance=ExtResource("7_pb85n")]
 collision_layer = 16
-collision_mask = 2
+collision_mask = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=192002963]
 shape = SubResource("CircleShape2D_pb85n")

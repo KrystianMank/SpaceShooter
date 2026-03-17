@@ -1,9 +1,7 @@
 IN PROGRESS:
-- Seeking alien nie otrzymuje obrażeń od lasera
+- Czas w jakim minie aktualny posiadany powerup widoczny na ikonce
 TODO:
-- Przeciwnik nie niszczy się po uderzeniu innego przeciwnika
 - Panel upgrade pojawia się po śmierci gracza
-
 - Piering, multishoot do lasera
 
  
