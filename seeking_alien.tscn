@@ -99,10 +99,8 @@ animations = [{
 }]
 
 [node name="SeekingAlien" type="RigidBody2D" unique_id=1527348025 node_paths=PackedStringArray("EntityHP")]
-collision_layer = 0
-collision_mask = 0
 gravity_scale = 0.0
-freeze = true
+freeze_mode = 1
 contact_monitor = true
 max_contacts_reported = 2
 script = ExtResource("1_se815")

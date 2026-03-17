@@ -114,6 +114,7 @@ animations = [{
 
 [node name="Meteor" type="RigidBody2D" unique_id=1523011807 node_paths=PackedStringArray("EntityHP") groups=["entities"]]
 gravity_scale = 0.0
+freeze_mode = 1
 contact_monitor = true
 max_contacts_reported = 2
 script = ExtResource("1_ohe0j")

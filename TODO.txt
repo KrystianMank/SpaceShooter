@@ -1,11 +1,9 @@
 IN PROGRESS:
- - PlayerWeapon, strzelanie z różnych rodzajów broni, poprawa bugów
-
+- Seeking alien nie otrzymuje obrażeń od lasera
 TODO:
 - Przeciwnik nie niszczy się po uderzeniu innego przeciwnika
 - Panel upgrade pojawia się po śmierci gracza
-- Seeking alien nie otrzymuje obrażeń od lasera
-- Zmienić bind do powerup skok
+
 - Piering, multishoot do lasera
 
  

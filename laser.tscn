@@ -87,10 +87,9 @@ color_ramp = SubResource("GradientTexture1D_xw5cg")
 
 [node name="Laser" type="RayCast2D" unique_id=1052263225 groups=["laser"]]
 material = SubResource("ShaderMaterial_2hs0m")
-target_position = Vector2(0, -500)
+target_position = Vector2(0, 0)
 collision_mask = 16
 collide_with_areas = true
-collide_with_bodies = false
 script = ExtResource("2_g6b45")
 
 [node name="Line2D" type="Line2D" parent="." unique_id=1744580704]

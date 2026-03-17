@@ -53,6 +53,7 @@ size = Vector2(36, 17)
 
 [node name="Alien" type="RigidBody2D" unique_id=234025309 node_paths=PackedStringArray("FiringComponent", "EntityHP") groups=["entities"]]
 gravity_scale = 0.0
+freeze_mode = 1
 contact_monitor = true
 max_contacts_reported = 2
 script = ExtResource("1_81ydp")
