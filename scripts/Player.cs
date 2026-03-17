@@ -162,7 +162,7 @@ public partial class Player : Area2D
 			{
 				ShowDashLandLabel(leftDashPos);
 
-				if (Input.IsActionJustPressed("shoot"))
+				if (Input.IsActionJustPressed("dash"))
 				{
 					_leftRightDashAnimation.FlipH = false;
 					_leftRightDashAnimation.Play();
@@ -178,7 +178,7 @@ public partial class Player : Area2D
 			{
 				ShowDashLandLabel(rightDashPos);
 
-				if (Input.IsActionJustPressed("shoot"))
+				if (Input.IsActionJustPressed("dash"))
 				{
 					_leftRightDashAnimation.FlipH = true;
 					_leftRightDashAnimation.Play();
@@ -192,7 +192,7 @@ public partial class Player : Area2D
 			{
 				ShowDashLandLabel(upDashPos);
 
-				if (Input.IsActionJustPressed("shoot"))
+				if (Input.IsActionJustPressed("dash"))
 				{
 					_upDownDashAnimation.Play();
 
