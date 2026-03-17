@@ -22,7 +22,7 @@ public partial class Laser : RayCast2D
 	const double MAX_TEMPERATURE = 100d;
 	const double OVERHEAT_TEMPERATURE = 80d;
 	const double HALFWAY_TEMPERATURE = 50d;
-	private bool _isCooldown = false;
+	public bool IsOnCooldown = false;
 	[Export]
     public double Temperature
     {
@@ -40,11 +40,11 @@ public partial class Laser : RayCast2D
 			if(_temperature >= MAX_TEMPERATURE)
 			{
 				IsCasting = false;
-				_isCooldown = true;
+				IsOnCooldown = true;
 				CooldownSound.Play();
 			}
 
-			CooldownParticles.Emitting = _isCooldown;
+			CooldownParticles.Emitting = IsOnCooldown;
 		}
 	}
 	[Export]
@@ -109,7 +109,7 @@ public partial class Laser : RayCast2D
 	public GpuParticles2D CastingParticles, CollisionParticles, BeamParticles, CooldownParticles;
 	public AudioStreamPlayer2D ShootSound, CooldownSound;
 	public TextureProgressBar Termometer;
-	public Tween Tween = null;
+	//public Tween Tween = null;
 
     private void Disappear()
     {
@@ -140,7 +140,7 @@ public partial class Laser : RayCast2D
 
 		line2D.Visible = false;
 
-		IsCasting = _isCasting;
+		IsCasting = false;
 		Color = _color;
 		
 		line2D.Points = [Vector2.Up * StartingDistance, Vector2.Zero];
@@ -149,6 +149,7 @@ public partial class Laser : RayCast2D
 		RaycastCollide += OnRaycastCollide;
 
 		AddToGroup("laser");
+	
     }
 
     public override void _PhysicsProcess(double delta)
@@ -162,14 +163,15 @@ public partial class Laser : RayCast2D
 			laserEndPosition = ToLocal(GetCollisionPoint());
 			CollisionParticles.GlobalRotation = GetCollisionNormal().Angle();
 			CollisionParticles.Position = laserEndPosition;
-			GD.Print("colliding");
 		}
 		line2D.SetPointPosition(1, laserEndPosition);
 
-		CollisionParticles.Emitting = IsColliding();
+		CollisionParticles.Emitting = IsCasting && IsColliding();
 
 		var laserStartPosition = line2D.Points[0];
-		BeamParticles.Position = laserStartPosition + (laserEndPosition - laserStartPosition) * 0.5f; // środek linii
+		BeamParticles.Position = laserStartPosition + (laserEndPosition - laserStartPosition) * 0.5f; // middle of the line
+
+		// setting the box in which the particles will display
 		if(BeamParticles.ProcessMaterial is ParticleProcessMaterial material)
 		{
 			Vector3 extents = material.EmissionBoxExtents;
@@ -196,15 +198,15 @@ public partial class Laser : RayCast2D
     public override void _Process(double delta)
     {
         if(IsCasting) Temperature += 0.1d;
-		else if(IsCasting == false && _isCooldown == false) Temperature -= 0.1d;
+		else if(IsCasting == false && IsOnCooldown == false) Temperature -= 0.1d;
 
-		if(_isCooldown)
+		if(IsOnCooldown)
 		{
 			Temperature -= 0.1;
 			IsCasting = false;
 			
-			if(_temperature <= 0) {  // Changed from >= to <=
-				_isCooldown = false;
+			if(_temperature <= 0) { 
+				IsOnCooldown = false;
 			}
 		}
     }

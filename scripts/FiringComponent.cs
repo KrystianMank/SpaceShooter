@@ -42,7 +42,7 @@ public partial class FiringComponent : Node
 	{
 	}
 
-	async public void SpawnBullets() 
+	public void SpawnBullets() 
     {
         for(int i = 1; i <= BulletQuantity; i++)
         {
@@ -63,10 +63,10 @@ public partial class FiringComponent : Node
 			_bullet.AddToGroup("bullet");
 			_bullet.GetNode<HitboxComponent>(nameof(HitboxComponent)).Damage = BulletDamage.Value;
 
-			if (i < BulletQuantity)
-			{
-				await ToSignal(GetTree().CreateTimer(0.05), Timer.SignalName.Timeout);
-			}
+			// if (i < BulletQuantity)
+			// {
+			// 	await ToSignal(GetTree().CreateTimer(0.05), Timer.SignalName.Timeout);
+			// }
         }
 		
 		_firingAnimation.Frame = 0;

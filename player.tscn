@@ -19,7 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://bhnjy00ckemy4" path="res://sprites/bullet_fire/rocket_projectile.png" id="16_pylmc"]
 [ext_resource type="Texture2D" uid="uid://craxdohx2abi" path="res://sprites/rocket/dash_updown.png" id="16_u1c27"]
 [ext_resource type="Texture2D" uid="uid://dl7bcymn7k3v8" path="res://sprites/poweups/weapon_laser.png" id="17_pbfsw"]
-[ext_resource type="Texture2D" uid="uid://phklvrhvyyk1" path="res://icon.svg" id="18_7ahtn"]
+[ext_resource type="Texture2D" uid="uid://phklvrhvyyk1" path="res://sprites/icon.svg" id="18_7ahtn"]
 [ext_resource type="Texture2D" uid="uid://caxumhxer8jde" path="res://sprites/poweups/weapon_maschinegun.png" id="19_7lmhl"]
 [ext_resource type="Texture2D" uid="uid://5um6ooqryp0k" path="res://sprites/poweups/weapon_rocket.png" id="20_dx0e4"]
 

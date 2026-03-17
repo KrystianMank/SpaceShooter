@@ -18,6 +18,7 @@ config/name="Space Shooter"
 config/version="0.4"
 run/main_scene="uid://coofy7hsq27pt"
 config/features=PackedStringArray("4.6", "C#", "Mobile")
+run/max_fps=240
 boot_splash/bg_color=Color(0, 0.17495865, 0.4916125, 1)
 boot_splash/use_filter=false
 boot_splash/image="uid://cdqfpe7yh47jj"
@@ -34,6 +35,17 @@ window/size/maximize_disabled=true
 [dotnet]
 
 project/assembly_name="Space Shooter"
+
+[file_customization]
+
+folder_colors={
+"res://addons/": "teal",
+"res://fonts/": "yellow",
+"res://resources/": "red",
+"res://scripts/": "blue",
+"res://sounds/": "pink",
+"res://sprites/": "green"
+}
 
 [global_group]
 

@@ -14,20 +14,24 @@ NEXT:
 2. Nowe powerup: 
 	- Czarna dziura (wciąga przeciwników do środka i zadaje dmg w czasie)
 3. Odpowiednie dźwięki do rakiet
-4. W stats upgrade panel przycisk zmieniający na weapon upgrade panel:
+4. W stats upgrade panel przycisk zmieniający na weapon upgrade panel (cena skill pointy czy nowa waluta?):
  - Maschinegun: 
  	4.1: większe pociski, 
-	4.2: strzał serią 3 pocisków
+	4.2: strzał serią 3 pocisków 
  - RocketLauncher: 
  	4.3: większe pole rażenia, 
 	4.4: wybuch zostawia trujący gaz?, płomień? Plama rozpływa się po 5s
  - Laser: 
  	4.5: ładowanie temperatury (przytrzymując przycisk strzału ładujesz temperaturę, nie strzelając. 
 			Zwiększanie temperatury zwiększy damage, strzał można rozpocząc po naciśnięciu prawego przycisku, resetując temperature do 0 ),
-	4.6: zniszczenie przeciwnika wyleczy 0.1 HP
+	4.6: trafienie przeciwnika powoduje rykoszet
+
+5. BOSS, (zabicie dodaje 5 skill point lub walute?):
+ 5.1: Garbage Collector: wystrzeliwuje w regularnych odstępach w kształcie stożka w strone gracza śmieci. Pochłania nadlatujące meteory i satelity, by gdy zbierze ich 5 utworzy dużą kulę, wystrzeliwując ją w stronę gracza
+ 5.2: The charger: przelatuje w jednym kierunku przez całą długość planszy kilka razy, np. od góry do dołu, potem od dołu do góry. Na drodze przelotu zostawia jedną bombę 
 
 GAME DESIGN:
-System podobnie jak w Brotato czy PicklePete, Kilka poziomów do przejścia na końcu walka z bossem. 
+System podobnie jak w Brotato czy PicklePete, Kilka poziomów do przejścia na końcu walka z bossem, poprzedzone animacją najechania panelu z spritem i nazwą bossa. 
 Koniec poziomu kończy się animacją przelotu do góry i pokazaniem panelu ulepszeń, po kliknięciu "Continue", przejście na następny poziom
 
 DONE:

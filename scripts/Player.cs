@@ -17,12 +17,6 @@ public partial class Player : Area2D
 	public PlayerWeapon PlayerWeapon;
 	[Export]
 	public HealthComponent HealthComponent;
-	// [Export]
-	// public FiringComponent FiringComponent;
-	// [Export]
-	// public Texture2D[] BulletSprites;
-	// [Export]
-	// public PackedScene[] ProjectileScenes;
 	
 	public Vector2 ScreenSize;
 	public TextureRect MainBackground;
@@ -83,6 +77,7 @@ public partial class Player : Area2D
         // };
 
 		PlayerWeapon.PlayerStats = playerStats;
+		PlayerWeapon.Init();
     }
 
 
@@ -92,9 +87,10 @@ public partial class Player : Area2D
 	{
 		_velocity = Vector2.Zero;
 		_rocketSprite.Texture = RocketTextures[2];
-		//PlayerWeapon.FiringComponent.BulletSpawn.Position = GetNode<Marker2D>("BulletSpawn").GlobalPosition;
+        //PlayerWeapon.FiringComponent.BulletSpawn.Position = GetNode<Marker2D>("BulletSpawn").GlobalPosition;
 
-		if(PlayerAlive){
+        if (PlayerAlive)
+        {
 			if (Input.IsActionPressed("turn_left"))
 			{
 				_velocity.X -= 1;
@@ -140,25 +136,20 @@ public partial class Player : Area2D
 				_velocity = _velocity.Normalized() * playerStats.Speed.Value;
 			}
 			Position += _velocity * (float)delta;
-		}
-		// Player can't go outside the screen boundaries
-		Position = new Vector2(
-			x: Mathf.Clamp(Position.X, 0, ScreenSize.X),
-			y: Mathf.Clamp(Position.Y, 0, ScreenSize.Y)
-		);
-		if(PlayerWeapon.CurrentWeaponType == WeaponTypes.Laser && PlayerWeapon.Laser != null)
+
+		// Shooting logic
+		if(PlayerWeapon.CurrentWeaponType == WeaponTypes.Laser && PlayerWeapon.Laser != null && PlayerWeapon.WeaponChangeAnimationFinished)
 		{
-			PlayerWeapon.Laser.IsCasting = Input.IsActionPressed("shoot");
+			PlayerWeapon.Laser.IsCasting = Input.IsActionPressed("shoot") && !PlayerWeapon.Laser.IsOnCooldown;
 		}
 		else
 		{
-			if(Input.IsActionPressed("shoot"))
+			if(Input.IsActionPressed("shoot") && PlayerWeapon.WeaponChangeAnimationFinished)
+			{
 				PlayerWeapon.FiringComponent.TryShoot();
-		}
-		// else
-		// {
-		// 	PlayerWeapon.FiringComponent.StopShooting();
-		// }
+			}
+        }
+		
 		
 		if (_isDashActive)
 		{
@@ -225,6 +216,12 @@ public partial class Player : Area2D
 			GetNode<HurtboxComponent>("HurtboxComponent").GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred(CollisionShape2D.PropertyName.Disabled, false);
 			timer.QueueFree();
 		}
+		}
+		// Player can't go outside the screen boundaries
+		Position = new Vector2(
+			x: Mathf.Clamp(Position.X, 0, ScreenSize.X),
+			y: Mathf.Clamp(Position.Y, 0, ScreenSize.Y)
+		);
 	}
 
 	/// <summary>
@@ -373,22 +370,6 @@ public partial class Player : Area2D
 		EndCurrentPowerup();
 		PowerupEnded();
 	}
-	// void OnInvincibilityTimeout()
-	// {
-	// 	EndCurrentPowerup();
-	// 	PowerupEnded();
-	// }
-	// void OnMultishotTimeout()
-	// {
-	// 	EndCurrentPowerup();
-	// 	PowerupEnded();
-
-	// }
-	// void OnDashTimeout()
-	// {
-	// 	EndCurrentPowerup();
-	// 	PowerupEnded();
-	// }
 
 	/// <summary>
     /// Change the powerup container to empty one and stop powerup timer
@@ -434,35 +415,6 @@ public partial class Player : Area2D
 		PlayerDeath();
     }
 
-	/// <summary>
-    /// Shows label with damage text
-    /// </summary>
-    /// <param name="hitboxComponent">Entity's hitbox that entered the Player's area</param>
-	// public void ShowDamageLabel(HitboxComponent hitboxComponent)
-    // {
-    //     Label label = new()
-    //     {
-    //         Text = $"-{hitboxComponent.Damage}",
-	// 		Position = GlobalPosition
-	// 	};
-	// 	var customTheme = new Theme();
-	// 	customTheme.SetColor("font_color", "Label", Colors.Red);
-	// 	label.Theme = customTheme;
-
-	// 	GetParent().AddChild(label);
-
-	// 	Godot.Timer timer = new();
-	// 	label.AddChild(timer);
-	// 	timer.WaitTime = 0.5;
-	// 	timer.OneShot = true;
-	// 	timer.Timeout += () => 
-	// 	{
-	// 		if (IsInstanceValid(label))
-	// 			label.QueueFree();
-	// 	};
-	// 	timer.Start();
-    // }
-
 	void ShowDashLandLabel(Vector2 position)
 	{
 		var label = GetParent().GetNode<Label>("DashLandLabel");
@@ -471,7 +423,7 @@ public partial class Player : Area2D
 			BgColor = new Color(0, 0, 0, 0f),
 			BorderColor = new Color(255, 0,0),
 		};
-		label.Position = position;
+		label.Position = position - new Vector2(-20, 0);
 		var customTheme = new Theme();
 		customTheme.SetColor("font_color", "Label", Colors.Red);
 		customTheme.SetStylebox("normal", "Label", styleBox);

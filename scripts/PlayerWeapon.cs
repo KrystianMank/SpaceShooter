@@ -17,10 +17,10 @@ public partial class PlayerWeapon : Node
 	public WeaponTypes CurrentWeaponType;
 	private int _weaponIndex;
 	public PackedScene CurrentWeapon;
-	public Laser Laser = null;
+	public Laser Laser;
 	private Texture2D _currentWeaponTexture;
 	private Texture2D _currentWeaponFrame;
-	private bool _animationFinished = true;
+	public bool WeaponChangeAnimationFinished = true;
 	const float WEAPON_CHANGE_TIME = 2F;
 
 	public readonly struct WeaponStatsMultiplier
@@ -65,6 +65,7 @@ public partial class PlayerWeapon : Node
 		FiringComponent = GetNode<FiringComponent>(nameof(FiringComponent));
 		FiringComponent.PlayerBullet = true;
 		WeaponChangeAnimation.SpeedScale = WEAPON_CHANGE_TIME;
+
 		Reset();
 	}
 
@@ -76,15 +77,22 @@ public partial class PlayerWeapon : Node
 
 		if(GetOwner<Player>().PlayerAlive)
 			// Changing to next weapon
-			if (Input.IsActionJustPressed("next_weapon") && _animationFinished)
+			if (Input.IsActionJustPressed("next_weapon") && WeaponChangeAnimationFinished)
 			{
 				ChangeWeapon(true);
 			}
 			// Changing to previous weapon
-			if (Input.IsActionJustPressed("previous_weapon") && _animationFinished)
+			if (Input.IsActionJustPressed("previous_weapon") && WeaponChangeAnimationFinished)
 			{
 				ChangeWeapon(false);
 			}
+	}
+
+	public void Init()
+	{
+		Laser = WeaponScenes[2].Instantiate<Laser>();
+		GetOwner<Player>().AddChild(Laser);
+		Laser.GetNode<CanvasLayer>(nameof(CanvasLayer)).Visible = false;
 	}
 
 	/// <summary>
@@ -195,17 +203,19 @@ public partial class PlayerWeapon : Node
 
 		if(CurrentWeaponType == WeaponTypes.Laser)
 		{
-			Laser = CurrentWeapon.Instantiate<Laser>();
-			GetOwner<Player>().AddChild(Laser);
+			Laser.GetNode<CanvasLayer>(nameof(CanvasLayer)).Visible =  true;
 			Laser.Damage = bulletDamage;
 			Laser.CastSpeed = bulletSpeed;
 			Laser.MaxPierce = FiringComponent.MaxPierce;
 		}
 		else
 		{
-			if(IsInstanceValid(Laser)) Laser.QueueFree();
+			if(IsInstanceValid(Laser)) {
+				Laser.GetNode<CanvasLayer>(nameof(CanvasLayer)).Visible = false;
+			}
 			FiringComponent.BulletScene = CurrentWeapon;
 		}
+		Laser.IsCasting = false;
 	}
 	
 	/// <summary>
@@ -230,12 +240,14 @@ public partial class PlayerWeapon : Node
 	private async void WeaponChangeAnim()
 	{
 		WeaponChangeAnimation.Play();
-		_animationFinished = false;
+		WeaponChangeAnimationFinished = false;
+		Laser.IsCasting = false;
+		
 		//FiringComponent.StopShooting();
 
 		await ToSignal(WeaponChangeAnimation, AnimatedSprite2D.SignalName.AnimationFinished);
 
-		_animationFinished = true;
+		WeaponChangeAnimationFinished = true;
 		SetWeapon();
 		SetWeaponToHUD();
 		//FiringComponent.StartShooting();
