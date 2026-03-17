@@ -1,1 +1,9 @@
-Sounds effects: https://www.101soundboards.com
+Sounds effects: 
+- Laser sounds:	https://www.101soundboards.com 
+- Powerup sounds: Lolo_s Pixabay
+- Background music: Clacksberg (Freesound) Pixabay
+- Maschinegun sound: Sergenious (Freesound) Pixabay
+- Explosion sound: RibhavAgrawal Pixabay
+
+Pixelart:
+ - Background: u/astrellon3 Reddit
