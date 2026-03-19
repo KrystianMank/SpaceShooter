@@ -290,6 +290,7 @@ public partial class Player : Area2D
 	public void OnPowerupPicked(PowerupEnum powerupEnum)
     {
 		GD.Print("powerup picked");
+		GetNode<AudioStreamPlayer2D>("PowerupPickedSound").Play();
 		_currentPowerup = powerupEnum;
         switch (powerupEnum)
         {
@@ -333,11 +334,12 @@ public partial class Player : Area2D
 
 		PowerupTimer.Connect(Godot.Timer.SignalName.Timeout, _powerupCallable);
 
-		var timeLeftTimer = GetTree().GetNodesInGroup("powerup_holders")[0].GetNode<TimeLeftLabel>("PanelContainer/TimeLeftLabel");
-		timeLeftTimer.TimeLeft = PowerupTimer.WaitTime;
-		PowerupTimer.Start();
-		timeLeftTimer.TimeLeftTimer.Start();
+		var timeLeftLabel = GetTree().GetNodesInGroup("powerup_holders")[0].GetNode<TimeLeftLabel>("PanelContainer/TimeLeftLabel");
+		timeLeftLabel.AssignValues(PowerupTimer.WaitTime);
 
+		timeLeftLabel.StartTimers();
+		PowerupTimer.Start();
+		
     }
 	// Cleanup effects for the current powerup
 	private void EndCurrentPowerup()
@@ -400,7 +402,7 @@ public partial class Player : Area2D
 
 		playerStats.Speed.Value = DeafultPlayerStatsValues.SPEED;
 		playerStats.FireRate.Value = DeafultPlayerStatsValues.FIRE_RATE;
-		playerStats.Luck.Value = DeafultPlayerStatsValues.LUCK;
+		playerStats.Luck.Value = 20;
 		playerStats.BulletSpeed.Value = DeafultPlayerStatsValues.BULLET_SPEED;
 		playerStats.Damage.Value = DeafultPlayerStatsValues.DAMAGE;
 		playerStats.Health.SetHP(DeafultPlayerStatsValues.HEALTH);
@@ -429,7 +431,7 @@ public partial class Player : Area2D
 			BgColor = new Color(0, 0, 0, 0f),
 			BorderColor = new Color(255, 0,0),
 		};
-		label.Position = position - new Vector2(-20, 0);
+		label.Position = position + new Vector2(-20, 0);
 		var customTheme = new Theme();
 		customTheme.SetColor("font_color", "Label", Colors.Red);
 		customTheme.SetStylebox("normal", "Label", styleBox);

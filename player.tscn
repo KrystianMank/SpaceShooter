@@ -22,6 +22,7 @@
 [ext_resource type="Texture2D" uid="uid://phklvrhvyyk1" path="res://sprites/icon.svg" id="18_7ahtn"]
 [ext_resource type="Texture2D" uid="uid://caxumhxer8jde" path="res://sprites/poweups/weapon_maschinegun.png" id="19_7lmhl"]
 [ext_resource type="Texture2D" uid="uid://5um6ooqryp0k" path="res://sprites/poweups/weapon_rocket.png" id="20_dx0e4"]
+[ext_resource type="AudioStream" uid="uid://cb7saas3xd3vh" path="res://sounds/lolo_s-power-up-474087.mp3" id="22_7lmhl"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hqtel"]
 radius = 6.6666665
@@ -183,9 +184,6 @@ position = Vector2(4, -3)
 scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_bwjto")
 
-[node name="ExplosionSound" type="AudioStreamPlayer2D" parent="." unique_id=1854468703]
-stream = ExtResource("12_urp6f")
-
 [node name="HitboxComponent" parent="." unique_id=1896230338 instance=ExtResource("8_ivps1")]
 collision_layer = 2
 collision_mask = 16
@@ -222,6 +220,12 @@ WeaponSprites = Array[Texture2D]([ExtResource("15_q13i1"), ExtResource("16_pylmc
 WeaponFrames = Array[Texture2D]([ExtResource("19_7lmhl"), ExtResource("20_dx0e4"), ExtResource("17_pbfsw")])
 
 [node name="HealthComponent" parent="." unique_id=1107344304 instance=ExtResource("13_urp6f")]
+
+[node name="PowerupPickedSound" type="AudioStreamPlayer2D" parent="." unique_id=160773526]
+stream = ExtResource("22_7lmhl")
+
+[node name="ExplosionSound" type="AudioStreamPlayer2D" parent="." unique_id=1854468703]
+stream = ExtResource("12_urp6f")
 
 [connection signal="area_entered" from="." to="." method="OnAreaEntered"]
 
