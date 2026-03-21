@@ -1,9 +1,8 @@
 IN PROGRESS:
-- Czas w jakim minie aktualny posiadany powerup widoczny na ikonce
-TODO:
-- Panel upgrade pojawia się po śmierci gracza
-- Piering, multishoot do lasera
+- Timer fali, na której końcu pojawia się panel ulepszeń
 
+TODO:
+- Piering, multishoot do lasera
  
 NEXT:
 1. Sterowanie na telefon i desktop (panel ustawień) 
@@ -38,3 +37,4 @@ DONE:
 	- zwykłe pociski (normal dmg, normal firerate, mały hitbox) ^
 	- Wybuchające pociski (duży dmg, mały firerate, duże pole rażenia) ^
 	- laser (mały dmg, duży firerate, mały hitbox, ciągła wiązka) ^
+5. Czas w jakim minie aktualny posiadany powerup widoczny na ikonce

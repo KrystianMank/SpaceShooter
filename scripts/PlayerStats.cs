@@ -18,7 +18,7 @@ public class PlayerStats
     public Observable<double> DashPowerupDuration = new();
 
 
-    public Dictionary<string,object> PlayerStatsList = new Dictionary<string, object>();
+    public Dictionary<string,double> PlayerStatsList = new Dictionary<string, double>();
     public PlayerWeapon PlayerWeapon;
     public PlayerStats(PlayerWeapon playerWeapon)
     {

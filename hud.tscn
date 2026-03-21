@@ -50,6 +50,18 @@ text = "Space Shooter"
 horizontal_alignment = 1
 autowrap_mode = 2
 
+[node name="WaveTimeLabel" type="Label" parent="." unique_id=1309095945]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -32.0
+offset_top = 110.0
+offset_right = 32.0
+offset_bottom = 145.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 25
+
 [node name="StartButton" type="Button" parent="." unique_id=1129690758]
 anchors_preset = 7
 anchor_left = 0.5
@@ -96,8 +108,7 @@ layer = 0
 
 [connection signal="PlayerStatsPanelReady" from="." to="PlayerStatsPanel" method="OnReady"]
 [connection signal="PlayerStatsUpgradePanelReady" from="." to="StatsUpgradePanel" method="OnPlayerStatsUpgradePanelReady"]
-[connection signal="Option1Picked" from="StatsUpgradePanel" to="." method="OnStatsUpgradePanelButton1Picked"]
-[connection signal="Option2Picked" from="StatsUpgradePanel" to="." method="OnStatsUpgradePanelButton2Picked"]
+[connection signal="CloseButton" from="StatsUpgradePanel" to="." method="OnCloseButtonPicked"]
 [connection signal="pressed" from="StartButton" to="." method="OnStartButtonPressed"]
 [connection signal="timeout" from="MessageTimer" to="." method="OnMessageTimerTimeout"]
 [connection signal="pressed" from="MainMenuButton" to="." method="OnMainMenuButtonPressed"]

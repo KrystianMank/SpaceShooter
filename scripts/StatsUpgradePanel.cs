@@ -4,12 +4,11 @@ using GameEnums;
 using System.Linq;
 using StaticClasses;
 using GenericObervable;
+using System;
 public partial class StatsUpgradePanel : CanvasLayer
 {
 	[Signal]
-	public delegate void Option1PickedEventHandler();
-	[Signal]
-	public delegate void Option2PickedEventHandler();
+	public delegate void CloseButtonEventHandler();
 	
 	Dictionary<UpgradableStatsEnum, double> UpgradableStats;
 	Dictionary<UpgradableStatsEnum, double> DrawnUpgradableStats = new();
@@ -47,7 +46,7 @@ public partial class StatsUpgradePanel : CanvasLayer
     {
         if (Input.IsActionJustPressed("close_upgrade_panel"))
         {
-            EmitSignal(SignalName.Option1Picked);
+            EmitSignal(SignalName.CloseButton);
         }
     }
 
@@ -64,8 +63,8 @@ public partial class StatsUpgradePanel : CanvasLayer
 		//_container.Visible = false;
         GenererateNewStats();
 
-		DisableButton(CallerButton.Option1, DrawnUpgradableStats.Keys.First(), DrawnUpgradableStats[DrawnUpgradableStats.Keys.First()]);
-		DisableButton(CallerButton.Option2, DrawnUpgradableStats.Keys.Last(), DrawnUpgradableStats[DrawnUpgradableStats.Keys.Last()]);
+		// DisableButton(CallerButton.Option1, DrawnUpgradableStats.Keys.First(), DrawnUpgradableStats[DrawnUpgradableStats.Keys.First()]);
+		// DisableButton(CallerButton.Option2, DrawnUpgradableStats.Keys.Last(), DrawnUpgradableStats[DrawnUpgradableStats.Keys.Last()]);
 
 		GetNode<Label>("MarginContainer/Animation/PanelContainer/MarginContainer/Control/SkillPointsLabel").Text = $"Skill points: {_playerStats.SkillPoints.Value}";
 
@@ -80,8 +79,16 @@ public partial class StatsUpgradePanel : CanvasLayer
 	}
 	void GenererateNewStats()
     {
-        DrawnUpgradableStats = UpgradableStats.OrderBy(x => GD.Randi()).Take(2).ToDictionary();
-		OptionButton1.Text = DrawnUpgradableStats.Keys.First().ToString();
+        DrawnUpgradableStats = UpgradableStats.Where(x => _playerStats.PlayerStatsList.First(z => z.Key == x.Key.ToString()).Value < TresholdValues.TresholdValuesDictionary.First(z => z.Key == x.Key).Value)
+											.OrderBy(x => GD.Randi()).Take(2).ToDictionary();
+
+		GD.Print("++++ NewStats +++");
+		foreach(var keyvaluePair in DrawnUpgradableStats)
+		{
+			GD.Print($"{keyvaluePair.Key}  {keyvaluePair.Value}");
+		}								
+
+        OptionButton1.Text = DrawnUpgradableStats.Keys.First().ToString();
 		OptionButton2.Text = DrawnUpgradableStats.Keys.Last().ToString();
 
 		OptionButton1.TooltipText = $"+{DrawnUpgradableStats[DrawnUpgradableStats.Keys.First()]}";
@@ -115,85 +122,85 @@ public partial class StatsUpgradePanel : CanvasLayer
 			break;
 		}
     }
-	void DisableButton(CallerButton callerButton, UpgradableStatsEnum upgradableStatsEnum, double value)
-    {
-        bool shouldDisable = false;
-        switch (upgradableStatsEnum)
-        {
-            case UpgradableStatsEnum.Speed:
-                {
-					if(_playerStats.Speed.Value + value > (int)TresholdValues.MAX_SPEED)
+	// void DisableButton(CallerButton callerButton, UpgradableStatsEnum upgradableStatsEnum, double value)
+    // {
+    //     bool shouldDisable = false;
+    //     switch (upgradableStatsEnum)
+    //     {
+    //         case UpgradableStatsEnum.Speed:
+    //             {
+	// 				if(_playerStats.Speed.Value + value > (int)TresholdValues.MAX_SPEED)
 						
-						shouldDisable = true;
-                    break;
-                }
-			case UpgradableStatsEnum.FireRate:
-                {
-					if(_playerStats.FireRate.Value - value< TresholdValues.MIN_FIRERATE)
+	// 					shouldDisable = true;
+    //                 break;
+    //             }
+	// 		case UpgradableStatsEnum.FireRate:
+    //             {
+	// 				if(_playerStats.FireRate.Value - value< TresholdValues.MIN_FIRERATE)
 
-						shouldDisable = true;
-                    break;
-                }
-			case UpgradableStatsEnum.Luck:
-                {
-					if(_playerStats.Luck.Value + value> TresholdValues.MAX_LUCK)
-						shouldDisable = true;
-                    break;
-                }
-			case UpgradableStatsEnum.BulletSpeed:
-                {
-					if(_playerStats.BulletSpeed.Value + value > TresholdValues.MAX_BULLET_SPEED)
-						shouldDisable = true;
-                    break;
-                }
-			case UpgradableStatsEnum.Damage:
-                {
-                    if(_playerStats.Damage.Value + value > TresholdValues.MAX_DAMAGE)
-						shouldDisable = true;
-                }
-				break;
-			case UpgradableStatsEnum.Health:
-                {
-                    if(_playerStats.Health.GetHP().Value + value >= _playerStats.MaxHealth.Value)
-						shouldDisable = true;
-                }
-				break;
-			case UpgradableStatsEnum.MaxHealth:
-                {
-                    if(_playerStats.MaxHealth.Value + value > TresholdValues.MAX_HEALTH)
-						shouldDisable = true;
-                }
-				break;
-			case UpgradableStatsEnum.InvincibilityPowerupDuration:
-                {
-					if(_playerStats.InvincibilityPowerupDuration.Value + value> TresholdValues.MAX_INVINCIBILITY_POWERUP_DURATION)
-						shouldDisable = true;
-                    break;
-                }
-			case UpgradableStatsEnum.PiercingPowerupDuration:
-                {
-					if(_playerStats.PiercingPowerupDuration.Value + value> TresholdValues.MAX_PIERCING_POWERUP_DURATION)
+	// 					shouldDisable = true;
+    //                 break;
+    //             }
+	// 		case UpgradableStatsEnum.Luck:
+    //             {
+	// 				if(_playerStats.Luck.Value + value> TresholdValues.MAX_LUCK)
+	// 					shouldDisable = true;
+    //                 break;
+    //             }
+	// 		case UpgradableStatsEnum.BulletSpeed:
+    //             {
+	// 				if(_playerStats.BulletSpeed.Value + value > TresholdValues.MAX_BULLET_SPEED)
+	// 					shouldDisable = true;
+    //                 break;
+    //             }
+	// 		case UpgradableStatsEnum.Damage:
+    //             {
+    //                 if(_playerStats.Damage.Value + value > TresholdValues.MAX_DAMAGE)
+	// 					shouldDisable = true;
+    //             }
+	// 			break;
+	// 		case UpgradableStatsEnum.Health:
+    //             {
+    //                 if(_playerStats.Health.GetHP().Value + value >= _playerStats.MaxHealth.Value)
+	// 					shouldDisable = true;
+    //             }
+	// 			break;
+	// 		case UpgradableStatsEnum.MaxHealth:
+    //             {
+    //                 if(_playerStats.MaxHealth.Value + value > TresholdValues.MAX_HEALTH)
+	// 					shouldDisable = true;
+    //             }
+	// 			break;
+	// 		case UpgradableStatsEnum.InvincibilityPowerupDuration:
+    //             {
+	// 				if(_playerStats.InvincibilityPowerupDuration.Value + value> TresholdValues.MAX_INVINCIBILITY_POWERUP_DURATION)
+	// 					shouldDisable = true;
+    //                 break;
+    //             }
+	// 		case UpgradableStatsEnum.PiercingPowerupDuration:
+    //             {
+	// 				if(_playerStats.PiercingPowerupDuration.Value + value> TresholdValues.MAX_PIERCING_POWERUP_DURATION)
 
-						shouldDisable = true;
-                    break;
-                }
-			case UpgradableStatsEnum.MultishotPowerupDuration:
-                {
-					if(_playerStats.MultishotPowerupDuration.Value + value> TresholdValues.MAX_MULTISHOT_POWERUP_DURATION)
+	// 					shouldDisable = true;
+    //                 break;
+    //             }
+	// 		case UpgradableStatsEnum.MultishotPowerupDuration:
+    //             {
+	// 				if(_playerStats.MultishotPowerupDuration.Value + value> TresholdValues.MAX_MULTISHOT_POWERUP_DURATION)
 
-						shouldDisable = true;
-                    break;
-                }
-			case UpgradableStatsEnum.DashPowerupDuration:
-                {
-					if(_playerStats.DashPowerupDuration.Value + value> TresholdValues.MAX_DASH_POWERUP_DURATION)
+	// 					shouldDisable = true;
+    //                 break;
+    //             }
+	// 		case UpgradableStatsEnum.DashPowerupDuration:
+    //             {
+	// 				if(_playerStats.DashPowerupDuration.Value + value> TresholdValues.MAX_DASH_POWERUP_DURATION)
 
-						shouldDisable = true;
-                    break;
-                }
-		}
-		DisableButton(callerButton, shouldDisable);
-    }
+	// 					shouldDisable = true;
+    //                 break;
+    //             }
+	// 	}
+	// 	DisableButton(callerButton, shouldDisable);
+    // }
 	void UpgradePlayerStats(UpgradableStatsEnum upgradableStatsEnum, double value)
     {
         switch (upgradableStatsEnum)
@@ -259,6 +266,7 @@ public partial class StatsUpgradePanel : CanvasLayer
                 }
         }
 		_playerStats.SkillPoints.Value--;
+		GenererateNewStats();
     }
 
 	void DisableHealButton()
@@ -273,35 +281,21 @@ public partial class StatsUpgradePanel : CanvasLayer
         }
     }
 
-	async public void OnOption1ButtonPressed()
+	public void OnOption1ButtonPressed()
 	{
-		_container.Visible = false;
-		Animation.Frame = 4;
-		Animation.PlayBackwards();
-
-		await ToSignal(Animation, AnimatedSprite2D.SignalName.AnimationFinished);
-
 		_pickedUpgradableStatsEnum = DrawnUpgradableStats.Keys.First();
 		_pickedValue = DrawnUpgradableStats[DrawnUpgradableStats.Keys.First()];
 		if(_playerStats.SkillPoints.Value > 0)
 			UpgradePlayerStats(_pickedUpgradableStatsEnum, _pickedValue);
 
-		EmitSignal(SignalName.Option1Picked);
 	}
-	async public void OnOption2ButtonPressed()
+	public void OnOption2ButtonPressed()
 	{
-		_container.Visible = false;
-		Animation.Frame = 4;
-		Animation.PlayBackwards();
-
-		await ToSignal(Animation, AnimatedSprite2D.SignalName.AnimationFinished);
-
 		_pickedUpgradableStatsEnum = DrawnUpgradableStats.Keys.Last();
 		_pickedValue = DrawnUpgradableStats[DrawnUpgradableStats.Keys.Last()];
 		if(_playerStats.SkillPoints.Value > 0)
 			UpgradePlayerStats(_pickedUpgradableStatsEnum, _pickedValue);
 
-		EmitSignal(SignalName.Option2Picked);
 	}
 	async public void OnCloseButtonPressed()
     {	
@@ -310,8 +304,8 @@ public partial class StatsUpgradePanel : CanvasLayer
 		Animation.PlayBackwards();
 
 		await ToSignal(Animation, AnimatedSprite2D.SignalName.AnimationFinished);
-        
-		EmitSignal(SignalName.Option1Picked);
+
+		EmitSignal(SignalName.CloseButton);
     }
 	public void OnRefreshButtonPressed()
     {
@@ -321,9 +315,15 @@ public partial class StatsUpgradePanel : CanvasLayer
 
 	public void OnHealButtonPressed()
     {
+		if(_playerStats.SkillPoints.Value <= 0) return;
         var healValue = _playerStats.MaxHealth.Value * 0.5; // heal multipier
-		DisableButton(CallerButton.HealButton, UpgradableStatsEnum.Health, healValue);
-		UpgradePlayerStats(UpgradableStatsEnum.Health, healValue);
+		
+		_playerStats.Health.GetHP().Value += healValue;
+		if(_playerStats.Health.GetHP().Value > _playerStats.MaxHealth.Value)
+		{
+			_playerStats.Health.GetHP().Value = Mathf.Min(_playerStats.Health.GetHP().Value, _playerStats.MaxHealth.Value);
+		}
+		_playerStats.SkillPoints.Value--;
 	}
 
 	public void OnHealButtonMouseEntered()
@@ -342,10 +342,10 @@ public partial class StatsUpgradePanel : CanvasLayer
 			DisableButton(CallerButton.HealButton, true);
 			DisableButton(CallerButton.RefreshButton, true);
         }
-        else
-        {
-            DisableButton(CallerButton.Option1, DrawnUpgradableStats.Keys.First(), DrawnUpgradableStats[DrawnUpgradableStats.Keys.First()]);
-			DisableButton(CallerButton.Option2, DrawnUpgradableStats.Keys.Last(), DrawnUpgradableStats[DrawnUpgradableStats.Keys.Last()]);
+		else
+		{
+			DisableButton(CallerButton.Option1, false);
+			DisableButton(CallerButton.Option2, false);
 			DisableButton(CallerButton.HealButton, false);
 			DisableButton(CallerButton.RefreshButton, false);
 		}

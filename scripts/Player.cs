@@ -26,7 +26,7 @@ public partial class Player : Area2D
 
 
 	public PlayerStats playerStats;
-	public bool PlayerAlive = true;
+	public bool PlayerAlive = false;
 
 	private Vector2 _velocity;
 	private Sprite2D _rocketSprite;
@@ -398,15 +398,15 @@ public partial class Player : Area2D
     /// </summary>
 	public void ResetStats()
 	{
-		playerStats.SkillPoints.Value = DeafultPlayerStatsValues.SKILL_POINTS;
+		playerStats.SkillPoints.Value = 10;
 
 		playerStats.Speed.Value = DeafultPlayerStatsValues.SPEED;
 		playerStats.FireRate.Value = DeafultPlayerStatsValues.FIRE_RATE;
-		playerStats.Luck.Value = 20;
+		playerStats.Luck.Value = 1;
 		playerStats.BulletSpeed.Value = DeafultPlayerStatsValues.BULLET_SPEED;
 		playerStats.Damage.Value = DeafultPlayerStatsValues.DAMAGE;
 		playerStats.Health.SetHP(DeafultPlayerStatsValues.HEALTH);
-		playerStats.MaxHealth.Value = DeafultPlayerStatsValues.HEALTH;
+		playerStats.MaxHealth.Value = 100;
 
 		playerStats.InvincibilityPowerupDuration.Value = DeafultPlayerStatsValues.INVINCIBILITY_POWERUP_DURATION;
 		playerStats.PiercingPowerupDuration.Value = DeafultPlayerStatsValues.PIERCING_POWERUP_DURATION;

@@ -13,12 +13,24 @@ public partial class Hud : CanvasLayer
 	public delegate void PlayerStatsUpgradePanelReadyEventHandler(Player player);
 	[Export]
 	public PackedScene MainMenuScene;
+
+	public Main MainNode;
+	public Label WaveTimeLabel;
+	
 	Vector2 entityVelocity = Vector2.Zero;
 	private Player _player;
+
+    public override void _Ready()
+    {
+        WaveTimeLabel = GetNode<Label>("WaveTimeLabel");
+    }
+
 
     public void OnHudReady(Player player)
     {
 		_player = player;
+		MainNode = GetTree().Root.GetNode<Main>("Main");
+
 		var healtBar = GetNode<PlayerHealthBar>(nameof(PlayerHealthBar));
 		healtBar.SetHealthBarMaxValue(_player.playerStats.MaxHealth.Value);
 		healtBar.SetHealthBarValue(_player.playerStats.Health.GetHP().Value);
@@ -103,6 +115,11 @@ public partial class Hud : CanvasLayer
 		GetNode<Label>("Message").Hide();
 	}
 
+	public void UpdateWaveTimeLabelText(double time)
+	{
+		WaveTimeLabel.Text = time.ToString("00:00");
+	}
+
 	public void ShowPlayerUpgradeStatsPanel(bool show)
 	{
 		GetNode<CanvasLayer>("StatsUpgradePanel").Visible = show;
@@ -146,12 +163,10 @@ public partial class Hud : CanvasLayer
 		}
 	}
 
-	public void OnStatsUpgradePanelButton1Picked()
-    {
-        ShowPlayerUpgradeStatsPanel(false);
-    }
-	public void OnStatsUpgradePanelButton2Picked()
-    {
-        ShowPlayerUpgradeStatsPanel(false);
-    }
+	public void OnCloseButtonPicked()
+	{
+		ShowPlayerUpgradeStatsPanel(false);
+
+		MainNode.WaveTimer.Start();
+	}
 }

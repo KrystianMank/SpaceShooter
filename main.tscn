@@ -67,9 +67,11 @@ EntityScene = ExtResource("11_dg77c")
 EntityType = 2
 InitialSpawnTime = 3.0
 
-[node name="Main" type="Node" unique_id=359640060 node_paths=PackedStringArray("EntitySpawner") groups=["main"]]
+[node name="Main" type="Node" unique_id=359640060 node_paths=PackedStringArray("EntitySpawner", "WaveTimer", "Hud") groups=["main"]]
 script = ExtResource("1_0xm2m")
 EntitySpawner = NodePath("EntitySpawnerComponent")
+WaveTimer = NodePath("WaveTimer")
+Hud = NodePath("HUD")
 
 [node name="LeftMarginWindow" type="Marker2D" parent="." unique_id=906078839]
 
@@ -132,6 +134,9 @@ EntityResources = Array[Resource]([ExtResource("3_efxa6"), ExtResource("4_dg77c"
 
 [node name="StartTimer" type="Timer" parent="." unique_id=1035437602]
 wait_time = 2.0
+one_shot = true
+
+[node name="WaveTimer" type="Timer" parent="." unique_id=229049593]
 one_shot = true
 
 [connection signal="HudReady" from="." to="HUD" method="OnHudReady"]

@@ -1,5 +1,6 @@
 using Godot;
 using GenericObervable;
+using System;
 public partial class Main : Node
 {
 	[Signal]
@@ -12,7 +13,11 @@ public partial class Main : Node
 	[Export]
 	public EntitySpawnerComponent EntitySpawner;
 	[Export]
+	public Timer WaveTimer;
+	[Export]
+	public Hud Hud;
 	public Vector2 ScreenSize;
+
 	public Player PlayerNode;
 	public float BackgroundSpeed = 100f;
 	public Observable<int> Score = new Observable<int>();
@@ -22,8 +27,10 @@ public partial class Main : Node
 	public float BackgroundRepeatHeight;
 
 	private bool _increaseDificulty = false;
-	private int[] _difficultyTresholds = [5,15, 25, 50, 75, 100, 125, 150, 200, 250, 300, 400, 500,650,800, 1000, 1200, 1500, 2000, 2250];
+	private int[] _lvTresholds = [5,15, 25, 50, 75, 100, 125, 150, 200, 250, 300, 400, 500,650,800, 1000, 1200, 1500, 2000, 2250];
 	private int _nextTresholdIndex = 0;
+	private double[] _waveTimeLength = [30d, 40d, 45d, 50d, 52d, 60d, 64d, 68d, 74d, 74d, 74d, 80d, 80d, 85d, 85d, 90d, 90d, 95d, 100d, 100d];
+	private int _currentWaveIndex = 0;
 
 
 	private bool _toogleStatsPanelView = false;
@@ -36,6 +43,9 @@ public partial class Main : Node
 		BackgroundStartPosition = Background.Position;
 		BackgroundRepeatHeight = Background.Size.Y / 2;
 
+		WaveTimer.WaitTime = _waveTimeLength[0];
+		WaveTimer.Timeout += OnWaveTimerTimeout;
+
 		ScreenSize = PlayerNode.ScreenSize;
 
 		Score.Changed += OnScoreValueChanged;
@@ -47,7 +57,7 @@ public partial class Main : Node
 		EntitySpawner.OnEntitySpawnerEntityHealthValueChanged += OnEntitySpawnerEntityHealtValueChanged;
     }
 
-	public override void _Process(double delta)
+    public override void _Process(double delta)
 	{
 		Background.Position += Vector2.Up * BackgroundSpeed * (float)delta;
 		if (Background.Position.Y < BackgroundStartPosition.Y - BackgroundRepeatHeight)
@@ -55,6 +65,8 @@ public partial class Main : Node
 			var bgRepeat = new Vector2(Background.Position.X, BackgroundStartPosition.Y);
 			Background.SetPosition(bgRepeat);
 		}
+
+		Hud.UpdateWaveTimeLabelText(WaveTimer.TimeLeft);
     }
 
     public override void _UnhandledInput(InputEvent @event)
@@ -64,7 +76,7 @@ public partial class Main : Node
 			if(eventKey.Pressed && eventKey.Keycode == Key.Tab)
 			{
 				_toogleStatsPanelView = !_toogleStatsPanelView;
-            	GetNode<Hud>("HUD").ShowPlayerStatsPanel(_toogleStatsPanelView);
+            	Hud.ShowPlayerStatsPanel(_toogleStatsPanelView);
 			}
 		}
     }
@@ -79,8 +91,7 @@ public partial class Main : Node
 		PlayerNode.Start(startPosition.Position);
 		EmitSignal(SignalName.HudReady, GetNode<Player>("Player"));
 
-		var hud = GetNode<Hud>("HUD");
-		hud.ShowMessage("Get Ready!");
+		Hud.ShowMessage("Get Ready!");
 
 		EntitySpawner.DestroyAllEntities();
 		EntitySpawner.RestComponent();
@@ -92,13 +103,13 @@ public partial class Main : Node
 		_increaseDificulty = false;
 		_nextTresholdIndex = 0;
 
-		hud.SetNewLVBarLevel(_nextTresholdIndex + 1,0 , _difficultyTresholds[_nextTresholdIndex]);
-		hud.UpdateScore(Score.Value);
+		Hud.SetNewLVBarLevel(_nextTresholdIndex + 1,0 , _lvTresholds[_nextTresholdIndex]);
+		Hud.UpdateScore(Score.Value);
 	}
 
 	public void GameOver()
 	{
-		GetNode<Hud>("HUD").ShowGameOver();
+		Hud.ShowGameOver();
 		EntitySpawner.StopSpawning();
 
 		EntitySpawner.DestroyAllEntities();
@@ -110,13 +121,27 @@ public partial class Main : Node
 	public void StartTimerTimeout()
     {
 		EntitySpawner.BeginSpawning();
+		WaveTimer.Start();
+    }
+
+	private void OnWaveTimerTimeout()
+    {
+        WaveTimer.WaitTime = _waveTimeLength[++_currentWaveIndex];
+
+		EmitSignal(SignalName.ShowPlayerStatsUpgradePanelReady, PlayerNode);
+		EmitSignal(SignalName.ShowPlayerStatsUpgradePanel, true);
+
+		if((_currentWaveIndex + 1) % 4 == 0)
+		{
+			EntitySpawner.IncreaseDifficulty();
+		}
     }
 
 	public void OnEntitySpawnerEntityHealthDepleted(Entity entity)
     {
 		if(!entity.EntitiesHitEachOther){
 			Score.Value += (int)entity.EntityMaxHP.Value;
-			GetNode<Hud>("HUD").UpdateScore(Score.Value);
+			Hud.UpdateScore(Score.Value);
 		}
 
 		entity.EnityDeath();
@@ -130,27 +155,16 @@ public partial class Main : Node
 
 	public void OnScoreValueChanged(object target, Observable<int>.ChanedEventArgs eventArgs)
     {
-		if (_nextTresholdIndex < _difficultyTresholds.Length
-			&& Score.Value >= _difficultyTresholds[_nextTresholdIndex])
+		if (_nextTresholdIndex < _lvTresholds.Length
+			&& Score.Value >= _lvTresholds[_nextTresholdIndex])
 		{
-			_increaseDificulty = true;
+			// _increaseDificulty = true;
 			_nextTresholdIndex++;
 
-			if((_nextTresholdIndex + 1) % 4 == 0)
-			{
-				EntitySpawner.IncreaseDifficulty();
-			}
-
-			GetNode<Hud>("HUD").SetNewLVBarLevel(_nextTresholdIndex + 1,_difficultyTresholds[_nextTresholdIndex - 1] ,_difficultyTresholds[_nextTresholdIndex]);
+			Hud.SetNewLVBarLevel(_nextTresholdIndex + 1,_lvTresholds[_nextTresholdIndex - 1] ,_lvTresholds[_nextTresholdIndex]);
 
 			PlayerNode.AddSkillPoint();
-			EmitSignal(SignalName.ShowPlayerStatsUpgradePanelReady, PlayerNode);
-			EmitSignal(SignalName.ShowPlayerStatsUpgradePanel, true);
 		}
-        else
-        {
-            _increaseDificulty = false;
-        }
     }
 	
 }
