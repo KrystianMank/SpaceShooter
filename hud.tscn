@@ -69,8 +69,6 @@ text = "Start"
 [node name="MessageTimer" type="Timer" parent="." unique_id=2139572232]
 wait_time = 2.0
 
-[node name="PowerupHolder" parent="." unique_id=290823551 instance=ExtResource("4_640wx")]
-
 [node name="PlayerStatsPanel" parent="." unique_id=1472119492 instance=ExtResource("5_a2258")]
 visible = false
 
@@ -91,6 +89,10 @@ icon = SubResource("CompressedTexture2D_1xsix")
 visible = false
 
 [node name="WeaponHolder" parent="." unique_id=1909623520 instance=ExtResource("9_g10ll")]
+layer = 0
+
+[node name="PowerupHolder" parent="." unique_id=290823551 instance=ExtResource("4_640wx")]
+layer = 0
 
 [connection signal="PlayerStatsPanelReady" from="." to="PlayerStatsPanel" method="OnReady"]
 [connection signal="PlayerStatsUpgradePanelReady" from="." to="StatsUpgradePanel" method="OnPlayerStatsUpgradePanelReady"]

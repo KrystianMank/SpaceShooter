@@ -140,7 +140,7 @@ public partial class Hud : CanvasLayer
 	public void SetAllTimersEnabled(bool enabled)
 	{
 		var timers = GetTree().GetNodesInGroup("timers");
-		foreach (Timer timer in timers)
+		foreach (Timer timer in timers.Cast<Timer>())
 		{
 			timer.ProcessMode = enabled ? Node.ProcessModeEnum.Inherit : Node.ProcessModeEnum.Disabled;
 		}
