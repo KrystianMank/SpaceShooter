@@ -10,12 +10,13 @@ public partial class Main : Node
 	[Signal]
 	public delegate void ShowPlayerStatsUpgradePanelReadyEventHandler(Player player);
 
-	[Export]
-	public EntitySpawnerComponent EntitySpawner;
+	
 	[Export]
 	public Timer WaveTimer;
 	[Export]
 	public Hud Hud;
+	[Export]
+	public MainWaveManager MainWaveManager;
 	public Vector2 ScreenSize;
 
 	public Player PlayerNode;
@@ -30,7 +31,7 @@ public partial class Main : Node
 	private int[] _lvTresholds = [5,15, 25, 50, 75, 100, 125, 150, 200, 250, 300, 400, 500,650,800, 1000, 1200, 1500, 2000, 2250];
 	private int _nextTresholdIndex = 0;
 	private double[] _waveTimeLength = [30d, 40d, 45d, 50d, 52d, 60d, 64d, 68d, 74d, 74d, 74d, 80d, 80d, 85d, 85d, 90d, 90d, 95d, 100d, 100d];
-	private int _currentWaveIndex = 0;
+	public int CurrentWaveIndex = 0;
 
 
 	private bool _toogleStatsPanelView = false;
@@ -53,8 +54,8 @@ public partial class Main : Node
 		//InstantiateAlienPaths();
 
 		// Subscribtion to Action<Entity> delegates
-		EntitySpawner.OnEntitySpawnerEntityHealthDepleted += OnEntitySpawnerEntityHealthDepleted;
-		EntitySpawner.OnEntitySpawnerEntityHealthValueChanged += OnEntitySpawnerEntityHealtValueChanged;
+		// EntitySpawner.OnEntitySpawnerEntityHealthDepleted += OnEntitySpawnerEntityHealthDepleted;
+		// EntitySpawner.OnEntitySpawnerEntityHealthValueChanged += OnEntitySpawnerEntityHealtValueChanged;
     }
 
     public override void _Process(double delta)
@@ -93,8 +94,9 @@ public partial class Main : Node
 
 		Hud.ShowMessage("Get Ready!");
 
-		EntitySpawner.DestroyAllEntities();
-		EntitySpawner.RestComponent();
+		// EntitySpawner.DestroyAllEntities();
+		// EntitySpawner.RestComponent();
+		MainWaveManager.Start();
 
 		GetNode<Timer>("StartTimer").Start();
 
@@ -102,6 +104,7 @@ public partial class Main : Node
 
 		_increaseDificulty = false;
 		_nextTresholdIndex = 0;
+		CurrentWaveIndex = 0;
 
 		Hud.SetNewLVBarLevel(_nextTresholdIndex + 1,0 , _lvTresholds[_nextTresholdIndex]);
 		Hud.UpdateScore(Score.Value);
@@ -110,9 +113,6 @@ public partial class Main : Node
 	public void GameOver()
 	{
 		Hud.ShowGameOver();
-		EntitySpawner.StopSpawning();
-
-		EntitySpawner.DestroyAllEntities();
 
 		GetNode<AudioStreamPlayer2D>("BackgroundMusic").Stop();
 		GetNode<AudioStreamPlayer2D>("DeathSound").Play();
@@ -120,38 +120,39 @@ public partial class Main : Node
 
 	public void StartTimerTimeout()
     {
-		EntitySpawner.BeginSpawning();
 		WaveTimer.Start();
+		MainWaveManager.WaveManager(CurrentWaveIndex);
     }
 
 	private void OnWaveTimerTimeout()
     {
-        WaveTimer.WaitTime = _waveTimeLength[++_currentWaveIndex];
+		MainWaveManager.EntitySpawner.DestroyAllEntities();
+        WaveTimer.WaitTime = _waveTimeLength[++CurrentWaveIndex];
 
 		EmitSignal(SignalName.ShowPlayerStatsUpgradePanelReady, PlayerNode);
 		EmitSignal(SignalName.ShowPlayerStatsUpgradePanel, true);
 
-		if((_currentWaveIndex + 1) % 4 == 0)
+		if((CurrentWaveIndex + 1) % 4 == 0)
 		{
-			EntitySpawner.IncreaseDifficulty();
+			MainWaveManager.EntitySpawner.IncreaseDifficulty();
 		}
     }
 
-	public void OnEntitySpawnerEntityHealthDepleted(Entity entity)
-    {
-		if(!entity.EntitiesHitEachOther){
-			Score.Value += (int)entity.EntityMaxHP.Value;
-			Hud.UpdateScore(Score.Value);
-		}
+	// public void OnEntitySpawnerEntityHealthDepleted(Entity entity)
+    // {
+	// 	if(!entity.EntitiesHitEachOther){
+	// 		Score.Value += (int)entity.EntityMaxHP.Value;
+	// 		Hud.UpdateScore(Score.Value);
+	// 	}
 
-		entity.EnityDeath();
+	// 	entity.EnityDeath();
 	
-    }
+    // }
 
-	public void OnEntitySpawnerEntityHealtValueChanged(Entity entity)
-    {
-		entity.SetHealthBarValue(entity.EntityHP.GetHP().Value);
-    }
+	// public void OnEntitySpawnerEntityHealtValueChanged(Entity entity)
+    // {
+	// 	entity.SetHealthBarValue(entity.EntityHP.GetHP().Value);
+    // }
 
 	public void OnScoreValueChanged(object target, Observable<int>.ChanedEventArgs eventArgs)
     {

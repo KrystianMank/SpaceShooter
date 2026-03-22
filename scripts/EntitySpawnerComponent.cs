@@ -2,6 +2,7 @@ using GameEnums;
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public partial class EntitySpawnerComponent : Node
 {
@@ -64,11 +65,12 @@ public partial class EntitySpawnerComponent : Node
 	private Player _player;
 	public void CreateEntitySpawners()
 	{
-		_screenSize = GetViewport().GetVisibleRect().Size;
-		_horizontalLines = (int)_screenSize.X / 30;
-		_verticalLines = (int)_screenSize.Y / 24;
 		foreach(var resource in EntityResources)
 		{
+			_screenSize = GetViewport().GetVisibleRect().Size;
+			_horizontalLines = (int)_screenSize.X / 30;
+			_verticalLines = (int)_screenSize.Y / 24;
+
 			EntitySpawnTimer timer = new(resource.InitialSpawnTime)
 			{ 
 				EntityCreator = resource.CreateEntityCreator() 
@@ -250,10 +252,11 @@ public partial class EntitySpawnerComponent : Node
 		//InstantiateAlienPaths();
 	}
 
-	public void BeginSpawning()
+	public void BeginSpawning(List<EntityType> entityTypes)
 	{
-		foreach(var spawner in EntitySpawnTimers)
+		foreach(var spawner in EntitySpawnTimers.Where(spawner => entityTypes.Contains(spawner.EntityCreator.EntityType)))
 		{
+			GD.Print("----------------------Spawning: "+spawner.EntityCreator.EntityType);
 			spawner.Start();
 		}
 	}
@@ -262,7 +265,10 @@ public partial class EntitySpawnerComponent : Node
 	{
 		foreach(var spawner in EntitySpawnTimers)
 		{
-			spawner.Stop();
+			if (!spawner.SpawnTimer.IsStopped())
+			{
+				spawner.Stop();
+			}
 		}
 	}
 

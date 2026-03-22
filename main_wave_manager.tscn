@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bj4evlsvwbylq"]
+
+[ext_resource type="Script" uid="uid://dksjnscc4gr4o" path="res://scripts/MainWaveManager.cs" id="1_0j8hd"]
+
+[node name="MainWaveManager" type="Node" unique_id=1886029571]
+script = ExtResource("1_0j8hd")
