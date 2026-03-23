@@ -265,11 +265,17 @@ public partial class EntitySpawnerComponent : Node
 	{
 		foreach(var spawner in EntitySpawnTimers)
 		{
+			spawner.ResetWaitTime();
 			if (!spawner.SpawnTimer.IsStopped())
 			{
 				spawner.Stop();
 			}
 		}
+	}
+
+	public void ApplyNewSpawnTime(EntityType entityType, double newWaitTime)
+	{
+		EntitySpawnTimers.First(spawner => spawner.EntityCreator.EntityType == entityType).ApplyNewWaitTime(newWaitTime);
 	}
 
 	public void RestComponent()

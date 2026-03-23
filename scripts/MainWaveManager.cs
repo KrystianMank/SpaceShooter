@@ -34,7 +34,7 @@ public partial class MainWaveManager : Node
 		{
 			case 0:
 				{
-					//EntitySpawner.EntitySpawnTimers.First(x => x.EntityCreator.EntityType == EntityType.Meteor).Start();
+					EntitySpawner.ApplyNewSpawnTime(EntityType.Meteor, 3d);
 					EntitySpawner.BeginSpawning([EntityType.Meteor]);
 					break;
 				}
@@ -44,7 +44,8 @@ public partial class MainWaveManager : Node
 
 					await ToSignal(GetTree().CreateTimer(15d), Timer.SignalName.Timeout);
 
-					EntitySpawner.BeginSpawning([EntityType.Meteor, EntityType.ShootingAlien, EntityType.SeekingAlien]);
+					EntitySpawner.ApplyNewSpawnTime(EntityType.SeekingAlien, 10d);
+					EntitySpawner.BeginSpawning([EntityType.SeekingAlien]);
 					break;
 				}
 			case 2:
