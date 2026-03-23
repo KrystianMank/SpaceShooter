@@ -20,6 +20,7 @@ public partial class Main : Node
 	public Vector2 ScreenSize;
 
 	public Player PlayerNode;
+	public AnimatedSprite2D PlayerNextLevelAnimation, PlayerAppearsAnimation;
 	public float BackgroundSpeed = 100f;
 	public Observable<int> Score = new Observable<int>();
 
@@ -30,7 +31,7 @@ public partial class Main : Node
 	private bool _increaseDificulty = false;
 	private int[] _lvTresholds = [5,15, 25, 50, 75, 100, 125, 150, 200, 250, 300, 400, 500,650,800, 1000, 1200, 1500, 2000, 2250];
 	private int _nextTresholdIndex = 0;
-	private double[] _waveTimeLength = [30d, 40d, 45d, 50d, 52d, 60d, 64d, 68d, 74d, 74d, 74d, 80d, 80d, 85d, 85d, 90d, 90d, 95d, 100d, 100d];
+	private double[] _waveTimeLength = [4d, 4d, 45d, 50d, 52d, 60d, 64d, 68d, 74d, 74d, 74d, 80d, 80d, 85d, 85d, 90d, 90d, 95d, 100d, 100d];
 	public int CurrentWaveIndex = 0;
 
 
@@ -41,6 +42,8 @@ public partial class Main : Node
     {
 		PlayerNode = GetNode<Player>("Player");
         Background = GetNode<TextureRect>("Background");
+		PlayerNextLevelAnimation = GetNode<AnimatedSprite2D>("PlayerNextLevelAnimation");
+		PlayerAppearsAnimation = GetNode<AnimatedSprite2D>("PlayerAppearsAnimation");
 		BackgroundStartPosition = Background.Position;
 		BackgroundRepeatHeight = Background.Size.Y / 2;
 
@@ -89,10 +92,13 @@ public partial class Main : Node
 		Score.Value = 0;
 		var startPosition = GetNode<Marker2D>("StartPosition");
 
+
 		PlayerNode.Start(startPosition.Position);
 		EmitSignal(SignalName.HudReady, GetNode<Player>("Player"));
 
 		Hud.ShowMessage("Get Ready!");
+
+		StartNewWaveAnimations();
 
 		// EntitySpawner.DestroyAllEntities();
 		// EntitySpawner.RestComponent();
@@ -129,6 +135,8 @@ public partial class Main : Node
 		MainWaveManager.EntitySpawner.DestroyAllEntities();
         WaveTimer.WaitTime = _waveTimeLength[++CurrentWaveIndex];
 
+		EndCurrentWaveAnimations();
+
 		EmitSignal(SignalName.ShowPlayerStatsUpgradePanelReady, PlayerNode);
 		EmitSignal(SignalName.ShowPlayerStatsUpgradePanel, true);
 
@@ -138,21 +146,31 @@ public partial class Main : Node
 		}
     }
 
-	// public void OnEntitySpawnerEntityHealthDepleted(Entity entity)
-    // {
-	// 	if(!entity.EntitiesHitEachOther){
-	// 		Score.Value += (int)entity.EntityMaxHP.Value;
-	// 		Hud.UpdateScore(Score.Value);
-	// 	}
+	public async void EndCurrentWaveAnimations()
+	{
+		PlayerNode.Visible = false;
+		PlayerNextLevelAnimation.Position = PlayerNode.Position;
+		PlayerNextLevelAnimation.Visible = true;
+		PlayerNextLevelAnimation.Play();
 
-	// 	entity.EnityDeath();
-	
-    // }
+		await ToSignal(PlayerNextLevelAnimation, AnimatedSprite2D.SignalName.AnimationFinished);
+	}
 
-	// public void OnEntitySpawnerEntityHealtValueChanged(Entity entity)
-    // {
-	// 	entity.SetHealthBarValue(entity.EntityHP.GetHP().Value);
-    // }
+	public async void StartNewWaveAnimations()
+	{
+		PlayerNode.Visible = false;
+		PlayerNode.SetProcess(false);
+		PlayerNextLevelAnimation.Visible = false;
+		PlayerAppearsAnimation.Position = PlayerNode.Position;
+		PlayerAppearsAnimation.Visible = true;
+		PlayerAppearsAnimation.Play();
+
+		await ToSignal(PlayerAppearsAnimation, AnimatedSprite2D.SignalName.AnimationFinished);
+
+		PlayerNode.Visible = true;
+		PlayerNode.SetProcess(true);
+		PlayerAppearsAnimation.Visible = false;
+	}
 
 	public void OnScoreValueChanged(object target, Observable<int>.ChanedEventArgs eventArgs)
     {

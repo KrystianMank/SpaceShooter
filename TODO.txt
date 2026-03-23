@@ -1,8 +1,9 @@
 IN PROGRESS:
-- Timer fali, na której końcu pojawia się panel ulepszeń
+
 
 TODO:
 - Piering, multishoot do lasera
+- Utworzyć różnorodne fale przeciwników
  
 NEXT:
 1. Sterowanie na telefon i desktop (panel ustawień) 
@@ -38,3 +39,5 @@ DONE:
 	- Wybuchające pociski (duży dmg, mały firerate, duże pole rażenia) ^
 	- laser (mały dmg, duży firerate, mały hitbox, ciągła wiązka) ^
 5. Czas w jakim minie aktualny posiadany powerup widoczny na ikonce
+6. Timer fali, na której końcu pojawia się panel ulepszeń
+7. Animacje gracza kończąc i rozpoczynając fale

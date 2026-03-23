@@ -169,5 +169,6 @@ public partial class Hud : CanvasLayer
 
 		MainNode.WaveTimer.Start();
 		MainNode.MainWaveManager.WaveManager(MainNode.CurrentWaveIndex);
+		MainNode.StartNewWaveAnimations();
 	}
 }

@@ -12,6 +12,8 @@
 [ext_resource type="PackedScene" uid="uid://bj4evlsvwbylq" path="res://main_wave_manager.tscn" id="8_ycdy4"]
 [ext_resource type="Texture2D" uid="uid://du74q21rvnt6f" path="res://sprites/rocket/rocket_dash_blink.png" id="10_4c57u"]
 [ext_resource type="Resource" uid="uid://dy2iy2jivvtof" path="res://resources/entityResource/SeekingAlien.tres" id="12_dg77c"]
+[ext_resource type="Texture2D" uid="uid://pcg6immstifu" path="res://sprites/wave_animtionss/player_go_next_level.png" id="13_ycdy4"]
+[ext_resource type="Texture2D" uid="uid://bo24o0fnwkmnk" path="res://sprites/wave_animtionss/player_appears_animation.png" id="14_w48qg"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qtqh7"]
 atlas = ExtResource("10_4c57u")
@@ -60,6 +62,123 @@ animations = [{
 vertices = PackedVector2Array(710.89844, 8.9765625, 704.09375, 716.9297, 8, 712.0625, 8, 8.0078125)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(721, -1, 714, 727, -2, 722, -2, -2)])
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w48qg"]
+atlas = ExtResource("13_ycdy4")
+region = Rect2(0, 0, 75, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vivmo"]
+atlas = ExtResource("13_ycdy4")
+region = Rect2(75, 0, 75, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2cqfq"]
+atlas = ExtResource("13_ycdy4")
+region = Rect2(150, 0, 75, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yaehf"]
+atlas = ExtResource("13_ycdy4")
+region = Rect2(225, 0, 75, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_074og"]
+atlas = ExtResource("13_ycdy4")
+region = Rect2(300, 0, 75, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cegan"]
+atlas = ExtResource("13_ycdy4")
+region = Rect2(375, 0, 75, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_82xsv"]
+atlas = ExtResource("13_ycdy4")
+region = Rect2(450, 0, 75, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_getpj"]
+atlas = ExtResource("13_ycdy4")
+region = Rect2(525, 0, 75, 75)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ryguw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w48qg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vivmo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2cqfq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yaehf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_074og")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cegan")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_82xsv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_getpj")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ryguw"]
+atlas = ExtResource("14_w48qg")
+region = Rect2(0, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d13ii"]
+atlas = ExtResource("14_w48qg")
+region = Rect2(50, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1u8w0"]
+atlas = ExtResource("14_w48qg")
+region = Rect2(100, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0odxb"]
+atlas = ExtResource("14_w48qg")
+region = Rect2(150, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lswn8"]
+atlas = ExtResource("14_w48qg")
+region = Rect2(200, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a6jrf"]
+atlas = ExtResource("14_w48qg")
+region = Rect2(250, 0, 50, 50)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xuqvo"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ryguw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d13ii")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1u8w0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0odxb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lswn8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a6jrf")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="Main" type="Node" unique_id=359640060 node_paths=PackedStringArray("WaveTimer", "Hud", "MainWaveManager") groups=["main"]]
 script = ExtResource("1_0xm2m")
@@ -135,6 +254,17 @@ one_shot = true
 
 [node name="WaveTimer" type="Timer" parent="." unique_id=229049593]
 one_shot = true
+
+[node name="PlayerNextLevelAnimation" type="AnimatedSprite2D" parent="." unique_id=1327431059]
+visible = false
+sprite_frames = SubResource("SpriteFrames_ryguw")
+speed_scale = 2.0
+
+[node name="PlayerAppearsAnimation" type="AnimatedSprite2D" parent="." unique_id=111001165]
+visible = false
+sprite_frames = SubResource("SpriteFrames_xuqvo")
+frame = 5
+frame_progress = 1.0
 
 [connection signal="HudReady" from="." to="HUD" method="OnHudReady"]
 [connection signal="ShowPlayerStatsUpgradePanel" from="." to="HUD" method="ShowPlayerUpgradeStatsPanel"]
