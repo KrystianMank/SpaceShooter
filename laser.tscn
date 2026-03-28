@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c4vm0pvcq87pa"]
 
-[ext_resource type="Script" uid="uid://bdlo7tacbv4cf" path="res://scripts/Laser.cs" id="2_g6b45"]
+[ext_resource type="Script" uid="uid://bdlo7tacbv4cf" path="res://scripts/Laser.cs" id="1_3gdm7"]
 [ext_resource type="Texture2D" uid="uid://biuqgwd5tenq4" path="res://sprites/glowing_particle.png" id="3_g6b45"]
 [ext_resource type="Texture2D" uid="uid://cqm64i3gpqy02" path="res://resources/scale_curve.tres" id="4_7vci3"]
 [ext_resource type="AudioStream" uid="uid://8pl333hg8pkk" path="res://sounds/steam-pipe-burst-str3.mp3" id="6_3gdm7"]
@@ -10,6 +10,9 @@
 [ext_resource type="Texture2D" uid="uid://eefcd6kdk1s1" path="res://sprites/steam.png" id="9_yfymw"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2hs0m"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5ny2x"]
+size = Vector2(10, 500)
 
 [sub_resource type="Gradient" id="Gradient_7vci3"]
 offsets = PackedFloat32Array(0, 0.8407258, 1, 1)
@@ -85,15 +88,20 @@ scale_max = 0.29999998
 scale_curve = SubResource("CurveTexture_xw5cg")
 color_ramp = SubResource("GradientTexture1D_xw5cg")
 
-[node name="Laser" type="RayCast2D" unique_id=1052263225 groups=["laser"]]
+[node name="Laser" type="ShapeCast2D" unique_id=1848176236 groups=["laser"]]
 material = SubResource("ShaderMaterial_2hs0m")
+shape = SubResource("RectangleShape2D_5ny2x")
 target_position = Vector2(0, 0)
+max_results = 10
 collision_mask = 16
 collide_with_areas = true
-script = ExtResource("2_g6b45")
+script = ExtResource("1_3gdm7")
+CastSpeed = 3000.0
+Color = Color(0.92362344, 0.32940048, 1, 1)
 
 [node name="Line2D" type="Line2D" parent="." unique_id=1744580704]
 visible = false
+modulate = Color(0.92362344, 0.32940048, 1, 1)
 points = PackedVector2Array(0, -40, 0, -500)
 gradient = SubResource("Gradient_7vci3")
 begin_cap_mode = 2
@@ -108,6 +116,7 @@ randomness = 1.0
 process_material = SubResource("ParticleProcessMaterial_sh4yq")
 
 [node name="CastingParticles" type="GPUParticles2D" parent="." unique_id=416948762]
+modulate = Color(0.92362344, 0.32940048, 1, 1)
 position = Vector2(0, -40)
 rotation = -1.5707964
 emitting = false
@@ -116,6 +125,7 @@ lifetime = 0.3
 process_material = SubResource("ParticleProcessMaterial_roivt")
 
 [node name="CollisionParticles" type="GPUParticles2D" parent="." unique_id=1944988497]
+modulate = Color(0.92362344, 0.32940048, 1, 1)
 emitting = false
 amount = 16
 texture = ExtResource("3_g6b45")
@@ -123,6 +133,7 @@ lifetime = 0.3
 process_material = SubResource("ParticleProcessMaterial_7vci3")
 
 [node name="BeamParticles" type="GPUParticles2D" parent="." unique_id=858156263]
+modulate = Color(0.92362344, 0.32940048, 1, 1)
 position = Vector2(0, -270)
 rotation = 1.5707964
 emitting = false

@@ -13,7 +13,10 @@ public partial class FiringComponent : Node
 	public int BulletQuantity;
 	public float FiringAngle;
 	public bool PlayerBullet;
-	public int MaxPierce = 1;
+	public Observable<int> MaxPierce = new()
+	{
+		Value = 1
+	};
 	
 	public Texture2D BulletSprite;
 	
@@ -55,7 +58,7 @@ public partial class FiringComponent : Node
 			_bullet.FiringAngle = rotation;
 			_bullet.PlayerBullet = PlayerBullet;
 			_bullet.BulletSprite = BulletSprite;
-			_bullet.MaxPierce = MaxPierce;
+			_bullet.MaxPierce = MaxPierce.Value;
 
 			_bullet.Initialize(GetParent(), PlayerBullet);
 			

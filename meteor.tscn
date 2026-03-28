@@ -113,6 +113,7 @@ animations = [{
 }]
 
 [node name="Meteor" type="RigidBody2D" unique_id=1523011807 node_paths=PackedStringArray("EntityHP") groups=["entities"]]
+collision_layer = 17
 gravity_scale = 0.0
 freeze_mode = 1
 contact_monitor = true

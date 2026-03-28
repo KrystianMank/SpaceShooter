@@ -52,6 +52,8 @@ animations = [{
 size = Vector2(36, 17)
 
 [node name="Alien" type="RigidBody2D" unique_id=234025309 node_paths=PackedStringArray("FiringComponent", "EntityHP") groups=["entities"]]
+collision_layer = 16
+collision_mask = 0
 gravity_scale = 0.0
 freeze_mode = 1
 contact_monitor = true

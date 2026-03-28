@@ -4,7 +4,7 @@ using Godot;
 using Godot.Collections;
 
 [Tool]
-public partial class Laser : RayCast2D
+public partial class Laser : ShapeCast2D
 {
 	[Signal]
 	public delegate void RaycastCollideEventHandler(double damage, Entity entity);
@@ -13,7 +13,6 @@ public partial class Laser : RayCast2D
 	[Export]
 	public float MaxLenght = 500f;
 
-	public int MaxPierce = 1;
 	public int Quantity;
 	public double Damage;
 
@@ -125,6 +124,7 @@ public partial class Laser : RayCast2D
 
     public override void _Ready()
     {
+
 		line2D = GetNode<Line2D>(nameof(Line2D));
 		CastingParticles = GetNode<GpuParticles2D>("CastingParticles");
 		CollisionParticles = GetNode<GpuParticles2D>("CollisionParticles");
@@ -156,13 +156,42 @@ public partial class Laser : RayCast2D
     {
         TargetPosition = TargetPosition.MoveToward(Vector2.Up * MaxLenght, (float)(CastSpeed * delta));
 
+		ForceShapecastUpdate();
+
 		var laserEndPosition = TargetPosition;
-		ForceRaycastUpdate();
+		
 		if (IsColliding())
 		{
-			laserEndPosition = ToLocal(GetCollisionPoint());
-			CollisionParticles.GlobalRotation = GetCollisionNormal().Angle();
+			int count = GetCollisionCount();
+			laserEndPosition = ToLocal(GetCollisionPoint(count - 1));
+			CollisionParticles.GlobalRotation = GetCollisionNormal(count - 1).Angle();
 			CollisionParticles.Position = laserEndPosition;
+			
+			for(int i = 0; i < count; i++)
+			{
+				var collider = GetCollider(i);
+				if(collider == null) continue;
+				
+				Entity entity = null;
+				
+				// GetCollider might return CollisionShape2D, so check parent
+				if(collider is CollisionShape2D shape)
+				{
+					entity = shape.GetParent() as Entity;
+				}
+				else
+				{
+					// Or it might return the physics body directly
+					entity = collider as Entity;
+				}
+				
+				if(entity != null)
+				{
+					GD.Print("colliding " + entity.EntityHP);
+					EmitSignal(SignalName.RaycastCollide, Damage, entity);
+				}
+			}
+
 		}
 		line2D.SetPointPosition(1, laserEndPosition);
 
@@ -177,21 +206,6 @@ public partial class Laser : RayCast2D
 			Vector3 extents = material.EmissionBoxExtents;
 			extents.X = laserEndPosition.DistanceTo(laserStartPosition) * 0.5f;
 			material.EmissionBoxExtents = extents;
-		}
-
-		var hits = GetAllRayHits(ToGlobal(laserStartPosition), ToGlobal(laserEndPosition), MaxPierce);
-
-		foreach(var hit in hits)
-		{
-			try{
-				var collider = hit["collider"].As<Entity>();
-				EmitSignal(SignalName.RaycastCollide, Damage, collider);
-			}
-			catch(System.InvalidCastException)
-			{
-				continue;
-			}
-
 		}
     }
 
@@ -211,27 +225,7 @@ public partial class Laser : RayCast2D
 		}
     }
 
-	List<Dictionary> GetAllRayHits(Vector2 from, Vector2 to, int pierceCount)
-	{
-		var spaceState = GetWorld2D().DirectSpaceState;
-		List<Dictionary> hits = [];
-		Array<Rid> exclude = [];
-
-		for(int i=0; i < pierceCount; i++)
-		{
-			var query = PhysicsRayQueryParameters2D.Create(from, to);
-			query.Exclude = exclude;
-
-			var result = spaceState.IntersectRay(query);
-
-			if(result.Count == 0) break;
-			
-			hits.Add(result);
-			exclude.Add(result["rid"].As<Rid>());
-		}
-		return hits;
-
-	}
+	
 
 	public void OnRaycastCollide(double damage, Entity character)
 	{

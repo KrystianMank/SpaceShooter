@@ -2,6 +2,7 @@ using Godot;
 using GameEnums;
 using System.Collections.Generic;
 using System.Linq;
+using GenericObervable;
 public partial class PlayerWeapon : Node
 {
 	[Export]
@@ -18,6 +19,7 @@ public partial class PlayerWeapon : Node
 	private int _weaponIndex;
 	public PackedScene CurrentWeapon;
 	public Laser Laser;
+	private List<Laser> _duplicates = [];
 	private Texture2D _currentWeaponTexture;
 	private Texture2D _currentWeaponFrame;
 	public bool WeaponChangeAnimationFinished = true;
@@ -64,6 +66,7 @@ public partial class PlayerWeapon : Node
 	{
 		FiringComponent = GetNode<FiringComponent>(nameof(FiringComponent));
 		FiringComponent.PlayerBullet = true;
+		FiringComponent.MaxPierce.Changed += MaxPierceValueChanged;
 		WeaponChangeAnimation.SpeedScale = WEAPON_CHANGE_TIME;
 
 		Reset();
@@ -74,8 +77,22 @@ public partial class PlayerWeapon : Node
 	{
 		FiringComponent.BulletSpawn.GlobalPosition = GetParent().GetNode<Marker2D>("BulletSpawn").GlobalPosition;
 		WeaponChangeAnimation.GlobalPosition = GetParent().GetNode<Marker2D>("BulletSpawn").GlobalPosition + new Vector2(20,0);
+		
+		// Update laser position to follow player
+		if(Laser != null)
+		{
+			Laser.GlobalPosition = FiringComponent.BulletSpawn.GlobalPosition;
+		}
+		foreach(var dupli in _duplicates)
+		{
+			if(dupli != null)
+			{
+				dupli.GlobalPosition = FiringComponent.BulletSpawn.GlobalPosition;
+			}
+		}
 
 		if(GetOwner<Player>().PlayerAlive)
+		{
 			// Changing to next weapon
 			if (Input.IsActionJustPressed("next_weapon") && WeaponChangeAnimationFinished)
 			{
@@ -86,13 +103,26 @@ public partial class PlayerWeapon : Node
 			{
 				ChangeWeapon(false);
 			}
+		}
 	}
 
 	public void Init()
 	{
 		Laser = WeaponScenes[2].Instantiate<Laser>();
-		GetOwner<Player>().AddChild(Laser);
+		AddChild(Laser);
 		Laser.GetNode<CanvasLayer>(nameof(CanvasLayer)).Visible = false;
+		CreateLaserDuplicates(1);
+	}
+
+	public void TryFireLasers(bool fire)
+	{
+		Laser.IsCasting = fire;
+		if(_duplicates.Count != 0)
+		{
+			foreach(var dupli in _duplicates){
+				dupli.IsCasting = fire && dupli.Enabled;
+			}
+		}
 	}
 
 	/// <summary>
@@ -100,8 +130,8 @@ public partial class PlayerWeapon : Node
 	/// </summary>
 	public void Reset()
 	{
-		_weaponIndex = 0;
-		CurrentWeaponType = WeaponTypes.MaschineGun;
+		_weaponIndex = 2;
+		CurrentWeaponType = (WeaponTypes)_weaponIndex;
 
 		CurrentWeapon = WeaponScenes[_weaponIndex];
 		_currentWeaponTexture = WeaponSprites[_weaponIndex];
@@ -206,7 +236,8 @@ public partial class PlayerWeapon : Node
 			Laser.GetNode<CanvasLayer>(nameof(CanvasLayer)).Visible =  true;
 			Laser.Damage = bulletDamage;
 			Laser.CastSpeed = bulletSpeed;
-			Laser.MaxPierce = FiringComponent.MaxPierce;
+			Laser.MaxResults = FiringComponent.MaxPierce.Value;
+			OneLaser(); // Upewniamy się że duplikaty są wyłączone na początku
 		}
 		else
 		{
@@ -252,4 +283,66 @@ public partial class PlayerWeapon : Node
 		SetWeaponToHUD();
 		//FiringComponent.StartShooting();
 	}
+
+	public void CreateLaserDuplicates(int amount){
+		for(int i=0;i<amount;i++){
+			var dupli = Laser.Duplicate() as Laser;
+			dupli.SetScript(GD.Load("scripts/Laser.cs"));
+			AddChild(dupli);
+			_duplicates.Add(dupli);
+		}
+	}
+
+	public void OneLaser()
+	{
+		Laser.RotationDegrees = 0f;
+		foreach(var dupli in _duplicates){
+			dupli.IsCasting = false;
+			dupli.Enabled = false;
+		}
+	}
+
+	public void MultiLaser(int beamCount = 2){
+		if(beamCount < 2) return;
+
+		float angleStep = 10f;
+		int beamIndex = 0;
+	
+		
+		for(int i=1; i<=beamCount; i++)
+		{
+			float angle;
+			
+			if(beamCount % 2 != 0)
+			{
+				// Odd: center laser at 0, build symmetric pairs around it
+				int pairLevel = (beamIndex + 1) / 2;
+				angle = (beamIndex % 2 == 0) ? -angleStep * pairLevel : angleStep * pairLevel;
+			}
+			else
+			{
+				// Even: symmetric pairs, no center
+				int pairLevel = (beamIndex / 2) + 1;
+				angle = (beamIndex % 2 == 0) ? -angleStep * pairLevel : angleStep * pairLevel;
+			}
+			
+			if(i == 1)
+			{
+				Laser.RotationDegrees = angle;
+				beamIndex++;
+				continue;
+			}
+			
+			var dupli = _duplicates[i-2];
+			dupli.Enabled = true;
+			dupli.RotationDegrees = angle;
+			dupli.Temperature = Laser.Temperature;
+			dupli.MaxResults = FiringComponent.MaxPierce.Value;
+			beamIndex++;
+		}
+	}
+	private void MaxPierceValueChanged(object sender, Observable<int>.ChanedEventArgs e)
+    {
+        Laser.MaxResults = e.NewValue;
+    }
 }

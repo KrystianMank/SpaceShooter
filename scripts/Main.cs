@@ -31,7 +31,7 @@ public partial class Main : Node
 	private bool _increaseDificulty = false;
 	private int[] _lvTresholds = [5,15, 25, 50, 75, 100, 125, 150, 200, 250, 300, 400, 500,650,800, 1000, 1200, 1500, 2000, 2250];
 	private int _nextTresholdIndex = 0;
-	private double[] _waveTimeLength = [4d, 4d, 45d, 50d, 52d, 60d, 64d, 68d, 74d, 74d, 74d, 80d, 80d, 85d, 85d, 90d, 90d, 95d, 100d, 100d];
+	private double[] _waveTimeLength = [30d, 35d, 45d, 50d, 52d, 60d, 64d, 68d, 74d, 74d, 74d, 80d, 80d, 85d, 85d, 90d, 90d, 95d, 100d, 100d];
 	public int CurrentWaveIndex = 0;
 
 
@@ -47,7 +47,7 @@ public partial class Main : Node
 		BackgroundStartPosition = Background.Position;
 		BackgroundRepeatHeight = Background.Size.Y / 2;
 
-		WaveTimer.WaitTime = _waveTimeLength[0];
+		WaveTimer.WaitTime = _waveTimeLength[CurrentWaveIndex];
 		WaveTimer.Timeout += OnWaveTimerTimeout;
 
 		ScreenSize = PlayerNode.ScreenSize;

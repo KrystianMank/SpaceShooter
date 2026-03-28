@@ -99,6 +99,7 @@ animations = [{
 }]
 
 [node name="SeekingAlien" type="RigidBody2D" unique_id=1527348025 node_paths=PackedStringArray("EntityHP")]
+collision_layer = 17
 gravity_scale = 0.0
 freeze_mode = 1
 contact_monitor = true

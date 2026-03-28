@@ -78,6 +78,7 @@ public partial class Player : Area2D
 
 		PlayerWeapon.PlayerStats = playerStats;
 		PlayerWeapon.Init();
+		PlayerWeapon.FiringComponent.MaxPierce.Value = 2;
     }
 
 
@@ -140,7 +141,7 @@ public partial class Player : Area2D
 		// Shooting logic
 		if(PlayerWeapon.CurrentWeaponType == WeaponTypes.Laser && PlayerWeapon.Laser != null && PlayerWeapon.WeaponChangeAnimationFinished)
 		{
-			PlayerWeapon.Laser.IsCasting = Input.IsActionPressed("shoot") && !PlayerWeapon.Laser.IsOnCooldown;
+			PlayerWeapon.TryFireLasers(Input.IsActionPressed("shoot") && !PlayerWeapon.Laser.IsOnCooldown);
 		}
 		else
 		{
@@ -296,7 +297,7 @@ public partial class Player : Area2D
         {
 			case PowerupEnum.piercing_powerup:
 				{
-					PlayerWeapon.FiringComponent.MaxPierce = 2;
+					PlayerWeapon.FiringComponent.MaxPierce.Value = 2;
 					PowerupTimer.WaitTime = playerStats.PiercingPowerupDuration.Value;
 					_powerupCallable = new Callable(this, nameof(OnPowerupTimeout));
 					break;
@@ -312,7 +313,8 @@ public partial class Player : Area2D
                 }
 			case PowerupEnum.multishot_powerup:
                 {
-					PlayerWeapon.SetBulletQuantity(2);			
+					PlayerWeapon.SetBulletQuantity(2);
+					PlayerWeapon.MultiLaser(2);
 
 					PowerupTimer.WaitTime = playerStats.MultishotPowerupDuration.Value;
 					_powerupCallable = new Callable(this, nameof(OnPowerupTimeout));
@@ -356,13 +358,14 @@ public partial class Player : Area2D
 		switch (_currentPowerup.Value)
 		{
 			case PowerupEnum.piercing_powerup:
-				PlayerWeapon.FiringComponent.MaxPierce = 1;
+				PlayerWeapon.FiringComponent.MaxPierce.Value = 1;
 				break;
 			case PowerupEnum.invincibility_powerup:
 				GetNode<HurtboxComponent>("HurtboxComponent").GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred(CollisionShape2D.PropertyName.Disabled, false);
 				break;
 			case PowerupEnum.multishot_powerup:
 				PlayerWeapon.SetBulletQuantity(1);
+				PlayerWeapon.OneLaser();
 				break;
 			case PowerupEnum.dash_powerup:
 				_isDashActive = false;
@@ -402,7 +405,7 @@ public partial class Player : Area2D
 
 		playerStats.Speed.Value = DeafultPlayerStatsValues.SPEED;
 		playerStats.FireRate.Value = DeafultPlayerStatsValues.FIRE_RATE;
-		playerStats.Luck.Value = 1;
+		playerStats.Luck.Value = 20;
 		playerStats.BulletSpeed.Value = DeafultPlayerStatsValues.BULLET_SPEED;
 		playerStats.Damage.Value = DeafultPlayerStatsValues.DAMAGE;
 		playerStats.Health.SetHP(DeafultPlayerStatsValues.HEALTH);
