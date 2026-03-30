@@ -14,6 +14,7 @@
 [ext_resource type="Resource" uid="uid://dy2iy2jivvtof" path="res://resources/entityResource/SeekingAlien.tres" id="12_dg77c"]
 [ext_resource type="Texture2D" uid="uid://pcg6immstifu" path="res://sprites/wave_animtionss/player_go_next_level.png" id="13_ycdy4"]
 [ext_resource type="Texture2D" uid="uid://bo24o0fnwkmnk" path="res://sprites/wave_animtionss/player_appears_animation.png" id="14_w48qg"]
+[ext_resource type="Environment" uid="uid://b8do7kuv7foxy" path="res://resources/2d_environment.tres" id="15_vivmo"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qtqh7"]
 atlas = ExtResource("10_4c57u")
@@ -265,6 +266,9 @@ visible = false
 sprite_frames = SubResource("SpriteFrames_xuqvo")
 frame = 5
 frame_progress = 1.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1740595925]
+environment = ExtResource("15_vivmo")
 
 [connection signal="HudReady" from="." to="HUD" method="OnHudReady"]
 [connection signal="ShowPlayerStatsUpgradePanel" from="." to="HUD" method="ShowPlayerUpgradeStatsPanel"]

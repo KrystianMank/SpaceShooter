@@ -20,6 +20,27 @@ MainMenuScene = ExtResource("2_rftc2")
 [node name="StatsUpgradePanel" parent="." unique_id=110685004 instance=ExtResource("2_640wx")]
 visible = false
 
+[node name="WaveLabelsContainer" type="HBoxContainer" parent="." unique_id=1288398922]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_top = 110.0
+offset_right = 20.0
+offset_bottom = 172.0
+grow_horizontal = 2
+theme_override_constants/separation = 4
+
+[node name="WaveNumberLabel" type="Label" parent="WaveLabelsContainer" unique_id=350969292]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 25
+
+[node name="WaveTimeLabel" type="Label" parent="WaveLabelsContainer" unique_id=1309095945]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 25
+
 [node name="ScoreLabel" type="Label" parent="." unique_id=2017390418]
 visible = false
 anchors_preset = 5
@@ -49,18 +70,6 @@ theme_override_font_sizes/font_size = 50
 text = "Space Shooter"
 horizontal_alignment = 1
 autowrap_mode = 2
-
-[node name="WaveTimeLabel" type="Label" parent="." unique_id=1309095945]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -32.0
-offset_top = 110.0
-offset_right = 32.0
-offset_bottom = 145.0
-grow_horizontal = 2
-size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 25
 
 [node name="StartButton" type="Button" parent="." unique_id=1129690758]
 anchors_preset = 7

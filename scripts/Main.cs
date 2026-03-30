@@ -97,6 +97,7 @@ public partial class Main : Node
 		EmitSignal(SignalName.HudReady, GetNode<Player>("Player"));
 
 		Hud.ShowMessage("Get Ready!");
+		Hud.SetNewWaveNumber(1);
 
 		StartNewWaveAnimations();
 
@@ -132,8 +133,9 @@ public partial class Main : Node
 
 	private void OnWaveTimerTimeout()
     {
+		CurrentWaveIndex++;
 		MainWaveManager.EntitySpawner.DestroyAllEntities();
-        WaveTimer.WaitTime = _waveTimeLength[++CurrentWaveIndex];
+        WaveTimer.WaitTime = _waveTimeLength[CurrentWaveIndex];
 
 		EndCurrentWaveAnimations();
 
@@ -144,6 +146,8 @@ public partial class Main : Node
 		{
 			MainWaveManager.EntitySpawner.IncreaseDifficulty();
 		}
+
+		Hud.SetNewWaveNumber(CurrentWaveIndex + 1);
     }
 
 	public async void EndCurrentWaveAnimations()

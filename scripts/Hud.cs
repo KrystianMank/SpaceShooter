@@ -15,14 +15,16 @@ public partial class Hud : CanvasLayer
 	public PackedScene MainMenuScene;
 
 	public Main MainNode;
-	public Label WaveTimeLabel;
+	public Label WaveTimeLabel, WaveNumberLabel;
 	
 	Vector2 entityVelocity = Vector2.Zero;
 	private Player _player;
 
     public override void _Ready()
     {
-        WaveTimeLabel = GetNode<Label>("WaveTimeLabel");
+        WaveTimeLabel = GetNode<Label>("WaveLabelsContainer/WaveTimeLabel");
+		WaveNumberLabel = GetNode<Label>("WaveLabelsContainer/WaveNumberLabel");
+
     }
 
 
@@ -117,7 +119,14 @@ public partial class Hud : CanvasLayer
 
 	public void UpdateWaveTimeLabelText(double time)
 	{
-		WaveTimeLabel.Text = time.ToString("00:00");
+		int minutes = (int)(time / 60);
+		int seconds = (int)(time % 60);
+		WaveTimeLabel.Text = $"{minutes:00}:{seconds:00}";
+	}
+
+	public void SetNewWaveNumber(int waveNumber)
+	{
+		WaveNumberLabel.Text = $"{waveNumber} - ";
 	}
 
 	public void ShowPlayerUpgradeStatsPanel(bool show)
