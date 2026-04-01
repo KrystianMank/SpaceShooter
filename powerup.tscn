@@ -10,7 +10,6 @@
 size = Vector2(50, 49)
 
 [node name="Powerup" type="Area2D" unique_id=383939482 groups=["powerups"]]
-collision_mask = 3
 script = ExtResource("1_iuyn8")
 PowerupTextures = Array[Texture2D]([ExtResource("2_6cuax"), ExtResource("3_6cuax"), ExtResource("4_xu7g1"), ExtResource("5_iuyn8")])
 

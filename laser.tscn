@@ -12,7 +12,7 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2hs0m"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5ny2x"]
-size = Vector2(10, 500)
+size = Vector2(2, 500)
 
 [sub_resource type="Gradient" id="Gradient_7vci3"]
 offsets = PackedFloat32Array(0, 0.8407258, 1, 1)
@@ -67,6 +67,13 @@ color_ramp = SubResource("GradientTexture1D_7vci3")
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_xw5cg"]
 gradient = SubResource("Gradient_7vci3")
 
+[sub_resource type="Curve" id="Curve_3gdm7"]
+_data = [Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 1
+
+[sub_resource type="CurveTexture" id="CurveTexture_yfymw"]
+curve = SubResource("Curve_3gdm7")
+
 [sub_resource type="Curve" id="Curve_7vci3"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.50216454, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 3
@@ -87,6 +94,7 @@ scale_min = 0.29999998
 scale_max = 0.29999998
 scale_curve = SubResource("CurveTexture_xw5cg")
 color_ramp = SubResource("GradientTexture1D_xw5cg")
+emission_curve = SubResource("CurveTexture_yfymw")
 
 [node name="Laser" type="ShapeCast2D" unique_id=1848176236 groups=["laser"]]
 material = SubResource("ShaderMaterial_2hs0m")
@@ -103,6 +111,7 @@ Color = Color(0.92362344, 0.32940048, 1, 1)
 visible = false
 modulate = Color(0.92362344, 0.32940048, 1, 1)
 points = PackedVector2Array(0, -40, 0, -500)
+width = 0.0
 gradient = SubResource("Gradient_7vci3")
 begin_cap_mode = 2
 end_cap_mode = 2

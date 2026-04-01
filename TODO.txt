@@ -1,8 +1,8 @@
 IN PROGRESS:
-
+- Piering, multishoot do lasera
 
 TODO:
-- Piering, multishoot do lasera
+- Interface do broni, przechowanie statystyk do każdego rodzaju broni
 - Utworzyć różnorodne fale przeciwników
  
 NEXT:
@@ -21,6 +21,9 @@ NEXT:
  	4.5: ładowanie temperatury (przytrzymując przycisk strzału ładujesz temperaturę, nie strzelając. 
 			Zwiększanie temperatury zwiększy damage, strzał można rozpocząc po naciśnięciu prawego przycisku, resetując temperature do 0 ),
 	4.6: trafienie przeciwnika powoduje rykoszet
+ - Forcefield:
+	4.7:
+	4.8:
 
 5. BOSS, (zabicie dodaje 5 skill point lub walute?):
  5.1: Garbage Collector: wystrzeliwuje w regularnych odstępach w kształcie stożka w strone gracza śmieci. Pochłania nadlatujące meteory i satelity, by gdy zbierze ich 5 utworzy dużą kulę, wystrzeliwując ją w stronę gracza

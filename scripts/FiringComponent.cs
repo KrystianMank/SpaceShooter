@@ -83,9 +83,9 @@ public partial class FiringComponent : Node
 	/// <summary>
 	/// Tries to shoot if cooldown is off
 	/// </summary>
-	public bool TryShoot()
+	public bool TryShoot(bool fire)
 	{
-		if (_canShoot)
+		if (_canShoot && fire)
 		{
 			SpawnBullets();
 			return true;

@@ -51,34 +51,18 @@ public partial class Player : Area2D
 		LeftMarginWindow = GetParent().GetNode<Marker2D>("LeftMarginWindow");
 		
 		_leftRightDashAnimation = GetNode<AnimatedSprite2D>("DashAnimationLeftRight");
-		_leftRightDashAnimation.SpriteFrames.SetAnimationLoop("default",false);
 		_upDownDashAnimation = GetNode<AnimatedSprite2D>("DashAnimationUpDown");
-		_upDownDashAnimation.SpriteFrames.SetAnimationLoop("default", false);
 		_dashBlinkAnimation = GetParent().GetNode<AnimatedSprite2D>("DashAnimationBlink");
-		_dashBlinkAnimation.SpriteFrames.SetAnimationLoop("default", false);
 
 		_rocketSprite = GetNode<Sprite2D>("Sprite2D");
-
-		// // Setting up some event handlers
-		// playerStats.FireRate.Value = 0.5d;
-		// GetNode<Godot.Timer>("ShootCooldown").WaitTime = playerStats.FireRate.Value;
 
         playerStats.Health.HPDepleted += OnHealthDepleted;
 		HealthComponent = playerStats.Health;
 		GetNode<HurtboxComponent>(nameof(HurtboxComponent)).HealthComponent = playerStats.Health;
 
-		// Showing damage that player received
-        // GetNode<HurtboxComponent>(nameof(HurtboxComponent)).AreaEntered += (area2D) =>
-        // {
-        //     if(area2D is HitboxComponent hitboxComponent)
-        //     {
-        //         ShowDamageLabel(hitboxComponent);
-        //     }
-        // };
-
 		PlayerWeapon.PlayerStats = playerStats;
 		PlayerWeapon.Init();
-		PlayerWeapon.FiringComponent.MaxPierce.Value = 2;
+		PlayerWeapon.FiringComponent.MaxPierce.Value = 1;
     }
 
 
@@ -139,19 +123,10 @@ public partial class Player : Area2D
 			Position += _velocity * (float)delta;
 
 		// Shooting logic
-		if(PlayerWeapon.CurrentWeaponType == WeaponTypes.Laser && PlayerWeapon.Laser != null && PlayerWeapon.WeaponChangeAnimationFinished)
-		{
-			PlayerWeapon.TryFireLasers(Input.IsActionPressed("shoot") && !PlayerWeapon.Laser.IsOnCooldown);
-		}
-		else
-		{
-			if(Input.IsActionPressed("shoot") && PlayerWeapon.WeaponChangeAnimationFinished)
-			{
-				PlayerWeapon.FiringComponent.TryShoot();
-			}
-        }
+		if(PlayerWeapon.WeaponChangeAnimationFinished)
+			PlayerWeapon.TryFireWeapon(Input.IsActionPressed("shoot"));
 		
-		
+		// Dash powerup logic
 		if (_isDashActive)
 		{
 			var leftDashPos = new Vector2(Position.X - 100, Position.Y);
@@ -401,15 +376,15 @@ public partial class Player : Area2D
     /// </summary>
 	public void ResetStats()
 	{
-		playerStats.SkillPoints.Value = 10;
+		playerStats.SkillPoints.Value = DeafultPlayerStatsValues.SKILL_POINTS;
 
 		playerStats.Speed.Value = DeafultPlayerStatsValues.SPEED;
 		playerStats.FireRate.Value = DeafultPlayerStatsValues.FIRE_RATE;
-		playerStats.Luck.Value = 20;
+		playerStats.Luck.Value = DeafultPlayerStatsValues.LUCK;
 		playerStats.BulletSpeed.Value = DeafultPlayerStatsValues.BULLET_SPEED;
 		playerStats.Damage.Value = DeafultPlayerStatsValues.DAMAGE;
 		playerStats.Health.SetHP(DeafultPlayerStatsValues.HEALTH);
-		playerStats.MaxHealth.Value = 100;
+		playerStats.MaxHealth.Value = DeafultPlayerStatsValues.HEALTH;
 
 		playerStats.InvincibilityPowerupDuration.Value = DeafultPlayerStatsValues.INVINCIBILITY_POWERUP_DURATION;
 		playerStats.PiercingPowerupDuration.Value = DeafultPlayerStatsValues.PIERCING_POWERUP_DURATION;

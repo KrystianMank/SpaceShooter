@@ -4,18 +4,19 @@ using System;
 public partial class ExplosionArea : Area2D
 {
 	[Export]
-	public float ExplosionRadius = 150;
+	public float ExplosionRadius = 250;
 	[Export]
 	public float ExplosionForce = 500;
-	[Export]
-    public double ExplosionDamageMultiplier = 0.5d;
 
 	[Export]
 	public AnimatedSprite2D ExplosionAnimation;
 	[Export]
 	public GpuParticles2D ExplosionVFX;
+	[Export]
+	public HitboxComponent HitboxComponent;
 	const float DISTANCE_TO_EXPLODE = 200;
 	private Vector2 _startPos, _distanceToExplode;
+
 	
 
     public override void _Ready()
@@ -64,10 +65,9 @@ public partial class ExplosionArea : Area2D
 				{
 					// var impulse = direction.Normalized() * ExplosionForce * (1 - (direction.Length() / ExplosionRadius));
 					// entity.ApplyImpulse(impulse);
-					double damage = ExplosionDamageMultiplier * Math.Ceiling(Mathf.Sqrt(Mathf.Abs(ExplosionRadius - direction.Length())));
-					GD.Print(entity.Name + " is in Range of explosion "+damage);
-					// farthest - 1dmg, closest - 3.5dmg
-					entity.EntityHP.DealDamage(damage); 
+					//double damage = ExplosionDamageMultiplier * Math.Ceiling(Mathf.Sqrt(Mathf.Abs(ExplosionRadius - direction.Length())));
+					entity.EntityHP.DealDamage(HitboxComponent.Damage); 
+					
 				}
 			}
 		}

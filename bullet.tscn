@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bilam6tfrs0s0" path="res://scripts/Bullet.cs" id="1_2b2rl"]
 [ext_resource type="Texture2D" uid="uid://ck48mexpggqpu" path="res://sprites/bullet_fire/bullet.png" id="2_t4vbm"]
 [ext_resource type="PackedScene" uid="uid://t6ijqvc73rcj" path="res://hitbox_component.tscn" id="3_t4vbm"]
+[ext_resource type="Texture2D" uid="uid://biuqgwd5tenq4" path="res://sprites/glowing_particle.png" id="4_2b2rl"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2b2rl"]
 radius = 5.0
@@ -42,6 +43,9 @@ collision_mask = 20
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AreaCollision" unique_id=683556909]
 shape = SubResource("CapsuleShape2D_2b2rl")
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=1569262949]
+texture = ExtResource("4_2b2rl")
 
 [connection signal="body_entered" from="." to="." method="OnBodyEntered"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="VisibleOnScreenNotifier2D"]

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
@@ -15,6 +16,7 @@ public partial class Laser : ShapeCast2D
 
 	public int Quantity;
 	public double Damage;
+	public double FireRate; 
 
 	private double _temperature = 0d;
 	const double MIN_TEMPERATURE = 0d;
@@ -108,17 +110,33 @@ public partial class Laser : ShapeCast2D
 	public GpuParticles2D CastingParticles, CollisionParticles, BeamParticles, CooldownParticles;
 	public AudioStreamPlayer2D ShootSound, CooldownSound;
 	public TextureProgressBar Termometer;
+
+	private bool _laserDamageCooldown = false;
 	//public Tween Tween = null;
+	//private double _lineGrowthTime = 0.1d;
 
     private void Disappear()
     {
         line2D.Visible = false;
+		// if(Tween != null && Tween.IsRunning()) Tween.Kill();
+
+		// Tween = CreateTween();
+		// Tween.TweenProperty(line2D, Line2D.PropertyName.Width.ToString(), 0d, _lineGrowthTime).From(line2D.Width);
+		//Tween.TweenCallback(new Callable(line2D, Line2D.MethodName.Hide));
     }
 
 
     private void Appear()
     {
         line2D.Visible = true;
+
+		// if(Tween != null && Tween.IsRunning()){
+		// 	Tween.Kill();
+		// }
+
+		// Tween = CreateTween();
+		// Tween.TweenProperty(line2D, Line2D.PropertyName.Width.ToString(), line2D.Width, _lineGrowthTime * 2d).From(0d);
+		//Tween.TweenCallback(new Callable(line2D, Line2D.MethodName.Show));
     }
 
 
@@ -152,8 +170,16 @@ public partial class Laser : ShapeCast2D
 	
     }
 
-    public override void _PhysicsProcess(double delta)
+	float x = 0f;
+
+	public override void _PhysicsProcess(double delta)
     {
+		// if(Input.IsActionJustPressed("dash")){
+		// 	x += 4;
+		// }
+		// if(Shape is RectangleShape2D rectangle){
+		// 	rectangle.Size = new((float)Mathf.Clamp(x,2,20),500);
+		// }
         TargetPosition = TargetPosition.MoveToward(Vector2.Up * MaxLenght, (float)(CastSpeed * delta));
 
 		ForceShapecastUpdate();
@@ -171,7 +197,7 @@ public partial class Laser : ShapeCast2D
 			{
 				var collider = GetCollider(i);
 				if(collider == null) continue;
-				
+
 				Entity entity = null;
 				
 				// GetCollider might return CollisionShape2D, so check parent
@@ -187,8 +213,8 @@ public partial class Laser : ShapeCast2D
 				
 				if(entity != null)
 				{
-					GD.Print("colliding " + entity.EntityHP);
-					EmitSignal(SignalName.RaycastCollide, Damage, entity);
+					if(!_laserDamageCooldown) DamageEntity(entity);
+					
 				}
 			}
 
@@ -225,7 +251,21 @@ public partial class Laser : ShapeCast2D
 		}
     }
 
-	
+	public void ResetLaserProperties()
+	{
+		IsCasting = false;
+		Temperature = 0d;
+		IsOnCooldown = false;
+	}
+
+	private async void DamageEntity(Entity entity)
+    {
+        EmitSignal(SignalName.RaycastCollide, Damage, entity);
+		_laserDamageCooldown = true;
+		await ToSignal(GetTree().CreateTimer(FireRate), Timer.SignalName.Timeout);
+		ForceShapecastUpdate();
+		_laserDamageCooldown = false;
+    }
 
 	public void OnRaycastCollide(double damage, Entity character)
 	{

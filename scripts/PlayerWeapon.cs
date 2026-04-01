@@ -40,8 +40,8 @@ public partial class PlayerWeapon : Node
 		public WeaponStatsMultiplier(){}
 	}
 	private readonly WeaponStatsMultiplier _maschineGunStatsMultipier = new(1,1,1);
-	private readonly WeaponStatsMultiplier _rocketLauncherStatsMultiplier = new(0.5, 3, 2);
-	private readonly WeaponStatsMultiplier _laserStatsMultiplier = new(10, 0.1, 5);
+	private readonly WeaponStatsMultiplier _rocketLauncherStatsMultiplier = new(0.5, 4, 2);
+	private readonly WeaponStatsMultiplier _laserStatsMultiplier = new(2, 0.1, 0.15);
 
 	public struct WeaponStats
 	{
@@ -125,6 +125,24 @@ public partial class PlayerWeapon : Node
 		}
 	}
 
+	public void TryFireWeapon(bool fire)
+	{
+		switch (CurrentWeaponType)
+		{
+			case WeaponTypes.Laser:
+				{
+					TryFireLasers(fire &&  !Laser.IsOnCooldown);
+				}
+			break;
+			case WeaponTypes.MaschineGun:
+			case WeaponTypes.RocketLauncher:
+				{
+					FiringComponent.TryShoot(fire);
+				}
+			break;
+		}
+	}
+
 	/// <summary>
 	/// Reset current weapon to default one (maschine gun)
 	/// </summary>
@@ -148,6 +166,7 @@ public partial class PlayerWeapon : Node
         //     MaschineGunStats, RocketLauncherStats, LaserStats
 		// };
 
+		Laser.ResetLaserProperties();
 		SetWeapon();
 		SetWeaponToHUD();
 	}
@@ -235,9 +254,10 @@ public partial class PlayerWeapon : Node
 		{
 			Laser.GetNode<CanvasLayer>(nameof(CanvasLayer)).Visible =  true;
 			Laser.Damage = bulletDamage;
+			Laser.FireRate = fireRate;
 			Laser.CastSpeed = bulletSpeed;
 			Laser.MaxResults = FiringComponent.MaxPierce.Value;
-			OneLaser(); // Upewniamy się że duplikaty są wyłączone na początku
+			OneLaser();
 		}
 		else
 		{

@@ -293,7 +293,7 @@ public partial class EntitySpawnerComponent : Node
 	{
 		EntitySpawnTimers.ForEach(timer =>
 		{
-			timer.ApplyNewWaitTime(timer.SpawnTimer.WaitTime - EnititySpawnDificultyMultiplier);
+			timer.ApplyNewWaitTime(timer.SpawnTimer.WaitTime -= EnititySpawnDificultyMultiplier * timer.SpawnTimer.WaitTime);
 		});
 		EntityHealthMultiplier += 0.5d;
 		AlienFirerateMultiplier -= 0.1d;

@@ -15,7 +15,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="Space Shooter"
-config/version="0.4"
+config/version="0.5"
 run/main_scene="uid://coofy7hsq27pt"
 config/features=PackedStringArray("4.6", "C#", "Mobile")
 run/max_fps=240

@@ -97,7 +97,7 @@ public partial class Alien : Entity
 
         };
 
-        FiringComponent.TryShoot();
+        FiringComponent.TryShoot(true);
          
     }
 
