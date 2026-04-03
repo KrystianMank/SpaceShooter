@@ -1,12 +1,13 @@
 [gd_scene format=3 uid="uid://c4bdp8uav35em"]
 
 [ext_resource type="Script" uid="uid://c6u6g34egvn5y" path="res://scripts/PlayerWeapon.cs" id="1_woryq"]
-[ext_resource type="PackedScene" uid="uid://cb4navl08e7bj" path="res://firing_component.tscn" id="2_g1uu5"]
-[ext_resource type="PackedScene" uid="uid://ddxe1pjlkw2uk" path="res://bullet.tscn" id="2_woryq"]
-[ext_resource type="PackedScene" uid="uid://c1gslxc722a82" path="res://rocket_projectile.tscn" id="3_66dhs"]
-[ext_resource type="Texture2D" uid="uid://ck48mexpggqpu" path="res://sprites/bullet_fire/bullet.png" id="4_uhxye"]
-[ext_resource type="Texture2D" uid="uid://bhnjy00ckemy4" path="res://sprites/bullet_fire/rocket_projectile.png" id="5_a47y8"]
+[ext_resource type="Texture2D" uid="uid://caxumhxer8jde" path="res://sprites/poweups/weapon_maschinegun.png" id="2_uhxye"]
+[ext_resource type="Texture2D" uid="uid://5um6ooqryp0k" path="res://sprites/poweups/weapon_rocket.png" id="3_a47y8"]
+[ext_resource type="Texture2D" uid="uid://dl7bcymn7k3v8" path="res://sprites/poweups/weapon_laser.png" id="4_gf177"]
+[ext_resource type="PackedScene" uid="uid://bmh1l1jr5kfha" path="res://maschinegun.tscn" id="5_rhoyi"]
+[ext_resource type="PackedScene" uid="uid://cxt57778w838s" path="res://rocketlauncher.tscn" id="6_g8g5g"]
 [ext_resource type="Texture2D" uid="uid://d1wsb8pw5gfph" path="res://sprites/WeaponLoadBar/WeaponLoadingBarEmpty-sheet.png" id="7_66dhs"]
+[ext_resource type="PackedScene" uid="uid://c4vm0pvcq87pa" path="res://laser.tscn" id="7_fmm3b"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_uhxye"]
 atlas = ExtResource("7_66dhs")
@@ -114,13 +115,19 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="PlayerWeapon" type="Node" unique_id=1499773877 node_paths=PackedStringArray("WeaponChangeAnimation")]
+[node name="PlayerWeapon" type="Node" unique_id=1499773877 node_paths=PackedStringArray("Laser", "Maschinegun", "Rocketlauncher", "WeaponChangeAnimation")]
 script = ExtResource("1_woryq")
-WeaponScenes = Array[PackedScene]([ExtResource("2_woryq"), ExtResource("3_66dhs")])
-WeaponSprites = Array[Texture2D]([ExtResource("4_uhxye"), ExtResource("5_a47y8")])
+Laser = NodePath("Laser")
+Maschinegun = NodePath("Maschinegun")
+Rocketlauncher = NodePath("Rocketlauncher")
+WeaponFrames = Array[Texture2D]([ExtResource("2_uhxye"), ExtResource("3_a47y8"), ExtResource("4_gf177")])
 WeaponChangeAnimation = NodePath("WeaponChangeAnim")
 
-[node name="FiringComponent" parent="." unique_id=268641480 instance=ExtResource("2_g1uu5")]
+[node name="Maschinegun" parent="." unique_id=254698987 instance=ExtResource("5_rhoyi")]
+
+[node name="Rocketlauncher" parent="." unique_id=1316933544 instance=ExtResource("6_g8g5g")]
+
+[node name="Laser" parent="." unique_id=1848176236 instance=ExtResource("7_fmm3b")]
 
 [node name="WeaponChangeAnim" type="AnimatedSprite2D" parent="." unique_id=1149379136]
 sprite_frames = SubResource("SpriteFrames_4p17a")

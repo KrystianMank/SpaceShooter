@@ -6,18 +6,18 @@ public partial class FiringComponent : Node
 {
 	[Export]
 	public PackedScene BulletScene;
-	public Observable<int> BulletSpeed =new();
+	public Observable<int> BulletSpeed =new()
+	{
+		Value = 500
+	};
 	public Observable<double> BulletDamage=new();
 	public Observable<double> BulletFirerate =new();
 	public Marker2D BulletSpawn;
 	public int BulletQuantity;
 	public float FiringAngle;
 	public bool PlayerBullet;
-	public Observable<int> MaxPierce = new()
-	{
-		Value = 1
-	};
-	
+	public int MaxPierce;
+	[Export]
 	public Texture2D BulletSprite;
 	
 	private Timer _shootCooldown;
@@ -58,7 +58,7 @@ public partial class FiringComponent : Node
 			_bullet.FiringAngle = rotation;
 			_bullet.PlayerBullet = PlayerBullet;
 			_bullet.BulletSprite = BulletSprite;
-			_bullet.MaxPierce = MaxPierce.Value;
+			_bullet.MaxPierce = MaxPierce;
 
 			_bullet.Initialize(GetParent(), PlayerBullet);
 			

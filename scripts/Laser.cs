@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using Godot.Collections;
+using WeaponNamescape;
 
 [Tool]
-public partial class Laser : ShapeCast2D
+public partial class Laser : ShapeCast2D, IBaseWeapon
 {
 	[Signal]
 	public delegate void RaycastCollideEventHandler(double damage, Entity entity);
@@ -14,7 +15,22 @@ public partial class Laser : ShapeCast2D
 	[Export]
 	public float MaxLenght = 500f;
 
-	public int Quantity;
+	private double _laserWidth = 10d;
+
+	[Export]
+	public double LaserWidth
+	{
+		get {return _laserWidth;}
+		set
+		{
+			_laserWidth = Mathf.Clamp(value,2,20);
+			if(Shape is RectangleShape2D rectangle){
+				rectangle.Size = new((float)_laserWidth, MaxLenght);
+			}
+			GetNode<Line2D>(nameof(Line2D)).Width = (float)_laserWidth;
+		}
+	}
+
 	public double Damage;
 	public double FireRate; 
 
@@ -115,6 +131,8 @@ public partial class Laser : ShapeCast2D
 	//public Tween Tween = null;
 	//private double _lineGrowthTime = 0.1d;
 
+	private LaserStats _laserStats;
+
     private void Disappear()
     {
         line2D.Visible = false;
@@ -170,16 +188,8 @@ public partial class Laser : ShapeCast2D
 	
     }
 
-	float x = 0f;
-
 	public override void _PhysicsProcess(double delta)
     {
-		// if(Input.IsActionJustPressed("dash")){
-		// 	x += 4;
-		// }
-		// if(Shape is RectangleShape2D rectangle){
-		// 	rectangle.Size = new((float)Mathf.Clamp(x,2,20),500);
-		// }
         TargetPosition = TargetPosition.MoveToward(Vector2.Up * MaxLenght, (float)(CastSpeed * delta));
 
 		ForceShapecastUpdate();
@@ -267,9 +277,25 @@ public partial class Laser : ShapeCast2D
 		_laserDamageCooldown = false;
     }
 
+	public void SetWeaponVariables(BaseWeaponStats baseWeaponStats)
+	{
+		if(baseWeaponStats is not LaserStats laserStats)
+			throw new ArgumentException("Invalid parameter type");
+		
+		_laserStats = laserStats;
+
+		Damage = laserStats.Damage;
+		FireRate = laserStats.FireRate;
+		LaserWidth = laserStats.LaserWidth;
+	}
+
 	public void OnRaycastCollide(double damage, Entity character)
 	{
 		character.EntityHP.DealDamage(damage);
 	}
 
+    public BaseWeaponStats GetWeaponStats()
+    {
+        return _laserStats;
+    }
 }

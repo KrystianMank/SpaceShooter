@@ -3,71 +3,52 @@ using GameEnums;
 using System.Collections.Generic;
 using System.Linq;
 using GenericObervable;
+using WeaponNamescape;
+
 public partial class PlayerWeapon : Node
 {
 	[Export]
-	public PackedScene[] WeaponScenes;
+	public Laser Laser;
 	[Export]
-	public Texture2D[] WeaponSprites;
+	public Maschinegun Maschinegun;
+	[Export]
+	public Rocketlauncher Rocketlauncher;
+	public Node[] Weapons;
+	public List<Node> WeaponsWithFiringComponent;
 	[Export]
 	public Texture2D[] WeaponFrames;
 	[Export]
 	public AnimatedSprite2D WeaponChangeAnimation;
-	public FiringComponent FiringComponent;
+	//public FiringComponent FiringComponent;
 	public PlayerStats PlayerStats;
 	public WeaponTypes CurrentWeaponType;
 	private int _weaponIndex;
-	public PackedScene CurrentWeapon;
-	public Laser Laser;
+	public IBaseWeapon CurrentWeapon;
+	//public Laser Laser;
 	private List<Laser> _duplicates = [];
-	private Texture2D _currentWeaponTexture;
 	private Texture2D _currentWeaponFrame;
 	public bool WeaponChangeAnimationFinished = true;
 	const float WEAPON_CHANGE_TIME = 2F;
 
-	public readonly struct WeaponStatsMultiplier
+	private readonly WeaponStatsMultiplier _maschineGunStatsMultipier = new(1,1);
+	private readonly WeaponStatsMultiplier _rocketLauncherStatsMultiplier = new(4, 2);
+	private readonly WeaponStatsMultiplier _laserStatsMultiplier = new(0.1, 0.15);
+
+	public Observable<int> MaxPierce = new()
 	{
-		public readonly double BulletSpeedMultiplier;
-		public readonly double BulletDamageMultiplier;
-		public readonly double FireRateMultiplier;
-
-		public WeaponStatsMultiplier(double speedMultiplier, double damageMultiplier, double fireRateMultiplier)
-		{
-			BulletSpeedMultiplier = speedMultiplier;
-			BulletDamageMultiplier = damageMultiplier;
-			FireRateMultiplier = fireRateMultiplier;
-		}
-		public WeaponStatsMultiplier(){}
-	}
-	private readonly WeaponStatsMultiplier _maschineGunStatsMultipier = new(1,1,1);
-	private readonly WeaponStatsMultiplier _rocketLauncherStatsMultiplier = new(0.5, 4, 2);
-	private readonly WeaponStatsMultiplier _laserStatsMultiplier = new(2, 0.1, 0.15);
-
-	public struct WeaponStats
-	{
-		public readonly WeaponTypes WeaponType;
-		public double BulletSpeed;
-		public double BulletDamage;
-		public double FireRate;
-
-		public WeaponStats(WeaponTypes weaponType, PlayerStats playerStats, WeaponStatsMultiplier weaponStatsMultiplier)
-		{
-			WeaponType = weaponType;
-			BulletSpeed = playerStats.BulletSpeed.Value * weaponStatsMultiplier.BulletSpeedMultiplier;
-			BulletDamage = playerStats.Damage.Value * weaponStatsMultiplier.BulletDamageMultiplier;
-			FireRate = playerStats.FireRate.Value * weaponStatsMultiplier.FireRateMultiplier;
-		}
-		public WeaponStats(){}
-	}
+		Value = 1
+	};
 
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		FiringComponent = GetNode<FiringComponent>(nameof(FiringComponent));
-		FiringComponent.PlayerBullet = true;
-		FiringComponent.MaxPierce.Changed += MaxPierceValueChanged;
+		Weapons = [Maschinegun, Rocketlauncher, Laser];
+		MaxPierce.Changed += MaxPierceValueChanged;
 		WeaponChangeAnimation.SpeedScale = WEAPON_CHANGE_TIME;
+		WeaponsWithFiringComponent = Weapons
+			.Where(weapon => weapon.HasNode(nameof(FiringComponent)))
+			.ToList();
 
 		Reset();
 	}
@@ -75,19 +56,18 @@ public partial class PlayerWeapon : Node
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		FiringComponent.BulletSpawn.GlobalPosition = GetParent().GetNode<Marker2D>("BulletSpawn").GlobalPosition;
-		WeaponChangeAnimation.GlobalPosition = GetParent().GetNode<Marker2D>("BulletSpawn").GlobalPosition + new Vector2(20,0);
+		var bulletSpawn = GetParent().GetNode<Marker2D>("BulletSpawn").GlobalPosition;
+		WeaponsWithFiringComponent.ForEach(weapon => 
+			weapon.GetNode<FiringComponent>(nameof(FiringComponent)).BulletSpawn.GlobalPosition = bulletSpawn);
+		WeaponChangeAnimation.GlobalPosition = bulletSpawn + new Vector2(20,0);
 		
 		// Update laser position to follow player
-		if(Laser != null)
-		{
-			Laser.GlobalPosition = FiringComponent.BulletSpawn.GlobalPosition;
-		}
+		Laser.GlobalPosition = bulletSpawn;
 		foreach(var dupli in _duplicates)
 		{
 			if(dupli != null)
 			{
-				dupli.GlobalPosition = FiringComponent.BulletSpawn.GlobalPosition;
+				dupli.GlobalPosition = bulletSpawn;
 			}
 		}
 
@@ -108,8 +88,9 @@ public partial class PlayerWeapon : Node
 
 	public void Init()
 	{
-		Laser = WeaponScenes[2].Instantiate<Laser>();
-		AddChild(Laser);
+		// Laser = WeaponScenes[2].Instantiate<Laser>();
+		// AddChild(Laser);
+
 		Laser.GetNode<CanvasLayer>(nameof(CanvasLayer)).Visible = false;
 		CreateLaserDuplicates(1);
 	}
@@ -135,9 +116,14 @@ public partial class PlayerWeapon : Node
 				}
 			break;
 			case WeaponTypes.MaschineGun:
+				{
+					Maschinegun.FiringComponent.TryShoot(fire);
+				}
+				break;
+			
 			case WeaponTypes.RocketLauncher:
 				{
-					FiringComponent.TryShoot(fire);
+					Rocketlauncher.FiringComponent.TryShoot(fire);
 				}
 			break;
 		}
@@ -151,8 +137,7 @@ public partial class PlayerWeapon : Node
 		_weaponIndex = 2;
 		CurrentWeaponType = (WeaponTypes)_weaponIndex;
 
-		CurrentWeapon = WeaponScenes[_weaponIndex];
-		_currentWeaponTexture = WeaponSprites[_weaponIndex];
+		CurrentWeapon =(IBaseWeapon) Weapons[_weaponIndex];
 		_currentWeaponFrame = WeaponFrames[_weaponIndex];
 
 		if (PlayerStats == null)
@@ -178,11 +163,10 @@ public partial class PlayerWeapon : Node
 	public void ChangeWeapon(bool next)
 	{
 		_weaponIndex = next
-			? (_weaponIndex < WeaponScenes.Length -1 ? ++_weaponIndex : _weaponIndex = 0)
-			: (_weaponIndex > 0 ? --_weaponIndex : _weaponIndex = WeaponScenes.Length - 1);
+			? (_weaponIndex < Weapons.Length -1 ? ++_weaponIndex : _weaponIndex = 0)
+			: (_weaponIndex > 0 ? --_weaponIndex : _weaponIndex = Weapons.Length - 1);
 		CurrentWeaponType = (WeaponTypes)_weaponIndex;
-		CurrentWeapon = WeaponScenes[_weaponIndex];
-		_currentWeaponTexture = WeaponSprites[_weaponIndex];
+		CurrentWeapon = (IBaseWeapon)Weapons[_weaponIndex];
 		_currentWeaponFrame = WeaponFrames[_weaponIndex];
 
 		WeaponChangeAnim();
@@ -191,15 +175,40 @@ public partial class PlayerWeapon : Node
 	/// <summary>
 	/// Set weapon variables
 	/// </summary>
-	/// <param name="bulletSpeed"></param>
-	/// <param name="damage"></param>
-	/// <param name="fireRate"></param>
-	public void SetWeaponVariables(int bulletSpeed, double damage, double fireRate)
+	/// <param name="weapon"></param>
+	/// <param name="weaponStats"></param>
+	/// <param name="weaponType"></param>
+	public void SetWeaponVariables(IBaseWeapon weapon, BaseWeaponStats weaponStats, WeaponTypes weaponType)
 	{
-		FiringComponent.BulletSpeed.Value = bulletSpeed;
-		FiringComponent.BulletDamage.Value = damage;
-		FiringComponent.BulletFirerate.Value = fireRate;
+		switch (weaponType)
+		{
+			case WeaponTypes.MaschineGun:
+				{
+					if(weapon is Maschinegun maschinegun && weaponStats is MaschineGunStats maschineGunStats)
+					{
+						maschinegun.SetWeaponVariables(maschineGunStats);
+					}
+					break;
+				}
+			case WeaponTypes.RocketLauncher:
+				{
+					if(weapon is Rocketlauncher rocketlauncher && weaponStats is RocketLauncherStats rocketLauncherStats)
+					{
+						rocketlauncher.SetWeaponVariables(rocketLauncherStats);
+					}
+					break;
+				}
+			case WeaponTypes.Laser:
+				{
+					if(weapon is Laser laser && weaponStats is LaserStats laserStats)
+					{
+						laser.SetWeaponVariables(laserStats);
+					}
+					break;
+				}
+		}
 	}
+
 	/// <summary>
 	/// Sets FiringsComponent's bullet aunatity and firing angle
 	/// </summary>
@@ -210,17 +219,20 @@ public partial class PlayerWeapon : Node
 		{
 			case 1:
 				{
-					FiringComponent.SetBulletSpawnVariables(1, 0f);
+					WeaponsWithFiringComponent.ForEach(weapon => 
+						weapon.GetNode<FiringComponent>(nameof(FiringComponent)).SetBulletSpawnVariables(1, 0f));
 				}
 				break;
 			case 2: 
 				{
-					FiringComponent.SetBulletSpawnVariables(2, 2f);
+					WeaponsWithFiringComponent.ForEach(weapon => 
+						weapon.GetNode<FiringComponent>(nameof(FiringComponent)).SetBulletSpawnVariables(2, 2f));
 				}
 				break;
 			case 3: 
 				{
-					FiringComponent.SetBulletSpawnVariables(3, 3f);
+					WeaponsWithFiringComponent.ForEach(weapon => 
+						weapon.GetNode<FiringComponent>(nameof(FiringComponent)).SetBulletSpawnVariables(3, 3f));
 				}
 				break;
 		}
@@ -243,20 +255,24 @@ public partial class PlayerWeapon : Node
 			_ => new WeaponStatsMultiplier()
 		};
 
-		double bulletSpeed = PlayerStats.BulletSpeed.Value * multiplier.BulletSpeedMultiplier;
-		double bulletDamage = PlayerStats.Damage.Value * multiplier.BulletDamageMultiplier;
+
+		double damage = PlayerStats.Damage.Value * multiplier.BulletDamageMultiplier;
 		double fireRate = PlayerStats.FireRate.Value * multiplier.FireRateMultiplier;
 
-		SetWeaponVariables((int)bulletSpeed, bulletDamage, fireRate);
-		FiringComponent.BulletSprite = _currentWeaponTexture;
+		BaseWeaponStats weaponStats = CurrentWeaponType switch
+		{
+			WeaponTypes.MaschineGun => new MaschineGunStats(PlayerStats.BulletSpeed.Value, damage, fireRate),
+			WeaponTypes.RocketLauncher => new RocketLauncherStats(200d, damage, fireRate),
+			WeaponTypes.Laser => new LaserStats(10d, damage, fireRate),
+			_ => new MaschineGunStats(PlayerStats.BulletSpeed.Value, damage, fireRate)
+		};
 
-		if(CurrentWeaponType == WeaponTypes.Laser)
+		SetWeaponVariables(CurrentWeapon, weaponStats, CurrentWeaponType);
+
+		if(CurrentWeaponType == WeaponTypes.Laser && weaponStats is LaserStats laserStats)
 		{
 			Laser.GetNode<CanvasLayer>(nameof(CanvasLayer)).Visible =  true;
-			Laser.Damage = bulletDamage;
-			Laser.FireRate = fireRate;
-			Laser.CastSpeed = bulletSpeed;
-			Laser.MaxResults = FiringComponent.MaxPierce.Value;
+			Laser.MaxResults = MaxPierce.Value;
 			OneLaser();
 		}
 		else
@@ -264,7 +280,6 @@ public partial class PlayerWeapon : Node
 			if(IsInstanceValid(Laser)) {
 				Laser.GetNode<CanvasLayer>(nameof(CanvasLayer)).Visible = false;
 			}
-			FiringComponent.BulletScene = CurrentWeapon;
 		}
 		Laser.IsCasting = false;
 	}
@@ -357,7 +372,7 @@ public partial class PlayerWeapon : Node
 			dupli.Enabled = true;
 			dupli.RotationDegrees = angle;
 			dupli.Temperature = Laser.Temperature;
-			dupli.MaxResults = FiringComponent.MaxPierce.Value;
+			dupli.MaxResults = MaxPierce.Value;
 			beamIndex++;
 		}
 	}

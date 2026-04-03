@@ -62,7 +62,7 @@ public partial class Player : Area2D
 
 		PlayerWeapon.PlayerStats = playerStats;
 		PlayerWeapon.Init();
-		PlayerWeapon.FiringComponent.MaxPierce.Value = 1;
+		PlayerWeapon.MaxPierce.Value = 1;
     }
 
 
@@ -220,7 +220,6 @@ public partial class Player : Area2D
 		PowerupEnded();
 		_isDashActive = false;
 
-		PlayerWeapon.SetWeaponVariables(playerStats.BulletSpeed.Value, playerStats.Damage.Value, playerStats.FireRate.Value);
 		PlayerWeapon.SetBulletQuantity(1);
 		//PlayerWeapon.FiringComponent.StartShooting();
     }
@@ -272,7 +271,7 @@ public partial class Player : Area2D
         {
 			case PowerupEnum.piercing_powerup:
 				{
-					PlayerWeapon.FiringComponent.MaxPierce.Value = 2;
+					PlayerWeapon.MaxPierce.Value = 2;
 					PowerupTimer.WaitTime = playerStats.PiercingPowerupDuration.Value;
 					_powerupCallable = new Callable(this, nameof(OnPowerupTimeout));
 					break;
@@ -333,7 +332,7 @@ public partial class Player : Area2D
 		switch (_currentPowerup.Value)
 		{
 			case PowerupEnum.piercing_powerup:
-				PlayerWeapon.FiringComponent.MaxPierce.Value = 1;
+				PlayerWeapon.MaxPierce.Value = 1;
 				break;
 			case PowerupEnum.invincibility_powerup:
 				GetNode<HurtboxComponent>("HurtboxComponent").GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred(CollisionShape2D.PropertyName.Disabled, false);

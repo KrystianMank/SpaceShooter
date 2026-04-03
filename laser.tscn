@@ -99,7 +99,8 @@ emission_curve = SubResource("CurveTexture_yfymw")
 [node name="Laser" type="ShapeCast2D" unique_id=1848176236 groups=["laser"]]
 material = SubResource("ShaderMaterial_2hs0m")
 shape = SubResource("RectangleShape2D_5ny2x")
-target_position = Vector2(0, 0)
+target_position = Vector2(0, -500)
+margin = 3.05
 max_results = 10
 collision_mask = 16
 collide_with_areas = true
@@ -111,7 +112,6 @@ Color = Color(0.92362344, 0.32940048, 1, 1)
 visible = false
 modulate = Color(0.92362344, 0.32940048, 1, 1)
 points = PackedVector2Array(0, -40, 0, -500)
-width = 0.0
 gradient = SubResource("Gradient_7vci3")
 begin_cap_mode = 2
 end_cap_mode = 2

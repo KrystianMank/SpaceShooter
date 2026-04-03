@@ -37,7 +37,7 @@ public class PlayerStats
       Speed.Changed += OnSpeedValueChanged;
       FireRate.Changed += OnFirerateValueChanged;
       Luck.Changed += OnLuckValueChanged;
-      BulletSpeed.Changed += OnBulletSpeedValueChanged;
+      //BulletSpeed.Changed += OnBulletSpeedValueChanged;
       Damage.Changed += OnDamageValueChanged;
       Health.GetHP().Changed += OnHealthValueChanged;
       MaxHealth.Changed += OnMaxHealthValueChanged;
@@ -49,25 +49,25 @@ public class PlayerStats
     }
     public void OnFirerateValueChanged(object target, Observable<double>.ChanedEventArgs eventArgs)
     {
-      if (PlayerWeapon?.FiringComponent != null)
+      if (PlayerWeapon?.CurrentWeapon != null)
       {
-          PlayerStatsList[nameof(FireRate)] = PlayerWeapon.FiringComponent.BulletFirerate.Value;
+          PlayerStatsList[nameof(FireRate)] = PlayerWeapon.CurrentWeapon.GetWeaponStats().FireRate;
           PlayerWeapon.SetWeapon();
       }
     }
-    public void OnBulletSpeedValueChanged(object target, Observable<int>.ChanedEventArgs eventArgs)
-    {
-      if(PlayerWeapon?.FiringComponent != null)
-      {
-        PlayerStatsList[nameof(BulletSpeed)] = PlayerWeapon.FiringComponent.BulletSpeed.Value;
-        PlayerWeapon.SetWeapon();
-      }
-    }
+    // public void OnBulletSpeedValueChanged(object target, Observable<int>.ChanedEventArgs eventArgs)
+    // {
+    //   if(PlayerWeapon?.CurrentWeapon != null)
+    //   {
+    //     PlayerStatsList[nameof(BulletSpeed)] = PlayerWeapon.FiringComponent.BulletSpeed.Value;
+    //     PlayerWeapon.SetWeapon();
+    //   }
+    // }
     public void OnDamageValueChanged(object target, Observable<double>.ChanedEventArgs eventArgs)
     {
-      if(PlayerWeapon?.FiringComponent != null)
+      if(PlayerWeapon?.CurrentWeapon != null)
       {
-        PlayerStatsList[nameof(Damage)] = PlayerWeapon.FiringComponent.BulletDamage.Value;
+        PlayerStatsList[nameof(Damage)] = PlayerWeapon.CurrentWeapon.GetWeaponStats().Damage;
         PlayerWeapon.SetWeapon();
       }
     }
@@ -106,15 +106,15 @@ public class PlayerStats
     {
     PlayerStatsList[nameof(DashPowerupDuration)] = eventArgs.NewValue;
     }
-    /// <summary>
-    /// Updates weapon-related stats from FiringComponent to ensure they're current
-    /// </summary>
+    // / <summary>
+    // / Updates weapon-related stats from FiringComponent to ensure they're current
+    // / </summary>
     public void UpdateWeaponStats()
     {
-      if (PlayerWeapon?.FiringComponent != null)
+      if (PlayerWeapon?.CurrentWeapon != null)
       {
-        PlayerStatsList[nameof(FireRate)] = PlayerWeapon.FiringComponent.BulletFirerate.Value;
-        PlayerStatsList[nameof(BulletSpeed)] = PlayerWeapon.FiringComponent.BulletSpeed.Value;
-        PlayerStatsList[nameof(Damage)] = PlayerWeapon.FiringComponent.BulletDamage.Value;
+        PlayerStatsList[nameof(FireRate)] = PlayerWeapon.CurrentWeapon.GetWeaponStats().FireRate;
+        PlayerStatsList[nameof(Damage)] = PlayerWeapon.CurrentWeapon.GetWeaponStats().Damage;
       }
-    }}
+    }
+  }
