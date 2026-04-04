@@ -5,16 +5,20 @@ namespace StaticClasses
 {
     public static class TresholdValues
     {
-        public static readonly double MAX_SPEED = 2000d;
-        public static readonly double MIN_FIRERATE = 0.1d;
+        public static readonly double MAX_SPEED = 1500d;
         public static readonly double MAX_LUCK = 4d;
-        public static readonly double MAX_BULLET_SPEED = 3000;
-        public static readonly double MAX_DAMAGE = 20d;
         public static readonly double MAX_HEALTH = 90d;
+
         public static readonly double MAX_INVINCIBILITY_POWERUP_DURATION = 6d;
         public static readonly double MAX_PIERCING_POWERUP_DURATION = 10d;
         public static readonly double MAX_MULTISHOT_POWERUP_DURATION = 15d;
         public static readonly double MAX_DASH_POWERUP_DURATION = 15d;
+
+        public static readonly double MAX_BULLET_SPEED = 3000;
+        public static readonly double MAX_EXPLOSION_RADIUS = 300d;
+        public static readonly double MAX_LASER_WIDTH = 30d;
+        public static readonly double MIN_FIRERATE = 0.1d;
+        public static readonly double MAX_DAMAGE = 20d;
 
         public static readonly double POWERUP_SPAWN_TRESHOLD = 0.85d;
 
@@ -38,6 +42,8 @@ namespace StaticClasses
             TresholdValuesDictionary.Add(UpgradableStatsEnum.FireRate, MIN_FIRERATE);
             TresholdValuesDictionary.Add(UpgradableStatsEnum.Luck, MAX_LUCK);
             TresholdValuesDictionary.Add(UpgradableStatsEnum.BulletSpeed, MAX_BULLET_SPEED);
+            TresholdValuesDictionary.Add(UpgradableStatsEnum.ExplosionRadius, MAX_EXPLOSION_RADIUS);
+            TresholdValuesDictionary.Add(UpgradableStatsEnum.LaserWidth, MAX_LASER_WIDTH);
             TresholdValuesDictionary.Add(UpgradableStatsEnum.Damage, MAX_DAMAGE);
             TresholdValuesDictionary.Add(UpgradableStatsEnum.MaxHealth, MAX_HEALTH);
             
@@ -53,6 +59,8 @@ namespace StaticClasses
         public const double FIRERATE_MULTIPLIER = 0.1d;
         public const double SPEED_MULTIPLIER = 100d;
         public const double BULLET_SPEED_MULTIPLIER = 200d;
+        public const double LASER_WIDTH_MULTIPLIER = 5d;
+        public const double EXPLOSION_RADIUS_MULTIPLIER = 25d;
         public const double LUCK_MULTIPLIER = 0.2d;
         public const double DAMAGE_MULTIPLIER = 0.5d;
         public const double MAX_HEALTH_MULTIPLIER = 15d;
@@ -69,6 +77,8 @@ namespace StaticClasses
         public const double FIRE_RATE = 0.5d;
         public const double LUCK = 1d;
         public const int BULLET_SPEED = 800;
+        public const double LASER_WIDTH = 10d;
+        public const double EXPLOSION_RADIUS = 150d;
         public const double DAMAGE = 1d;
         public const double HEALTH = 10d;
 

@@ -13,6 +13,8 @@ namespace GameEnums
         FireRate,
         Luck,
         BulletSpeed,
+        LaserWidth,
+        ExplosionRadius,
         Damage,
         Health,
         MaxHealth,

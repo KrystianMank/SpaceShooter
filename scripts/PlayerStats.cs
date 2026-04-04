@@ -85,18 +85,18 @@ public class PlayerStats
     // RocketLauncher specific stats
     public void OnExplosionRadiusValueChanged(object target, Observable<double>.ChanedEventArgs eventArgs)
     {
-      if(PlayerWeapon?.CurrentWeapon != null && PlayerWeapon?.CurrentWeapon.GetWeaponStats() is LaserStats laserStats)
+      if(PlayerWeapon?.CurrentWeapon != null && PlayerWeapon?.CurrentWeapon.GetWeaponStats() is RocketLauncherStats rocketLauncherStats)
       {
-        PlayerStatsList[nameof(LaserWidth)] = laserStats.LaserWidth;
+        PlayerStatsList[nameof(ExplosionRadius)] = rocketLauncherStats.ExplosionRadius;
         PlayerWeapon.SetWeapon();
       }
     }
     // Laser specific stats
     public void OnLaserWidthValueChanged(object target, Observable<double>.ChanedEventArgs eventArgs)
     {
-      if(PlayerWeapon?.CurrentWeapon != null && PlayerWeapon?.CurrentWeapon.GetWeaponStats() is RocketLauncherStats rocketLauncherStats)
+      if(PlayerWeapon?.CurrentWeapon != null && PlayerWeapon?.CurrentWeapon.GetWeaponStats() is LaserStats laserStats)
       {
-        PlayerStatsList[nameof(ExplosionRadius)] = rocketLauncherStats.ExplosionRadius;
+        PlayerStatsList[nameof(LaserWidth)] = laserStats.LaserWidth;
         PlayerWeapon.SetWeapon();
       }
     }

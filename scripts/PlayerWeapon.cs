@@ -43,6 +43,8 @@ public partial class PlayerWeapon : Node
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		Rocketlauncher.FiringComponent.PlayerBullet = true;
+		Maschinegun.FiringComponent.PlayerBullet = true;
 		Weapons = [Maschinegun, Rocketlauncher, Laser];
 		MaxPierce.Changed += MaxPierceValueChanged;
 		WeaponChangeAnimation.SpeedScale = WEAPON_CHANGE_TIME;
@@ -263,8 +265,8 @@ public partial class PlayerWeapon : Node
 		BaseWeaponStats weaponStats = CurrentWeaponType switch
 		{
 			WeaponTypes.MaschineGun => new MaschineGunStats(PlayerStats.BulletSpeed.Value, damage, fireRate),
-			WeaponTypes.RocketLauncher => new RocketLauncherStats(200d, damage, fireRate),
-			WeaponTypes.Laser => new LaserStats(10d, damage, fireRate),
+			WeaponTypes.RocketLauncher => new RocketLauncherStats(PlayerStats.ExplosionRadius.Value, damage, fireRate),
+			WeaponTypes.Laser => new LaserStats(PlayerStats.LaserWidth.Value, damage, fireRate),
 			_ => new MaschineGunStats(PlayerStats.BulletSpeed.Value, damage, fireRate)
 		};
 

@@ -375,12 +375,14 @@ public partial class Player : Area2D
     /// </summary>
 	public void ResetStats()
 	{
-		playerStats.SkillPoints.Value = DeafultPlayerStatsValues.SKILL_POINTS;
+		playerStats.SkillPoints.Value = 20;
 
 		playerStats.Speed.Value = DeafultPlayerStatsValues.SPEED;
 		playerStats.FireRate.Value = DeafultPlayerStatsValues.FIRE_RATE;
 		playerStats.Luck.Value = DeafultPlayerStatsValues.LUCK;
 		playerStats.BulletSpeed.Value = DeafultPlayerStatsValues.BULLET_SPEED;
+		playerStats.LaserWidth.Value = DeafultPlayerStatsValues.LASER_WIDTH;
+		playerStats.ExplosionRadius.Value = DeafultPlayerStatsValues.EXPLOSION_RADIUS;
 		playerStats.Damage.Value = DeafultPlayerStatsValues.DAMAGE;
 		playerStats.Health.SetHP(DeafultPlayerStatsValues.HEALTH);
 		playerStats.MaxHealth.Value = DeafultPlayerStatsValues.HEALTH;

@@ -34,6 +34,8 @@ public partial class StatsUpgradePanel : CanvasLayer
 			{UpgradableStatsEnum.FireRate, PlayerStatsMultipliers.FIRERATE_MULTIPLIER},
 			{UpgradableStatsEnum.Luck, PlayerStatsMultipliers.LUCK_MULTIPLIER},
 			{UpgradableStatsEnum.BulletSpeed, PlayerStatsMultipliers.BULLET_SPEED_MULTIPLIER},
+			{UpgradableStatsEnum.ExplosionRadius, PlayerStatsMultipliers.EXPLOSION_RADIUS_MULTIPLIER},
+			{UpgradableStatsEnum.LaserWidth, PlayerStatsMultipliers.LASER_WIDTH_MULTIPLIER},
 			{UpgradableStatsEnum.Damage, PlayerStatsMultipliers.DAMAGE_MULTIPLIER},
 			{UpgradableStatsEnum.MaxHealth, PlayerStatsMultipliers.MAX_HEALTH_MULTIPLIER},
 			{UpgradableStatsEnum.PiercingPowerupDuration, PlayerStatsMultipliers.PIERCING_POWERUP_DURATION_MULTIPLIER},
@@ -223,6 +225,16 @@ public partial class StatsUpgradePanel : CanvasLayer
 			case UpgradableStatsEnum.BulletSpeed:
                 {
 					_playerStats.BulletSpeed.Value += (int)value;
+                    break;
+                }
+			case UpgradableStatsEnum.LaserWidth:
+                {
+					_playerStats.LaserWidth.Value += value;
+                    break;
+                }
+			case UpgradableStatsEnum.ExplosionRadius:
+                {
+					_playerStats.ExplosionRadius.Value += value;
                     break;
                 }
 			case UpgradableStatsEnum.Damage:
