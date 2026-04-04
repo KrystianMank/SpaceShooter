@@ -259,6 +259,7 @@ public partial class PlayerWeapon : Node
 		double damage = PlayerStats.Damage.Value * multiplier.BulletDamageMultiplier;
 		double fireRate = PlayerStats.FireRate.Value * multiplier.FireRateMultiplier;
 
+		// Set current weapon stats
 		BaseWeaponStats weaponStats = CurrentWeaponType switch
 		{
 			WeaponTypes.MaschineGun => new MaschineGunStats(PlayerStats.BulletSpeed.Value, damage, fireRate),
@@ -379,5 +380,6 @@ public partial class PlayerWeapon : Node
 	private void MaxPierceValueChanged(object sender, Observable<int>.ChanedEventArgs e)
     {
         Laser.MaxResults = e.NewValue;
+		WeaponsWithFiringComponent.ForEach(w => w.GetNode<FiringComponent>(nameof(FiringComponent)).MaxPierce = e.NewValue);
     }
 }

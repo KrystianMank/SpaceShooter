@@ -84,37 +84,5 @@ public partial class PlayerStatsPanel : CanvasLayer
                 statLabel.Text = $"{_playerStats.PlayerStatsList.ElementAt(i).Key}:  {_playerStats.PlayerStatsList[_playerStats.PlayerStatsList.ElementAt(i).Key]:0.00}";
 			grid.AddChild(statLabel);
         }
-
-
-		// foreach(var key in _playerStats.PlayerStatsList.Keys)
-        // {
-        //     if(i == 3){
-        //         var playerStatLabel = new Label{
-        //             Text = "Player Stats:",
-        //             Theme = customTheme
-        //         };
-        //         grid.AddChild(playerStatLabel);
-        //     }
-
-        //     var statLabel = new Label();
-        //     if(_playerStats.PlayerStatsList[key].GetType() == typeof(int))
-		// 	    statLabel.Text = $"{key}:  {_playerStats.PlayerStatsList[key]}";
-        //     else
-        //         statLabel.Text = $"{key}:  {_playerStats.PlayerStatsList[key]:0.00}";
-		// 	grid.AddChild(statLabel);
-        //     i++;
-        // }
-        // var healthLabel = GetParent().GetNode<Label>("PlayerHealthBar/TextureProgressBar/Label");
-        // healthLabel.Text = $"{(_playerStats.Health.GetHP().Value <= 0 ? 0 : _playerStats.Health.GetHP().Value)}/{_playerStats.MaxHealth.Value}";
-
-        // var children = grid.GetChildren().ToList();
-        // for (int i = 0; i < children.Count; i++)
-        // {
-        //     if (i < TresholdValues.TresholdValuesList.Count)
-        //     {
-        //         Label label = (Label)children[i];
-        //         label.Text += "    Max : " + TresholdValues.TresholdValuesList[i].ToString();
-        //     }
-        // }
     }
 }

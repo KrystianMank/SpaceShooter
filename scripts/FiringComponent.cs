@@ -10,6 +10,7 @@ public partial class FiringComponent : Node
 	{
 		Value = 500
 	};
+	public Observable<double> ExplosionRadius = new();
 	public Observable<double> BulletDamage=new();
 	public Observable<double> BulletFirerate =new();
 	public Marker2D BulletSpawn;
@@ -52,6 +53,7 @@ public partial class FiringComponent : Node
             _bullet = BulletScene.Instantiate<Bullet>();
 			_bullet.Position = BulletSpawn.GlobalPosition;
 			_bullet.Speed = BulletSpeed.Value;
+			if(_bullet is RocketProjectile rocketProjectile) rocketProjectile.ExplosionRadius.Value = ExplosionRadius.Value;
 
 			var rotation = i % 2 == 0 ? FiringAngle * i : FiringAngle * -i;
 			BulletSpawn.Rotation = FiringAngle;

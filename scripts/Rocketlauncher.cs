@@ -20,7 +20,7 @@ public partial class Rocketlauncher : Node, IBaseWeapon
 		
 		FiringComponent.BulletDamage.Value = rocketLauncherStats.Damage;
 		FiringComponent.BulletFirerate.Value = rocketLauncherStats.FireRate;
-		// explosion radius
+		FiringComponent.ExplosionRadius.Value = rocketLauncherStats.ExplosionRadius;
 	}
 
     public BaseWeaponStats GetWeaponStats()
