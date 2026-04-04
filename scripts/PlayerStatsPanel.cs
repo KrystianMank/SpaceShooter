@@ -24,7 +24,7 @@ public partial class PlayerStatsPanel : CanvasLayer
 
 	public void PrintStats()
     {
-        var i = 0;
+       // var i = 0;
         var styleBox = new StyleBoxFlat
         {
             BgColor = new Color(0, 0, 0, 0f),
@@ -38,33 +38,72 @@ public partial class PlayerStatsPanel : CanvasLayer
         
         var grid = GetNode<GridContainer>("PanelContainer/GridContainer");
 		grid.GetChildren().ToList().ForEach(x => x.QueueFree());
-		
-		foreach(var key in _playerStats.PlayerStatsList.Keys)
-        {
-            if(i == 0){
                 
-                var label = new Label{
-                    Text = "Weapon Stats:",
-                    Theme = customTheme
-                };
-                grid.AddChild(label);
-            }
-            if(i == 3){
-                var label = new Label{
-                    Text = "Player Stats:",
-                    Theme = customTheme
-                };
-                grid.AddChild(label);
-            }
+        var label = new Label{
+            Text = $"Weapon Stats: {_playerStats.PlayerWeapon.CurrentWeaponType}",
+            Theme = customTheme
+        };
+        grid.AddChild(label);
 
-            var statLabel = new Label();
-            if(_playerStats.PlayerStatsList[key].GetType() == typeof(int))
-			    statLabel.Text = $"{key}:  {_playerStats.PlayerStatsList[key]}";
-            else
-                statLabel.Text = $"{key}:  {_playerStats.PlayerStatsList[key]:0.00}";
-			grid.AddChild(statLabel);
-            i++;
+
+        var weaponSpecificLabel = new Label();
+        switch (_playerStats.PlayerWeapon.CurrentWeaponType)
+        {
+            case WeaponTypes.MaschineGun:
+                {
+                    weaponSpecificLabel.Text = $"{_playerStats.PlayerStatsList.Keys.First(x => x == "BulletSpeed")}:  {_playerStats.PlayerStatsList["BulletSpeed"]}";
+                    break;
+                }
+            case WeaponTypes.RocketLauncher:
+                {
+                    weaponSpecificLabel.Text = $"{_playerStats.PlayerStatsList.Keys.First(x => x == "ExplosionRadius")}:  {_playerStats.PlayerStatsList["ExplosionRadius"]}";
+                    break;
+                }
+            case WeaponTypes.Laser:
+                {
+                    weaponSpecificLabel.Text = $"{_playerStats.PlayerStatsList.Keys.First(x => x == "LaserWidth")}:  {_playerStats.PlayerStatsList["LaserWidth"]}";
+                    break;
+                }
         }
+        grid.AddChild(weaponSpecificLabel);
+
+        for(int i = 3; i<_playerStats.PlayerStatsList.Count; i++)
+        {
+            if(i == 5)
+            {
+                 var playerLabel = new Label{
+                    Text = $"Player Stats",
+                    Theme = customTheme
+                };
+                grid.AddChild(playerLabel);
+            }
+            var statLabel = new Label();
+            if(_playerStats.PlayerStatsList[_playerStats.PlayerStatsList.ElementAt(i).Key].GetType() == typeof(int))
+			    statLabel.Text = $"{_playerStats.PlayerStatsList.ElementAt(i).Key}:  {_playerStats.PlayerStatsList[_playerStats.PlayerStatsList.ElementAt(i).Key]}";
+            else
+                statLabel.Text = $"{_playerStats.PlayerStatsList.ElementAt(i).Key}:  {_playerStats.PlayerStatsList[_playerStats.PlayerStatsList.ElementAt(i).Key]:0.00}";
+			grid.AddChild(statLabel);
+        }
+
+
+		// foreach(var key in _playerStats.PlayerStatsList.Keys)
+        // {
+        //     if(i == 3){
+        //         var playerStatLabel = new Label{
+        //             Text = "Player Stats:",
+        //             Theme = customTheme
+        //         };
+        //         grid.AddChild(playerStatLabel);
+        //     }
+
+        //     var statLabel = new Label();
+        //     if(_playerStats.PlayerStatsList[key].GetType() == typeof(int))
+		// 	    statLabel.Text = $"{key}:  {_playerStats.PlayerStatsList[key]}";
+        //     else
+        //         statLabel.Text = $"{key}:  {_playerStats.PlayerStatsList[key]:0.00}";
+		// 	grid.AddChild(statLabel);
+        //     i++;
+        // }
         // var healthLabel = GetParent().GetNode<Label>("PlayerHealthBar/TextureProgressBar/Label");
         // healthLabel.Text = $"{(_playerStats.Health.GetHP().Value <= 0 ? 0 : _playerStats.Health.GetHP().Value)}/{_playerStats.MaxHealth.Value}";
 

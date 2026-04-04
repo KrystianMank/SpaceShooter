@@ -1,14 +1,12 @@
 using System.Collections.Generic;
 using GenericObervable;
 using Godot;
+using WeaponNamescape;
 public class PlayerStats
 {
     public Observable<int> SkillPoints = new();
     public Observable<int> Speed = new();
-    public Observable<double> FireRate = new();
     public Observable<double> Luck = new();
-    public Observable<int> BulletSpeed = new();
-    public Observable<double> Damage = new();
     public HealthComponent Health = new();
     public Observable<double> MaxHealth = new();
     //Powerups timer values
@@ -17,6 +15,12 @@ public class PlayerStats
     public Observable<double> MultishotPowerupDuration = new();
     public Observable<double> DashPowerupDuration = new();
 
+    // Weapon stats
+    public Observable<int> BulletSpeed = new();
+    public Observable<double> ExplosionRadius = new();
+    public Observable<double> LaserWidth = new();
+    public Observable<double> Damage = new();
+    public Observable<double> FireRate = new();
 
     public Dictionary<string,double> PlayerStatsList = new Dictionary<string, double>();
     public PlayerWeapon PlayerWeapon;
@@ -24,6 +28,8 @@ public class PlayerStats
     {
       PlayerWeapon = playerWeapon;
       PlayerStatsList.Add(nameof(BulletSpeed), BulletSpeed.Value);
+      PlayerStatsList.Add(nameof(ExplosionRadius), ExplosionRadius.Value);
+      PlayerStatsList.Add(nameof(LaserWidth), LaserWidth.Value);
       PlayerStatsList.Add(nameof(Damage), Damage.Value);
       PlayerStatsList.Add(nameof(FireRate), FireRate.Value);
       PlayerStatsList.Add(nameof(Speed), Speed.Value);
@@ -37,10 +43,13 @@ public class PlayerStats
       Speed.Changed += OnSpeedValueChanged;
       FireRate.Changed += OnFirerateValueChanged;
       Luck.Changed += OnLuckValueChanged;
-      //BulletSpeed.Changed += OnBulletSpeedValueChanged;
       Damage.Changed += OnDamageValueChanged;
       Health.GetHP().Changed += OnHealthValueChanged;
       MaxHealth.Changed += OnMaxHealthValueChanged;
+
+      BulletSpeed.Changed += OnBulletSpeedValueChanged;
+      ExplosionRadius.Changed += OnExplosionRadiusValueChanged;
+      LaserWidth.Changed += OnLaserWidthValueChanged;
 
       InvincibilityPowerupDuration.Changed += OnInvinciblityPowerupDurationValueChanged;
       PiercingPowerupDuration.Changed += OnPiercingPowerupDurationValueChanged;
@@ -55,14 +64,6 @@ public class PlayerStats
           PlayerWeapon.SetWeapon();
       }
     }
-    // public void OnBulletSpeedValueChanged(object target, Observable<int>.ChanedEventArgs eventArgs)
-    // {
-    //   if(PlayerWeapon?.CurrentWeapon != null)
-    //   {
-    //     PlayerStatsList[nameof(BulletSpeed)] = PlayerWeapon.FiringComponent.BulletSpeed.Value;
-    //     PlayerWeapon.SetWeapon();
-    //   }
-    // }
     public void OnDamageValueChanged(object target, Observable<double>.ChanedEventArgs eventArgs)
     {
       if(PlayerWeapon?.CurrentWeapon != null)
@@ -71,6 +72,35 @@ public class PlayerStats
         PlayerWeapon.SetWeapon();
       }
     }
+    // Maschinegun specific stats
+    public void OnBulletSpeedValueChanged(object target, Observable<int>.ChanedEventArgs eventArgs)
+    {
+      if(PlayerWeapon?.CurrentWeapon != null && PlayerWeapon?.CurrentWeapon.GetWeaponStats() is MaschineGunStats maschineGunStats)
+      {
+        PlayerStatsList[nameof(BulletSpeed)] = maschineGunStats.BulletSpeed;
+        PlayerWeapon.SetWeapon();
+      }
+    }
+
+    // RocketLauncher specific stats
+    public void OnExplosionRadiusValueChanged(object target, Observable<double>.ChanedEventArgs eventArgs)
+    {
+      if(PlayerWeapon?.CurrentWeapon != null && PlayerWeapon?.CurrentWeapon.GetWeaponStats() is LaserStats laserStats)
+      {
+        PlayerStatsList[nameof(LaserWidth)] = laserStats.LaserWidth;
+        PlayerWeapon.SetWeapon();
+      }
+    }
+    // Laser specific stats
+    public void OnLaserWidthValueChanged(object target, Observable<double>.ChanedEventArgs eventArgs)
+    {
+      if(PlayerWeapon?.CurrentWeapon != null && PlayerWeapon?.CurrentWeapon.GetWeaponStats() is RocketLauncherStats rocketLauncherStats)
+      {
+        PlayerStatsList[nameof(ExplosionRadius)] = rocketLauncherStats.ExplosionRadius;
+        PlayerWeapon.SetWeapon();
+      }
+    }
+
     public void OnSpeedValueChanged(object target, Observable<int>.ChanedEventArgs eventArgs)
     {
     PlayerStatsList[nameof(Speed)] = eventArgs.NewValue;
@@ -107,14 +137,30 @@ public class PlayerStats
     PlayerStatsList[nameof(DashPowerupDuration)] = eventArgs.NewValue;
     }
     // / <summary>
-    // / Updates weapon-related stats from FiringComponent to ensure they're current
+    // / Updates weapon-related stats from PlayerWeapon to ensure they're current
     // / </summary>
     public void UpdateWeaponStats()
     {
       if (PlayerWeapon?.CurrentWeapon != null)
       {
-        PlayerStatsList[nameof(FireRate)] = PlayerWeapon.CurrentWeapon.GetWeaponStats().FireRate;
-        PlayerStatsList[nameof(Damage)] = PlayerWeapon.CurrentWeapon.GetWeaponStats().Damage;
+          var weaponStats = PlayerWeapon.CurrentWeapon.GetWeaponStats();
+          if(weaponStats != null){
+              PlayerStatsList[nameof(FireRate)] = weaponStats.FireRate;
+              PlayerStatsList[nameof(Damage)] = weaponStats.Damage;
+
+              if(weaponStats is MaschineGunStats maschineGunStats)
+              {
+                PlayerStatsList[nameof(BulletSpeed)] = maschineGunStats.BulletSpeed;
+              }
+              if(weaponStats is RocketLauncherStats rocketLauncherStats)
+              {
+                PlayerStatsList[nameof(ExplosionRadius)] = rocketLauncherStats.ExplosionRadius;
+              }
+              if(weaponStats is LaserStats laserStats)
+              {
+                PlayerStatsList[nameof(LaserWidth)] = laserStats.LaserWidth;
+              }
+          }
       }
     }
   }
