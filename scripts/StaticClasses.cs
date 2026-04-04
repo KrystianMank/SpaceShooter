@@ -22,22 +22,10 @@ namespace StaticClasses
 
         public static readonly double POWERUP_SPAWN_TRESHOLD = 0.85d;
 
-       // public static List<double> TresholdValuesList = [];
         public static Dictionary<UpgradableStatsEnum, double> TresholdValuesDictionary = [];
         
         static TresholdValues()
         {
-            // TresholdValuesList.Add(MAX_SPEED);
-            // TresholdValuesList.Add(MIN_FIRERATE);
-            // TresholdValuesList.Add(MAX_LUCK);
-            // TresholdValuesList.Add(MAX_BULLET_SPEED);
-            // TresholdValuesList.Add(MAX_DAMAGE);
-            // TresholdValuesList.Add(MAX_HEALTH);
-            // TresholdValuesList.Add(MAX_INVINCIBILITY_POWERUP_DURATION);
-            // TresholdValuesList.Add(MAX_PIERCING_POWERUP_DURATION);
-            // TresholdValuesList.Add(MAX_MULTISHOT_POWERUP_DURATION);
-            // TresholdValuesList.Add(MAX_DASH_POWERUP_DURATION);
-
             TresholdValuesDictionary.Add(UpgradableStatsEnum.Speed, MAX_SPEED);
             TresholdValuesDictionary.Add(UpgradableStatsEnum.FireRate, MIN_FIRERATE);
             TresholdValuesDictionary.Add(UpgradableStatsEnum.Luck, MAX_LUCK);

@@ -53,12 +53,6 @@ public partial class Main : Node
 		ScreenSize = PlayerNode.ScreenSize;
 
 		Score.Changed += OnScoreValueChanged;
-
-		//InstantiateAlienPaths();
-
-		// Subscribtion to Action<Entity> delegates
-		// EntitySpawner.OnEntitySpawnerEntityHealthDepleted += OnEntitySpawnerEntityHealthDepleted;
-		// EntitySpawner.OnEntitySpawnerEntityHealthValueChanged += OnEntitySpawnerEntityHealtValueChanged;
     }
 
     public override void _Process(double delta)
@@ -181,7 +175,6 @@ public partial class Main : Node
 		if (_nextTresholdIndex < _lvTresholds.Length
 			&& Score.Value >= _lvTresholds[_nextTresholdIndex])
 		{
-			// _increaseDificulty = true;
 			_nextTresholdIndex++;
 
 			Hud.SetNewLVBarLevel(_nextTresholdIndex + 1,_lvTresholds[_nextTresholdIndex - 1] ,_lvTresholds[_nextTresholdIndex]);

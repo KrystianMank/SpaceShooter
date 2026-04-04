@@ -96,7 +96,6 @@ public partial class Hud : CanvasLayer
 	{
 		var lvBar = GetNode<LvBar>("LVBar");
 		lvBar.SetLVBarValue(score);
-		//GetNode<Label>("ScoreLabel").Text = score.ToString();
 	}
 
 	public void OnStartButtonPressed()
@@ -136,18 +135,6 @@ public partial class Hud : CanvasLayer
 		{
 			if(child is Entity entity)
             {
-				// if(entity.LinearVelocity != Vector2.Zero)
-				// {
-				// 	entityVelocity = entity.LinearVelocity;
-				// }
-                // if (show)
-                // {
-				// 	entity.LinearVelocity = Vector2.Zero;
-                // }
-                // else
-                // {
-				// 	entity.LinearVelocity = entityVelocity;
-                // }
 				entity.SetPhysicsProcess(!show);
             }
 			if(child is Main main)

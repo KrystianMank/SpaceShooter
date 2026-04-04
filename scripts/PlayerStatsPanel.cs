@@ -24,7 +24,6 @@ public partial class PlayerStatsPanel : CanvasLayer
 
 	public void PrintStats()
     {
-       // var i = 0;
         var styleBox = new StyleBoxFlat
         {
             BgColor = new Color(0, 0, 0, 0f),

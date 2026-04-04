@@ -27,7 +27,6 @@ public partial class SeekingAlien : Entity
         SetHitboxShape(GetNode<CollisionShape2D>("CollisionShape2D").Shape);
         SetHurtboxboxShape(GetNode<CollisionShape2D>("CollisionShape2D").Shape);
 
-        //_screenSize = GetViewportRect().Size;
         (float x, float y) = GenereateNewRandomPoint();
         _newPosition = Position + new Vector2(x, y);
 
@@ -47,10 +46,6 @@ public partial class SeekingAlien : Entity
 		{
 			_playerFound = true;
 		}
-		// if (_playerFound)
-		// {
-		// 	GetNode<Timer>("MovementTimer").Stop();
-		// }
     }
 
     public override void _PhysicsProcess(double delta)

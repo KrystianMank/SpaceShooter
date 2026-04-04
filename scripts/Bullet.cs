@@ -62,27 +62,6 @@ public partial class Bullet : RigidBody2D
 		_hit = false; 
 	}
 
-	// public void OnBodyEntered(Node body)
-	// {
-	// 	if(_hit) return;
-		
-	// 	if(body == _shooter)
-	// 	{
-	// 		return;
-	// 	}
-
-	// 	if(hitbox == null) return;
-		
-	// 	if(body is Entity entity && PlayerBullet == true)
-	// 	{
-	// 		_hit = true;
-	// 		// entity.EntityHP.DealDamage(hitbox.Damage);
-			
-	// 		
-	// 	}
-		
-	// }
-
 	public void OnAreaEntered(Area2D area)
 	{
 		if(_hit) return;
@@ -108,8 +87,6 @@ public partial class Bullet : RigidBody2D
 				entity.EntitiesHitEachOther = true;
 				GD.Print("This is entity");
 			}
-			//ShowDamageLabel(hitbox.Damage);
-			//hurtboxComponent.HealthComponent.DealDamage(hitbox.Damage);
 			
 			if(_currentPierceCount >= MaxPierce)
 			{
@@ -122,30 +99,6 @@ public partial class Bullet : RigidBody2D
 			}
 		}
 	}
-
-	// public void ShowDamageLabel(double damage)
-    // {
-    //     Label label = new()
-    //     {
-    //         Text = $"-{damage}",
-	// 		Position = GlobalPosition,
-	// 	};
-	// 	var customTheme = new Theme();
-	// 	customTheme.SetColor("font_color", "Label", PlayerBullet ? Colors.White : Colors.Red);
-	// 	label.Theme = customTheme;
-	// 	GetParent().AddChild(label);
-
-	// 	var timer = new Timer();
-	// 	label.AddChild(timer);
-	// 	timer.WaitTime = 0.5;
-	// 	timer.OneShot = true;
-	// 	timer.Timeout += () => 
-	// 	{
-	// 		if (IsInstanceValid(label))
-	// 			label.QueueFree();
-	// 	};
-	// 	timer.Start();
-    // }
 
 	public void VisibleOnScreenNotifier2D()
     {

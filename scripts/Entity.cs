@@ -13,7 +13,6 @@ public partial class Entity : RigidBody2D
 	[Export]
 	public HealthComponent EntityHP = new();
 	public Observable<double> EntityMaxHP = new();
-	//public PlayerStats PlayerStats { get; set; }
 	public bool EntitiesHitEachOther = false;
 	private bool _hit = false;
     public override void _Ready()
@@ -25,11 +24,6 @@ public partial class Entity : RigidBody2D
 		BodyEntered += OnBodyEntered;
 
 		GetNode<HurtboxComponent>("HurtboxComponent").HealthComponent = EntityHP;
-		// GetNode<HurtboxComponent>("HurtboxComponent").AreaEntered += (area) =>
-		// {
-		// 	if(area.GetParent() is Entity) EntitiesHitEachOther = true;
-		// 	else EntitiesHitEachOther = false;	
-		// };
     }
 
 	public virtual void InitializeValues(EntitySpawnParams entitySpawnParams){}

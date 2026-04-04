@@ -19,12 +19,10 @@ public partial class PlayerWeapon : Node
 	public Texture2D[] WeaponFrames;
 	[Export]
 	public AnimatedSprite2D WeaponChangeAnimation;
-	//public FiringComponent FiringComponent;
 	public PlayerStats PlayerStats;
 	public WeaponTypes CurrentWeaponType;
 	private int _weaponIndex;
 	public IBaseWeapon CurrentWeapon;
-	//public Laser Laser;
 	private List<Laser> _duplicates = [];
 	private Texture2D _currentWeaponFrame;
 	public bool WeaponChangeAnimationFinished = true;
@@ -90,9 +88,6 @@ public partial class PlayerWeapon : Node
 
 	public void Init()
 	{
-		// Laser = WeaponScenes[2].Instantiate<Laser>();
-		// AddChild(Laser);
-
 		Laser.GetNode<CanvasLayer>(nameof(CanvasLayer)).Visible = false;
 		CreateLaserDuplicates(1);
 	}
@@ -144,14 +139,6 @@ public partial class PlayerWeapon : Node
 
 		if (PlayerStats == null)
 			return;
-
-		// MaschineGunStats = new( WeaponTypes.MaschineGun,PlayerStats, _maschineGunStatsMultipier);
-		// RocketLauncherStats = new(WeaponTypes.RocketLauncher, PlayerStats, _rocketLauncherStatsMultiplier);
-		// LaserStats = new(WeaponTypes.Laser, PlayerStats, _laserStatsMultiplier);
-		// WeaponStatsList =new List<WeaponStats>
-        // {
-        //     MaschineGunStats, RocketLauncherStats, LaserStats
-		// };
 
 		Laser.ResetLaserProperties();
 		SetWeapon();
@@ -286,14 +273,6 @@ public partial class PlayerWeapon : Node
 		}
 		Laser.IsCasting = false;
 	}
-	
-	/// <summary>
-	/// </summary>
-	/// <returns>Currently held weapon stats</returns>
-	// public WeaponStats GetCurrentWeaponStats()
-	// {
-	// 	return WeaponStatsList.First(x => x.WeaponType == CurrentWeaponType);
-	// }
 
 	/// <summary>
 	/// Save picekd weapon to WeaponHolder UI
@@ -311,15 +290,12 @@ public partial class PlayerWeapon : Node
 		WeaponChangeAnimation.Play();
 		WeaponChangeAnimationFinished = false;
 		Laser.IsCasting = false;
-		
-		//FiringComponent.StopShooting();
 
 		await ToSignal(WeaponChangeAnimation, AnimatedSprite2D.SignalName.AnimationFinished);
 
 		WeaponChangeAnimationFinished = true;
 		SetWeapon();
 		SetWeaponToHUD();
-		//FiringComponent.StartShooting();
 	}
 
 	public void CreateLaserDuplicates(int amount){

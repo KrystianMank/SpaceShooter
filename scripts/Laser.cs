@@ -136,25 +136,12 @@ public partial class Laser : ShapeCast2D, IBaseWeapon
     private void Disappear()
     {
         line2D.Visible = false;
-		// if(Tween != null && Tween.IsRunning()) Tween.Kill();
-
-		// Tween = CreateTween();
-		// Tween.TweenProperty(line2D, Line2D.PropertyName.Width.ToString(), 0d, _lineGrowthTime).From(line2D.Width);
-		//Tween.TweenCallback(new Callable(line2D, Line2D.MethodName.Hide));
     }
 
 
     private void Appear()
     {
         line2D.Visible = true;
-
-		// if(Tween != null && Tween.IsRunning()){
-		// 	Tween.Kill();
-		// }
-
-		// Tween = CreateTween();
-		// Tween.TweenProperty(line2D, Line2D.PropertyName.Width.ToString(), line2D.Width, _lineGrowthTime * 2d).From(0d);
-		//Tween.TweenCallback(new Callable(line2D, Line2D.MethodName.Show));
     }
 
 
@@ -209,15 +196,13 @@ public partial class Laser : ShapeCast2D, IBaseWeapon
 				if(collider == null) continue;
 
 				Entity entity = null;
-				
-				// GetCollider might return CollisionShape2D, so check parent
+
 				if(collider is CollisionShape2D shape)
 				{
 					entity = shape.GetParent() as Entity;
 				}
 				else
 				{
-					// Or it might return the physics body directly
 					entity = collider as Entity;
 				}
 				

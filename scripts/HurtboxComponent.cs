@@ -18,8 +18,6 @@ public partial class HurtboxComponent : Area2D
         {
             ShowDamageLabel(GetParent(), hitbox.Damage);
             HealthComponent.DealDamage(hitbox.Damage);
-            //ShowDamageLabel(hitbox);
-            //GD.Print(area2D.GetParent().GetType() + " " + hitbox.GetCollisionLayerValue(5));
         }
     }
     public void ShowDamageLabel(Node receiver, double damage)

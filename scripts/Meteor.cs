@@ -6,9 +6,6 @@ public partial class Meteor : Entity
 	public override void _Ready()
 	{
 		base._Ready();
-		//GetNode<AnimatedSprite2D>("MeteorAnimation").Play();
-		// ContactMonitor = true;
-		// MaxContactsReported = 1;
 		AddToGroup("entities");
 
 		SetHitboxShape(GetNode<CollisionShape2D>("CollisionShape2D").Shape);

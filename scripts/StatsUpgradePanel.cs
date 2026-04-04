@@ -62,11 +62,7 @@ public partial class StatsUpgradePanel : CanvasLayer
     }
 	async public void OnVisibilityChanged()
     {
-		//_container.Visible = false;
         GenererateNewStats();
-
-		// DisableButton(CallerButton.Option1, DrawnUpgradableStats.Keys.First(), DrawnUpgradableStats[DrawnUpgradableStats.Keys.First()]);
-		// DisableButton(CallerButton.Option2, DrawnUpgradableStats.Keys.Last(), DrawnUpgradableStats[DrawnUpgradableStats.Keys.Last()]);
 
 		GetNode<Label>("MarginContainer/Animation/PanelContainer/MarginContainer/Control/SkillPointsLabel").Text = $"Skill points: {_playerStats.SkillPoints.Value}";
 

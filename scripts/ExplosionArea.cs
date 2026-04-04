@@ -21,12 +21,7 @@ public partial class ExplosionArea : Area2D
 
     public override void _Ready()
     {
-        // GetNode<CollisionShape2D>("CollisionShape2D").Shape = new CapsuleShape2D
-		// {
-		// 	Radius = ExplosionRadius
-		// };
 		_startPos = GlobalPosition;
-		
     }
 
 	public void OnBodyEntered(Node2D body)

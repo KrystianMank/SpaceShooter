@@ -18,14 +18,6 @@ public partial class TimeLeftLabel : Label
 		SecondsTimer.Timeout += OnSecondsTimerTimeout;
 	}
 
-    // public override void _Process(double delta)
-    // {
-	// 	if (!SecondsTimer.IsStopped())
-	// 	{
-	// 		TextTimeCountdownTimer.Start();
-	// 	}
-    // }
-
 	public void AssignValues(double timeLeft)
 	{
 		TextTimeCountdownTimer.WaitTime = timeLeft;
