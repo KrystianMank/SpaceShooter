@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using GameEnums;
+using Godot;
 
 namespace StaticClasses
 {
@@ -74,5 +75,13 @@ namespace StaticClasses
         public const double PIERCING_POWERUP_DURATION = 6d;
         public const double MULTISHOT_POWERUP_DURATION = 10d;
         public const double DASH_POWERUP_DURATION = 10d;
+    }
+    public static class Icons
+    {
+        public static Texture2D GetIcon(string iconPath)
+        {
+            return (Texture2D)GD.Load(ResourceLoader.Exists(iconPath) ? iconPath : "res://sprites/icon.svg");
+        }
+
     }
 }

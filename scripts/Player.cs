@@ -129,9 +129,9 @@ public partial class Player : Area2D
 		// Dash powerup logic
 		if (_isDashActive)
 		{
-			var leftDashPos = new Vector2(Position.X - 100, Position.Y);
-			var rightDashPos = new Vector2(Position.X + 100, Position.Y);
-			var upDashPos = new Vector2(Position.X, Position.Y - 100);
+			var leftDashPos = new Vector2(Position.X - 150, Position.Y);
+			var rightDashPos = new Vector2(Position.X + 150, Position.Y);
+			var upDashPos = new Vector2(Position.X, Position.Y - 150);
 			var oldPos = GlobalPosition;
 
 			if(_rocketSprite.Texture == RocketTextures[0])
@@ -178,20 +178,23 @@ public partial class Player : Area2D
 				}
 			}
 
-				// invincibility after dashing
-			Godot.Timer timer = new();
-			timer.OneShot = true;
-			timer.WaitTime = 0.5d;
-			timer.Timeout += () =>
-			{
-				GetNode<HurtboxComponent>("HurtboxComponent").GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred(CollisionShape2D.PropertyName.Disabled, true);
-			};
-			AddChild(timer);
-			
-			await ToSignal(timer, Godot.Timer.SignalName.Timeout);
-			GetNode<HurtboxComponent>("HurtboxComponent").GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred(CollisionShape2D.PropertyName.Disabled, false);
-			timer.QueueFree();
-		}
+                // invincibility after dashing
+                Godot.Timer timer = new()
+                {
+                    OneShot = true,
+                    WaitTime = 0.5d
+                };
+                timer.Timeout += () =>
+				{
+					GetNode<HurtboxComponent>("HurtboxComponent").GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred(CollisionShape2D.PropertyName.Disabled, true);
+				};
+				AddChild(timer);
+				timer.Start();
+				
+				await ToSignal(timer, Godot.Timer.SignalName.Timeout);
+				GetNode<HurtboxComponent>("HurtboxComponent").GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred(CollisionShape2D.PropertyName.Disabled, false);
+				timer.QueueFree();
+			}
 		}
 		// Player can't go outside the screen boundaries
 		Position = new Vector2(

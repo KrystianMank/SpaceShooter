@@ -61,6 +61,8 @@ size_flags_horizontal = 0
 
 [node name="Animation" type="AnimatedSprite2D" parent="MarginContainer" unique_id=1177275813]
 sprite_frames = SubResource("SpriteFrames_2rg74")
+frame = 4
+frame_progress = 1.0
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/Animation" unique_id=1698782838]
 clip_contents = true
@@ -69,15 +71,15 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -227.0
-offset_top = -210.0
-offset_right = -22.0
-offset_bottom = -70.0
+offset_left = -236.0
+offset_top = -209.0
+offset_right = -16.0
+offset_bottom = -64.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.073, 0.947)
 pivot_offset = Vector2(97.29678, 75.259186)
-size_flags_horizontal = 8
+size_flags_horizontal = 0
 size_flags_vertical = 8
 
 [node name="ColorRect" type="ColorRect" parent="MarginContainer/Animation/PanelContainer" unique_id=616913837]
@@ -131,11 +133,10 @@ columns = 2
 
 [node name="Option_1_Button" type="Button" parent="MarginContainer/Animation/PanelContainer/MarginContainer/Control/GridContainer" unique_id=1250574687]
 layout_mode = 2
-text = "Fire rate UP"
 
 [node name="Option_2_Button" type="Button" parent="MarginContainer/Animation/PanelContainer/MarginContainer/Control/GridContainer" unique_id=791240211]
 layout_mode = 2
-text = "Speed UP
+text = "
 "
 
 [node name="SkillPointsLabel" type="Label" parent="MarginContainer/Animation/PanelContainer/MarginContainer/Control" unique_id=594161351]

@@ -86,8 +86,12 @@ public partial class StatsUpgradePanel : CanvasLayer
 			GD.Print($"{keyvaluePair.Key}  {keyvaluePair.Value}");
 		}								
 
-        OptionButton1.Text = DrawnUpgradableStats.Keys.First().ToString();
-		OptionButton2.Text = DrawnUpgradableStats.Keys.Last().ToString();
+        // OptionButton1.Text = DrawnUpgradableStats.Keys.First().ToString();
+		// OptionButton2.Text = DrawnUpgradableStats.Keys.Last().ToString();
+		var option1IconPath = $"res://sprites/stats upgrade panel/{DrawnUpgradableStats.First().Key}.png";
+		var option2IconPath = $"res://sprites/stats upgrade panel/{DrawnUpgradableStats.Last().Key}.png";
+		OptionButton1.Icon = Icons.GetIcon(option1IconPath);
+		OptionButton2.Icon = Icons.GetIcon(option2IconPath);
 
 		OptionButton1.TooltipText = $"+{DrawnUpgradableStats[DrawnUpgradableStats.Keys.First()]}";
 		OptionButton2.TooltipText = $"+{DrawnUpgradableStats[DrawnUpgradableStats.Keys.Last()]}";

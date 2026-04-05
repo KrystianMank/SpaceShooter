@@ -1,22 +1,30 @@
-[gd_scene load_steps=2 format=3 uid="uid://f6ukj75fdw68"]
+[gd_scene format=3 uid="uid://f6ukj75fdw68"]
 
 [ext_resource type="Script" uid="uid://1cnhb0l1r62v" path="res://scripts/PlayerStatsPanel.cs" id="1_naqit"]
+[ext_resource type="Texture2D" uid="uid://br2t5mhh3fogi" path="res://sprites/stats upgrade panel/stats_panel_background.png" id="2_sutap"]
 
-[node name="PlayerStatsPanel" type="CanvasLayer"]
+[node name="PlayerStatsPanel" type="CanvasLayer" unique_id=2076362686]
 script = ExtResource("1_naqit")
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1297261357]
 custom_minimum_size = Vector2(200, 0)
-offset_left = 10.0
-offset_top = 10.0
-offset_right = 50.0
-offset_bottom = 50.0
+offset_left = 15.0
+offset_top = 15.0
+offset_right = 215.0
+offset_bottom = 315.0
 
-[node name="ColorRect" type="ColorRect" parent="PanelContainer"]
+[node name="TextureRect" type="TextureRect" parent="PanelContainer" unique_id=320388111]
 layout_mode = 2
-color = Color(0.41567016, 0.50180393, 1, 0.49803922)
+texture = ExtResource("2_sutap")
 
-[node name="GridContainer" type="GridContainer" parent="PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=1708110099]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="GridContainer" type="GridContainer" parent="PanelContainer/MarginContainer" unique_id=925022433]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
